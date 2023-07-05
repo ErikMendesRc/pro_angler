@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pro_angler/Util/cores.dart';
+import 'package:pro_angler/Util/custom_styles.dart';
 
 class TournamentCard extends StatelessWidget {
   const TournamentCard({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class TournamentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Lógica de redirecionamento para outra página
+        Navigator.pushNamed(context, '/tournamentpage');
       },
       child: SizedBox(
         width: 200,
@@ -40,62 +41,60 @@ class TournamentCard extends StatelessWidget {
                     children: [
                       const Text(
                         'Tucuna Free',
-                        style: TextStyle(
-                          color: CoresPersonalizada.corPrimariaTexto,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: CustomTextStyles.cardsTitles,
                       ),
                       const Text(
                         'Santa Fé do Sul',
-                        style: TextStyle(
-                          color: CoresPersonalizada.corPrimariaTexto,
-                        ),
+                        style: CustomTextStyles.cardsSubTitles,
                       ),
                       const SizedBox(height: 6),
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.date_range,
-                            color: CoresPersonalizada.corPrimariaTexto,
-                          ),
-                          SizedBox(width: 6),
-                          Text(
-                            '20/09/2023',
-                            style: TextStyle(
-                              color: CoresPersonalizada.corPrimariaTexto,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.date_range,
+                              color: CoresPersonalizada.textWhite,
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 6),
+                            Text(
+                              '20/09/2023',
+                              style: CustomTextStyles.cardsTexts,
+                            ),
+                          ],
+                        ),
                       ),
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.location_on,
-                            color: CoresPersonalizada.corPrimariaTexto,
-                          ),
-                          SizedBox(width: 6),
-                          Text(
-                            'Virtual',
-                            style: TextStyle(
-                              color: CoresPersonalizada.corPrimariaTexto,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.location_on,
+                              color: CoresPersonalizada.textWhite,
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 6),
+                            Text(
+                              'Virtual',
+                              style: CustomTextStyles.cardsTexts,
+                            ),
+                          ],
+                        ),
                       ),
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.group,
-                            color: CoresPersonalizada.corPrimariaIcones,
-                          ),
-                          SizedBox(width: 6),
-                          Text(
-                            'Equipes',
-                            style: TextStyle(
-                              color: CoresPersonalizada.corPrimariaTexto,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.group,
+                              color: CoresPersonalizada.corPrimariaIcones,
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 6),
+                            Text(
+                              'Equipes',
+                              style: CustomTextStyles.cardsTexts,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -108,4 +107,3 @@ class TournamentCard extends StatelessWidget {
     );
   }
 }
-

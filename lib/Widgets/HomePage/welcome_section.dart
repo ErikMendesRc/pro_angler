@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Util/custom_styles.dart';
 
 class WelcomeSection extends StatelessWidget {
   const WelcomeSection({super.key});
@@ -17,18 +18,11 @@ class WelcomeSection extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: 'Bem Vindo, ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                      color: Color(0xFF268CB7),
-                    ),
+                    style: CustomTextStyles.titleText,
                   ),
                   TextSpan(
                     text: ' Pescador',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Color(0xFF268CB7),
-                    ),
+                    style: CustomTextStyles.subtitleText,
                   ),
                 ],
               ),

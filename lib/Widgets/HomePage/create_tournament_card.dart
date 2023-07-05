@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pro_angler/Util/cores.dart';
+import 'package:pro_angler/Util/custom_styles.dart';
 
 class CreateTournamentCard extends StatelessWidget {
   const CreateTournamentCard({Key? key}) : super(key: key);
@@ -41,15 +42,10 @@ class CreateTournamentCard extends StatelessWidget {
                     children: const [
                       Text(
                         'Crie seu torneio com a gente.',
-                        style: TextStyle(
-                          color: CoresPersonalizada.corPrimariaTexto,
-                          fontWeight: FontWeight.bold
-                          ),
+                        style: CustomTextStyles.cardTournamentTitle,
                       ),
                       Text('É rápido, fácil e seguro',
-                      style: TextStyle(
-                        color: CoresPersonalizada.corPrimariaTexto
-                      ),),
+                      style: CustomTextStyles.cardTournamentSubTitle,),
                     ],
                   ),
                 ),

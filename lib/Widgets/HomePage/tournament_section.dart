@@ -46,7 +46,7 @@ class TournamentSection extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 300,
+          height: 320,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: itemCount,

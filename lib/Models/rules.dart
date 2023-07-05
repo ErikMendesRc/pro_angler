@@ -1,9 +1,9 @@
-class RegrasModel {
+class Rules {
   String id;
   String descricao;
   List<String> restricoes;
 
-  RegrasModel({
+  Rules({
     required this.id,
     required this.descricao,
     required this.restricoes,

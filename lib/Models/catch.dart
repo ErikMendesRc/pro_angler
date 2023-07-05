@@ -1,4 +1,4 @@
-import 'package:pro_angler/Models/participantes.dart';
+import 'package:pro_angler/Models/participant.dart';
 
 class Catch {
   String id;

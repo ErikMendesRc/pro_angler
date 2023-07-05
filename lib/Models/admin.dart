@@ -1,4 +1,4 @@
-import 'package:pro_angler/Models/torneios.dart';
+import 'package:pro_angler/Models/tournament.dart';
 import 'package:pro_angler/Models/user.dart';
 
 class Admin {

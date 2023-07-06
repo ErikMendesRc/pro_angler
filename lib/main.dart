@@ -4,11 +4,15 @@ import 'package:pro_angler/Views/login_page.dart';
 import 'package:pro_angler/Views/signup_page.dart';
 import 'package:pro_angler/Views/tournament_spage.dart';
 
+import 'Views/new_tournament_page.dart';
+
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,7 +26,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
         '/homepage': (context) => const HomePage(),
-        '/tournamentpage': (context) => const TournamentPage()
+        '/tournamentpage': (context) => const TournamentPage(),
+        '/newtournament': (context) => const NewTournamentPage()
       },
     );
   }

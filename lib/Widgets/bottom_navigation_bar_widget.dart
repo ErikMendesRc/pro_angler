@@ -7,6 +7,7 @@ class BottomNavigationBarWidget extends StatefulWidget {
   const BottomNavigationBarWidget({super.key, required this.currentIndex, required this.onTabTapped});
 
   @override
+  // ignore: library_private_types_in_public_api
   _BottomNavigationBarWidgetState createState() =>
       _BottomNavigationBarWidgetState();
 }
@@ -17,7 +18,13 @@ class _BottomNavigationBarWidgetState
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: widget.currentIndex,
-      onTap: widget.onTabTapped,
+      onTap: (index) {
+        if (index == 2) {
+          Navigator.pushNamed(context, '/newtournament');
+        } else {
+          widget.onTabTapped(index);
+        }
+      },
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.explore),

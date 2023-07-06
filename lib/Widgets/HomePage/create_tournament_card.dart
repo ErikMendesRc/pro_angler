@@ -12,7 +12,7 @@ class CreateTournamentCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(8),
         onTap: () {
-          // Lógica para o clique no card
+          Navigator.pushNamed(context, '/newtournament');
         },
         child: SizedBox(
           height: 140,

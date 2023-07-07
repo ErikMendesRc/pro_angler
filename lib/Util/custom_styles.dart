@@ -30,29 +30,29 @@ class CustomTextStyles {
     //Cards Horizontal
     static const TextStyle cardsTitles = TextStyle(
     fontSize: 16,
-    color: CoresPersonalizada.textWhite,
+    color: CoresPersonalizada.white,
   );
 
   static const TextStyle cardsSubTitles = TextStyle(
     fontSize: 12,
-    color: CoresPersonalizada.textWhite,
+    color: CoresPersonalizada.white,
   );
 
   static const TextStyle cardsTexts = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.normal,
-    color: CoresPersonalizada.textWhite,
+    color: CoresPersonalizada.white,
   );
 
   //Card de Criação de torneios
   static const TextStyle cardTournamentTitle= TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,
-    color: CoresPersonalizada.textWhite,
+    color: CoresPersonalizada.white,
   );
 
   static const TextStyle cardTournamentSubTitle = TextStyle(
     fontSize: 14,
-    color: CoresPersonalizada.textWhite,
+    color: CoresPersonalizada.white,
   );
 }

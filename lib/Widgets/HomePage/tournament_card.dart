@@ -54,7 +54,7 @@ class TournamentCard extends StatelessWidget {
                           children: const [
                             Icon(
                               Icons.date_range,
-                              color: CoresPersonalizada.textWhite,
+                              color: CoresPersonalizada.white,
                             ),
                             SizedBox(width: 6),
                             Text(
@@ -70,7 +70,7 @@ class TournamentCard extends StatelessWidget {
                           children: const [
                             Icon(
                               Icons.location_on,
-                              color: CoresPersonalizada.textWhite,
+                              color: CoresPersonalizada.white,
                             ),
                             SizedBox(width: 6),
                             Text(

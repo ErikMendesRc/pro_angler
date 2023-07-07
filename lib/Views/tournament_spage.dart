@@ -31,21 +31,33 @@ class _TournamentPageState extends State<TournamentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nome do Torneio'),
+        centerTitle: true,
+        backgroundColor: CoresPersonalizada.corPrimaria,
+        elevation: 0.0,
+        title: const Text('Detalhes do Torneio'),
       ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(8.0),
-          children: [
-            const HeaderWidget(),
-            const GeneralInfoCard(),
-            const DescriptionCard(),
-            const RegistrationFeeCard(),
-            const RulesCard(),
-            PrizesCard(),
-            const CaptureListCard(),
-            const TournamentRankingCard(),
-          ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: RadialGradient(
+            colors: [CoresPersonalizada.corSecundaria, CoresPersonalizada.corPrimaria],
+            center: Alignment.center,
+            radius: 1.0,
+          ),
+        ),
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(8.0),
+            children: [
+              const HeaderWidget(),
+              const GeneralInfoCard(),
+              const DescriptionCard(),
+              const RegistrationFeeCard(),
+              const RulesCard(),
+              PrizesCard(),
+              const CaptureListCard(),
+              const TournamentRankingCard(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Theme(

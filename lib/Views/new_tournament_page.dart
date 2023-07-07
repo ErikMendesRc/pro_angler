@@ -1,12 +1,19 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
+import 'package:pro_angler/Util/cores.dart';
+
+import '../Widgets/NewTournamentsPage/torunament_entry_fee_switch.dart';
+import '../Widgets/NewTournamentsPage/tournament_date_range.dart';
+import '../Widgets/NewTournamentsPage/tournament_description.dart';
+import '../Widgets/NewTournamentsPage/tournament_entry_fee.dart';
+import '../Widgets/NewTournamentsPage/tournament_form_field.dart';
+import '../Widgets/NewTournamentsPage/tournament_modalidade.dart';
+import '../Widgets/NewTournamentsPage/tournament_terms_checkbox.dart';
+import '../Widgets/NewTournamentsPage/tournament_type.dart';
 
 class NewTournamentPage extends StatefulWidget {
-  const NewTournamentPage({super.key});
+  const NewTournamentPage({Key? key}) : super(key: key);
 
   @override
   _NewTournamentPageState createState() => _NewTournamentPageState();
@@ -14,7 +21,7 @@ class NewTournamentPage extends StatefulWidget {
 
 class _NewTournamentPageState extends State<NewTournamentPage> {
   bool _hasEntryFee = false;
-  bool _acceptTerms = false;
+  bool? _acceptTerms = false;
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _entryFeeController = TextEditingController();
@@ -43,181 +50,85 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastro de Torneios'),
+        centerTitle: true,
+        elevation: 0.0,
+        backgroundColor: CoresPersonalizada.corPrimaria,
+        title: const Text('Criar Torneio'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              GestureDetector(
-                onTap: getImage,
-                child: Container(
-                  height: 200.0,
-                  color: Colors.grey,
-                  child: _pickedImage != null
-                      ? Image.file(
-                          _pickedImage!,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        )
-                      : const Icon(Icons.upload_file),
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Nome do Torneio',
-                  prefixIcon: Icon(Icons.title),
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Data Inicial',
-                        prefixIcon: Icon(Icons.calendar_today),
-                      ),
-                      controller: _startDateController,
-                      onTap: () async {
-                        final DateTime? selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
-                        );
-                        if (selectedDate != null) {
-                          final formattedDate =
-                              DateFormat('dd/MM/yyyy').format(selectedDate);
-                          setState(() {
-                            _startDateController.text = formattedDate;
-                          });
-                        }
-                      },
-                      readOnly: true,
-                    ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: RadialGradient(
+            colors: [
+              CoresPersonalizada.corSecundaria,
+              CoresPersonalizada.corPrimaria
+            ],
+            center: Alignment.center,
+            radius: 1.5,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                GestureDetector(
+                  onTap: getImage,
+                  child: Container(
+                    height: 200.0,
+                    color: Colors.grey,
+                    child: _pickedImage != null
+                        ? Image.file(
+                            _pickedImage!,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          )
+                        : const Icon(Icons.upload_file),
                   ),
-                  const SizedBox(width: 16.0),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Data Final',
-                        prefixIcon: Icon(Icons.calendar_today),
-                      ),
-                      controller: _endDateController,
-                      onTap: () async {
-                        final DateTime? selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
-                        );
-                        if (selectedDate != null) {
-                          final formattedDate =
-                              DateFormat('dd/MM/yyyy').format(selectedDate);
-                          setState(() {
-                            _endDateController.text = formattedDate;
-                          });
-                        }
-                      },
-                      readOnly: true,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16.0),
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Modalidade',
-                  prefixIcon: Icon(Icons.sports),
                 ),
-                items: const [
-                  DropdownMenuItem(value: '1', child: Text('Modalidade 1')),
-                  DropdownMenuItem(value: '2', child: Text('Modalidade 2')),
-                  DropdownMenuItem(value: '3', child: Text('Modalidade 3')),
-                ],
-                onChanged: (value) {},
-              ),
-              const SizedBox(height: 16.0),
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Tipo do Torneio',
-                  prefixIcon: Icon(Icons.category),
+                const SizedBox(height: 16.0),
+                const TournamentNameFormField(),
+                const SizedBox(height: 16.0),
+                TournamentDateRangeFormField(
+                  startDateController: _startDateController,
+                  endDateController: _endDateController,
                 ),
-                items: const [
-                  DropdownMenuItem(value: '1', child: Text('Tipo 1')),
-                  DropdownMenuItem(value: '2', child: Text('Tipo 2')),
-                  DropdownMenuItem(value: '3', child: Text('Tipo 3')),
-                ],
-                onChanged: (value) {},
-              ),
-              const SizedBox(height: 16.0),
-              SwitchListTile(
-                title: const Text('Possui taxa de inscrição?'),
-                value: _hasEntryFee,
-                onChanged: (value) {
-                  setState(() {
-                    _hasEntryFee = value;
-                  });
-                },
-              ),
-              if (_hasEntryFee)
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Valor da Inscrição',
-                    prefixIcon: Icon(Icons.attach_money),
-                  ),
-                  controller: _entryFeeController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  onChanged: (value) {
-                    final formattedValue = NumberFormat.currency(
-                      symbol: 'R\$',
-                      decimalDigits: 2,
-                      locale: 'pt_BR',
-                    ).format(double.parse(value) /
-                        100); // Dividir por 100 para ajustar as casas decimais
-                    _entryFeeController.value =
-                        _entryFeeController.value.copyWith(
-                      text: formattedValue,
-                      selection: TextSelection.collapsed(
-                          offset: formattedValue.length),
-                    );
+                const SizedBox(height: 16.0),
+                const TournamentModalidadeFormField(),
+                const SizedBox(height: 16.0),
+                const TournamentTypeFormField(),
+                const SizedBox(height: 16.0),
+                TournamentEntryFeeSwitchTile(
+                  hasEntryFee: _hasEntryFee,
+                  onEntryFeeChanged: (value) {
+                    setState(() {
+                      _hasEntryFee = value;
+                    });
                   },
                 ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Descrição',
-                  prefixIcon: Icon(Icons.description),
-                ),
-                maxLines: 3,
-              ),
-              const SizedBox(height: 16.0),
-              Row(
-                children: [
-                  Checkbox(
-                    value: _acceptTerms,
-                    onChanged: (value) {
-                      setState(() {
-                        _acceptTerms = value!;
-                      });
-                    },
+                if (_hasEntryFee)
+                  TournamentEntryFeeFormField(
+                    entryFeeController: _entryFeeController,
                   ),
-                  const Text('Aceito os Termos e Condições'),
-                ],
-              ),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _acceptTerms ? () => _createTournament() : null,
-                child: const Text('Criar Torneio'),
-              ),
-            ],
+                const SizedBox(height: 16.0),
+                const TournamentDescriptionFormField(),
+                const SizedBox(height: 16.0),
+                TournamentTermsCheckbox(
+                  acceptTerms: _acceptTerms ?? false,
+                  onTermsChanged: (value) {
+                    setState(() {
+                      _acceptTerms = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed:
+                      _acceptTerms ?? false ? () => _createTournament() : null,
+                  child: const Text('Criar Torneio'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

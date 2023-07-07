@@ -27,9 +27,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shadowColor: const Color.fromARGB(255, 190, 190, 190),
+        elevation: 0.0,
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: CoresPersonalizada.corPrimaria,
         title: const Text(
           "Pro Angler's",
           style: TextStyle(
@@ -37,29 +37,38 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: ListView(
-          children: const <Widget>[
-            WelcomeSection(),
-            Divider(),
-            Padding(
-              padding: EdgeInsets.only(bottom: 16.0),
-              child: TournamentSection(
-                title: 'Torneios em andamento',
-                itemCount: 3,
-                textStyle: CustomTextStyles.sessionTitles,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: RadialGradient(
+            colors: [CoresPersonalizada.corSecundaria,CoresPersonalizada.corPrimaria],
+            center: Alignment.center,
+            radius: 1.0,
+          ),
+        ),
+        child: SafeArea(
+          child: ListView(
+            children: const <Widget>[
+              WelcomeSection(),
+              Divider(),
+              Padding(
+                padding: EdgeInsets.only(bottom: 2.0),
+                child: TournamentSection(
+                  title: 'Torneios em andamento',
+                  itemCount: 3,
+                  textStyle: CustomTextStyles.sessionTitles,
+                ),
               ),
-            ),
-            CreateTournamentCard(),
-            Padding(
-              padding: EdgeInsets.only(bottom: 16.0),
-              child: TournamentSection(
-                title: 'Ver todos os Torneios',
-                itemCount: 3,
-                textStyle: CustomTextStyles.sessionTitles,
+              CreateTournamentCard(),
+              Padding(
+                padding: EdgeInsets.only(bottom: 2.0),
+                child: TournamentSection(
+                  title: 'Ver todos os Torneios',
+                  itemCount: 3,
+                  textStyle: CustomTextStyles.sessionTitles,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Theme(

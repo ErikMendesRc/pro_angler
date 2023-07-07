@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Util/cores.dart';
 import 'package:pro_angler/Widgets/HomePage/tournament_card.dart';
 
 class TournamentSection extends StatelessWidget {
@@ -37,7 +38,7 @@ class TournamentSection extends StatelessWidget {
                   child: Text(
                     'Ver todos',
                     style: TextStyle(
-                      color: Color(0xFF268CB7),
+                      color: CoresPersonalizada.corTextoDestaque,
                     ),
                   ),
                 ),

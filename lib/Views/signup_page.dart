@@ -13,18 +13,15 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                CoresPersonalizada.corPrimaria,
-                CoresPersonalizada.corSecundaria,
-              ],
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: RadialGradient(
+            colors: [CoresPersonalizada.corSecundaria, CoresPersonalizada.corPrimaria],
+            center: Alignment.center,
+            radius: 1.0,
           ),
+        ),
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

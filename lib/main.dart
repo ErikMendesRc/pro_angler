@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pro_angler/Views/home_page.dart';
 import 'package:pro_angler/Views/login_page.dart';
+import 'package:pro_angler/Views/profile_page.dart';
 import 'package:pro_angler/Views/signup_page.dart';
 import 'package:pro_angler/Views/tournament_spage.dart';
 
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignupPage(),
         '/homepage': (context) => const HomePage(),
         '/tournamentpage': (context) => const TournamentPage(),
-        '/newtournament': (context) => const NewTournamentPage()
+        '/newtournament': (context) => const NewTournamentPage(),
+        '/profile': (context) => const ProfilePage()
       },
     );
   }

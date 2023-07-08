@@ -28,17 +28,22 @@ class TournamentSection extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Text(
                   title,
-                  style: textStyle, // Aplicando o estilo fornecido ao título
+                  style: textStyle,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(right: 16),
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 16),
-                  child: Text(
-                    'Ver todos',
-                    style: TextStyle(
-                      color: CoresPersonalizada.corTextoDestaque,
+              GestureDetector(
+                onTap: () {
+                  
+                },
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 16),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 16),
+                    child: Text(
+                      'Ver todos',
+                      style: TextStyle(
+                        color: CoresPersonalizada.corTextoDestaque,
+                      ),
                     ),
                   ),
                 ),
@@ -51,7 +56,7 @@ class TournamentSection extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: itemCount,
-            separatorBuilder: (context, index) => SizedBox(width: 8),
+            separatorBuilder: (context, index) => const SizedBox(width: 8),
             itemBuilder: (context, index) {
               return const TournamentCard();
             },
@@ -61,4 +66,3 @@ class TournamentSection extends StatelessWidget {
     );
   }
 }
-

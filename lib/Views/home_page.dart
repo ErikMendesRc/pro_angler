@@ -26,7 +26,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0.0,
         centerTitle: true,
         backgroundColor: CoresPersonalizada.corPrimaria,
@@ -40,7 +42,10 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: RadialGradient(
-            colors: [CoresPersonalizada.corSecundaria,CoresPersonalizada.corPrimaria],
+            colors: [
+              CoresPersonalizada.corSecundaria,
+              CoresPersonalizada.corPrimaria
+            ],
             center: Alignment.center,
             radius: 1.0,
           ),
@@ -73,10 +78,10 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          canvasColor: CoresPersonalizada.corSecundaria, // Defina a cor de fundo do BottomNavigationBar
+          canvasColor: CoresPersonalizada.corPrimaria
         ),
         child: BottomNavigationBarWidget(
-          currentIndex: _currentIndex, // Defina o índice atual aqui
+          currentIndex: _currentIndex,
           onTabTapped: _onTabTapped,
         ),
       ),

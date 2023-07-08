@@ -11,6 +11,7 @@ import '../Widgets/NewTournamentsPage/tournament_form_field.dart';
 import '../Widgets/NewTournamentsPage/tournament_modalidade.dart';
 import '../Widgets/NewTournamentsPage/tournament_terms_checkbox.dart';
 import '../Widgets/NewTournamentsPage/tournament_type.dart';
+import '../Widgets/bottom_navigation_bar_widget.dart';
 
 class NewTournamentPage extends StatefulWidget {
   const NewTournamentPage({Key? key}) : super(key: key);
@@ -27,6 +28,14 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
   final TextEditingController _entryFeeController = TextEditingController();
   final picker = ImagePicker();
   File? _pickedImage;
+
+  int _currentIndex = 2;
+
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   void dispose() {
@@ -130,6 +139,15 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
               ],
             ),
           ),
+        ),
+      ),
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: CoresPersonalizada.corPrimaria
+        ),
+        child: BottomNavigationBarWidget(
+          currentIndex: _currentIndex,
+          onTabTapped: _onTabTapped,
         ),
       ),
     );

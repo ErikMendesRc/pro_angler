@@ -21,12 +21,6 @@ class CustomTextStyles {
     color: CoresPersonalizada.corTextoDestaque,
   );
 
-  static const TextStyle sessionTitlesWhite = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
-    color: Color.fromARGB(255, 255, 255, 255),
-  );
-
     //Cards Horizontal
     static const TextStyle cardsTitles = TextStyle(
     fontSize: 16,
@@ -53,6 +47,24 @@ class CustomTextStyles {
 
   static const TextStyle cardTournamentSubTitle = TextStyle(
     fontSize: 14,
+    color: CoresPersonalizada.white,
+  );
+
+  //Cards Troféus e Conquistas
+
+  static const TextStyle cardProfilePageTitle= TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    color: CoresPersonalizada.white,
+  );
+
+  static const TextStyle cardProfilePageSubTitle = TextStyle(
+    fontSize: 12,
+    color: CoresPersonalizada.white,
+  );
+
+  static const TextStyle profileLocal = TextStyle(
+    fontSize: 16,
     color: CoresPersonalizada.white,
   );
 }

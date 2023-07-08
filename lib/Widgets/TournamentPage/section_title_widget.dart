@@ -10,7 +10,7 @@ class SectionTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: CustomTextStyles.sessionTitlesWhite,
+      style: CustomTextStyles.sessionTitles,
     );
   }
 }

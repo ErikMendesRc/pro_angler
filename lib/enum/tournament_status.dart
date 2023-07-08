@@ -1,0 +1,4 @@
+enum TournamentStatus {
+  emAndamento,
+  todos,
+}

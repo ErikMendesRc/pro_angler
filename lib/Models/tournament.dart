@@ -2,8 +2,8 @@ import 'package:pro_angler/Models/user.dart';
 
 class Tournament {
   String id;
-  User organizer;
-  List<User> administrators;
+  String organizerName;
+  List<User>? administrators;
   String name;
   String description;
   DateTime startDate;
@@ -13,11 +13,12 @@ class Tournament {
   String type;
   double entryFee;
   List<String> prizes;
+  String status;
 
   Tournament({
     required this.id,
-    required this.organizer,
-    required this.administrators,
+    required this.organizerName,
+    this.administrators,
     required this.name,
     required this.description,
     required this.startDate,
@@ -27,5 +28,7 @@ class Tournament {
     required this.type,
     required this.entryFee,
     required this.prizes,
+    required this.status
   });
+
 }

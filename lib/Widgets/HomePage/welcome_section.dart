@@ -4,6 +4,7 @@ import 'package:pro_angler/Util/custom_styles.dart';
 class WelcomeSection extends StatelessWidget {
   const WelcomeSection({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,8 +28,13 @@ class WelcomeSection extends StatelessWidget {
                 ],
               ),
             ),
-            const CircleAvatar(
-              child: Icon(Icons.person),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+              child: const CircleAvatar(
+                child: Icon(Icons.person),
+              ),
             ),
           ],
         ),

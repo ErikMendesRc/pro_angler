@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pro_angler/Util/cores.dart';
 
+import '../Widgets/NewTournamentsPage/teamtype_radio_button.dart';
 import '../Widgets/NewTournamentsPage/torunament_entry_fee_switch.dart';
 import '../Widgets/NewTournamentsPage/tournament_date_range.dart';
 import '../Widgets/NewTournamentsPage/tournament_description.dart';
 import '../Widgets/NewTournamentsPage/tournament_entry_fee.dart';
 import '../Widgets/NewTournamentsPage/tournament_form_field.dart';
 import '../Widgets/NewTournamentsPage/tournament_modalidade.dart';
+import '../Widgets/NewTournamentsPage/tournament_rules.dart';
 import '../Widgets/NewTournamentsPage/tournament_terms_checkbox.dart';
 import '../Widgets/NewTournamentsPage/tournament_type.dart';
 import '../Widgets/bottom_navigation_bar_widget.dart';
+import '../enum/tournament_team_based.dart';
 
 class NewTournamentPage extends StatefulWidget {
   const NewTournamentPage({Key? key}) : super(key: key);
@@ -28,6 +31,7 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
   final TextEditingController _entryFeeController = TextEditingController();
   final picker = ImagePicker();
   File? _pickedImage;
+  TournamentTeamBased _teamBase = TournamentTeamBased.Equipe;
 
   int _currentIndex = 2;
 
@@ -106,6 +110,15 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
                 const TournamentModalidadeFormField(),
                 const SizedBox(height: 16.0),
                 const TournamentTypeFormField(),
+                const SizedBox(height: 40.0),
+                TeamTypeRadioButtons(
+                  value: _teamBase,
+                  onChanged: (value) {
+                    setState(() {
+                      _teamBase = value;
+                    });
+                  },
+                ),
                 const SizedBox(height: 16.0),
                 TournamentEntryFeeSwitchTile(
                   hasEntryFee: _hasEntryFee,
@@ -119,6 +132,10 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
                   TournamentEntryFeeFormField(
                     entryFeeController: _entryFeeController,
                   ),
+                  const SizedBox(height: 30.0),
+                  TournamentRulesFormField(
+                rulesController: TextEditingController(),
+              ),
                 const SizedBox(height: 16.0),
                 const TournamentDescriptionFormField(),
                 const SizedBox(height: 16.0),
@@ -143,7 +160,7 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          canvasColor: CoresPersonalizada.corPrimaria
+          canvasColor: CoresPersonalizada.corPrimaria,
         ),
         child: BottomNavigationBarWidget(
           currentIndex: _currentIndex,

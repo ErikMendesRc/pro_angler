@@ -30,8 +30,10 @@ class TournamentSection extends StatelessWidget {
           filteredTournaments = tournaments
               .where((tournament) => tournament.status == 'Em Andamento')
               .toList();
-        } else {
+        } else if (status == TournamentStatus.todos) {
           filteredTournaments = tournaments;
+        } else {
+          filteredTournaments = [];
         }
 
         return Column(

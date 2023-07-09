@@ -7,6 +7,7 @@ import '../../Providers/tournament_provider.dart';
 import '../../Util/cores.dart';
 import '../../Util/custom_styles.dart';
 import '../status_flag.dart';
+import '../verified_badge.dart';
 
 class TournamentCard extends StatelessWidget {
   const TournamentCard({Key? key, required this.tournament}) : super(key: key);
@@ -16,12 +17,14 @@ class TournamentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-  String formattedStartDate = dateFormat.format(tournament.startDate);
+    String formattedStartDate = dateFormat.format(tournament.startDate);
 
     return InkWell(
       onTap: () {
-        final tournamentProvider = Provider.of<TournamentProvider>(context, listen: false);
-        tournamentProvider.setCurrentTournament(tournament); // Define o torneio atual
+        final tournamentProvider =
+            Provider.of<TournamentProvider>(context, listen: false);
+        tournamentProvider
+            .setCurrentTournament(tournament); // Define o torneio atual
         Navigator.pushNamed(context, '/tournamentpage');
       },
       child: SizedBox(
@@ -52,9 +55,20 @@ class TournamentCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        tournament.name,
-                        style: CustomTextStyles.cardsTitles,
+                      Row(
+                        children: [
+                          Text(
+                            tournament.name,
+                            style: CustomTextStyles.cardsTitles,
+                          ),
+                          if (tournament.isUserVerified &&
+                              tournament.isTournamentVerified)
+                            const SizedBox(width: 4.0),
+                          VerifiedBadge(
+                            isOrganizerVerified: tournament.isUserVerified,
+                            isTournamentVerified: tournament.isTournamentVerified,
+                          ),
+                        ],
                       ),
                       Text(
                         tournament.location,
@@ -103,7 +117,7 @@ class TournamentCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              tournament.status,
+                              tournament.modality,
                               style: CustomTextStyles.cardsTexts,
                             ),
                           ],

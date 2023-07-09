@@ -1,5 +1,7 @@
 import 'package:pro_angler/Models/user.dart';
 
+import '../enum/tournament_team_based.dart';
+
 class Tournament {
   String id;
   String organizerName;
@@ -14,6 +16,10 @@ class Tournament {
   double entryFee;
   List<String> prizes;
   String status;
+  TournamentTeamBased teamBased;
+  String rules;
+  bool isUserVerified;
+  bool isTournamentVerified;
 
   Tournament({
     required this.id,
@@ -28,7 +34,11 @@ class Tournament {
     required this.type,
     required this.entryFee,
     required this.prizes,
-    required this.status
+    required this.status,
+    required this.teamBased,
+    required this.rules,
+    required this.isUserVerified,
+    this.isTournamentVerified = false,
   });
 
 }

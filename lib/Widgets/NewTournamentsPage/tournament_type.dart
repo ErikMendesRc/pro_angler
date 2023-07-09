@@ -16,7 +16,7 @@ class TournamentTypeFormField extends StatelessWidget {
       items: const [
         DropdownMenuItem(value: '1', child: Text('Presencial', style: TextStyle(color: CoresPersonalizada.white))),
         DropdownMenuItem(value: '2', child: Text('Online', style: TextStyle(color: CoresPersonalizada.white))), 
-        DropdownMenuItem(value: '3', child: Text('Presencia/Online', style: TextStyle(color: CoresPersonalizada.white))), 
+        DropdownMenuItem(value: '3', child: Text('Presencial/Online', style: TextStyle(color: CoresPersonalizada.white))), 
       ],
       dropdownColor: CoresPersonalizada.corPrimaria,
       onChanged: (value) {},

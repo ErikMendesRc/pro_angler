@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pro_angler/Util/cores.dart';
 import 'package:pro_angler/Providers/tournament_provider.dart';
+import 'package:pro_angler/Util/custom_styles.dart';
 import 'package:provider/provider.dart';
 
 import '../status_flag.dart';
@@ -31,10 +32,26 @@ class GeneralInfoCard extends StatelessWidget {
 
                 if (currentTournament != null) {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 8.0,),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Início do torneio',
+                          style: CustomTextStyles.cardsTexts
+                        ),
+                      ),
                       InfoItemWidget(FontAwesomeIcons.calendar, dateFormatter.format(currentTournament.startDate)),
+                      const SizedBox(height: 8),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Fim do torneio',
+                          style: CustomTextStyles.cardsTexts
+                        ),
+                      ),
                       InfoItemWidget(FontAwesomeIcons.calendarCheck, dateFormatter.format(currentTournament.endDate)),
-                      const InfoItemWidget(FontAwesomeIcons.clock, '8:00 AM'),
                       InfoItemWidget(FontAwesomeIcons.mapLocation, currentTournament.location),
                       const SizedBox(height: 8),
                       StatusFlag(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pro_angler/Util/cores.dart';
 import 'package:pro_angler/Util/custom_styles.dart';
+import 'package:provider/provider.dart';
 
 import '../../Mock/tournament_mock.dart';
 import '../../Models/tournament.dart';
+import '../../Providers/tournament_provider.dart';
 import 'section_title_widget.dart';
 
 class DescriptionCard extends StatefulWidget {
@@ -36,8 +38,9 @@ class _DescriptionCardState extends State<DescriptionCard> {
     }
   }
 
-  @override
   Widget build(BuildContext context) {
+    final tournamentProvider = Provider.of<TournamentProvider>(context);
+
     return Card(
       color: CoresPersonalizada.corCards,
       child: Padding(
@@ -48,7 +51,8 @@ class _DescriptionCardState extends State<DescriptionCard> {
             const SectionTitleWidget('Descrição'),
             const SizedBox(height: 8),
             Text(
-              tournament?.description ?? 'Carregando...',  // Verifica se o tournament é nulo
+              tournamentProvider.currentTournament?.description ??
+                  'Carregando...',
               style: CustomTextStyles.cardsTexts,
             ),
           ],

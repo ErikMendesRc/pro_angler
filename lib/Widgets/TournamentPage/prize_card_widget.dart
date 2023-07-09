@@ -18,7 +18,7 @@ class PrizesCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionTitleWidget('Prêmios e Reconhecimento'),
+            const SectionTitleWidget('Prêmio para o Campeão'),
             const SizedBox(height: 8),
             Consumer<TournamentProvider>(
               builder: (context, tournamentProvider, _) {

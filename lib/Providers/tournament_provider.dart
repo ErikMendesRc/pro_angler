@@ -5,6 +5,7 @@ import '../Mock/tournament_mock.dart';
 
 class TournamentProvider with ChangeNotifier {
   final List<Tournament> _tournaments = MockData.getTodosOsTorneios();
+  
   bool _isLoading = false;
   String _error = '';
   Tournament? _currentTournament;
@@ -15,22 +16,36 @@ class TournamentProvider with ChangeNotifier {
   Tournament? get currentTournament => _currentTournament;
 
   Future<void> fetchTournaments() async {
-    try {
-      _isLoading = true;
-      _error = '';
-      notifyListeners();
+  try {
+    _isLoading = true;
+    _error = '';
+    notifyListeners();
 
-      // Simulação de uma solicitação assíncrona ao backend
-      await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
-      _isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      _isLoading = false;
-      _error = 'Falha ao buscar os torneios: $e';
-      notifyListeners();
-    }
+    List<Tournament> filteredTournaments = _tournaments
+        .where((tournament) => tournament.status == 'Em Andamento')
+        .toList();
+    _currentTournament = null;
+    _tournaments.clear();
+    _tournaments.addAll(filteredTournaments);
+
+    final currentDate = DateTime.now();
+      for (var tournament in _tournaments) {
+        if (tournament.endDate.isBefore(currentDate) && tournament.status != 'Finalizado') {
+          tournament.status = 'Finalizado';
+        }
+      }
+
+    _isLoading = false;
+    notifyListeners();
+  } catch (e) {
+    _isLoading = false;
+    _error = 'Falha ao buscar os torneios: $e';
+    notifyListeners();
   }
+}
+
 
   void setCurrentTournament(Tournament tournament) {
     _currentTournament = tournament; // Atualiza o valor corretamente

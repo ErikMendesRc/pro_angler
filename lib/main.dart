@@ -3,7 +3,7 @@ import 'package:pro_angler/Views/home_page.dart';
 import 'package:pro_angler/Views/login_page.dart';
 import 'package:pro_angler/Views/profile_page.dart';
 import 'package:pro_angler/Views/signup_page.dart';
-import 'package:pro_angler/Views/tournament_spage.dart';
+import 'package:pro_angler/Views/tournaments_page.dart';
 import 'package:provider/provider.dart';
 
 import 'Providers/tournament_provider.dart';

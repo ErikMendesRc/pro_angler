@@ -4,7 +4,7 @@ class StatusFlag extends StatelessWidget {
   final DateTime startDate;
   final DateTime endDate;
 
-  const StatusFlag({super.key, required this.startDate, required this.endDate});
+  const StatusFlag({Key? key, required this.startDate, required this.endDate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +14,10 @@ class StatusFlag extends StatelessWidget {
     IconData statusIcon;
     Color statusColor;
     if (currentDate.isBefore(startDate)) {
-      status = 'Inscrições Abertas';
-      statusIcon = Icons.check_circle;
-      statusColor = Colors.green;
-    } else if (currentDate.isBefore(endDate)) {
+      status = 'Aguardando Inicio';
+      statusIcon = Icons.alarm;
+      statusColor = Colors.blue;
+    } else if (currentDate.isBefore(endDate) || currentDate.isAtSameMomentAs(endDate)) {
       status = 'Em Andamento';
       statusIcon = Icons.schedule;
       statusColor = Colors.grey;

@@ -3,6 +3,7 @@ import 'package:pro_angler/Models/participant.dart';
 import 'package:pro_angler/Models/team.dart';
 import 'package:pro_angler/Models/catch.dart';
 import 'package:pro_angler/Models/user.dart';
+import 'package:pro_angler/enum/fish_evaluation_status.dart';
 import 'package:pro_angler/enum/tournament_team_based.dart';
 
 class MockData {
@@ -205,7 +206,7 @@ class MockData {
         photo: 'photo1.jpg',
         video: 'video1.mp4',
         dateTime: DateTime.now(),
-        evaluationStatus: 'Aguardando Avaliação',
+        fishEvaluationStatus: FishEvaluationStatus.aguardandoAvaliacao,
       ),
       Catch(
         id: '2',
@@ -221,7 +222,7 @@ class MockData {
         photo: 'photo2.jpg',
         video: 'video2.mp4',
         dateTime: DateTime.now(),
-        evaluationStatus: 'Validado',
+        fishEvaluationStatus: FishEvaluationStatus.peixeValidado,
       ),
     ];
   }

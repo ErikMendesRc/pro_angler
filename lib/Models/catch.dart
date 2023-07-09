@@ -8,6 +8,7 @@ class Catch {
   String photo;
   String video;
   DateTime dateTime;
+  String evaluationStatus;
 
   Catch({
     required this.id,
@@ -17,5 +18,6 @@ class Catch {
     required this.photo,
     required this.video,
     required this.dateTime,
+    this.evaluationStatus = 'Aguardando Avaliação',
   });
 }

@@ -1,0 +1,4 @@
+enum TournamentTeamBased {
+  Equipe,
+  Individual,
+}

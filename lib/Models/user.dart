@@ -1,3 +1,5 @@
+import 'package:pro_angler/Models/tournament.dart';
+
 import 'achiviement.dart';
 
 class User {
@@ -5,15 +7,17 @@ class User {
   String name;
   String email;
   String password;
-  String photo;
-  List<Achievement> achievements;
+  String? photo;
+  List<Achievement>? achievements;
+  List<Tournament>? myTournaments;
 
   User({
     required this.id,
     required this.name,
     required this.email,
     required this.password,
-    required this.photo,
-    required this.achievements,
+    this.photo,
+    this.achievements,
+    this.myTournaments
   });
 }

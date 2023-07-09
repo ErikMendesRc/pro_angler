@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:pro_angler/Util/cores.dart';
-import 'package:pro_angler/Util/custom_styles.dart';
+import 'package:intl/intl.dart';
+import 'package:pro_angler/Models/tournament.dart';
+import 'package:provider/provider.dart';
+
+import '../../Providers/tournament_provider.dart';
+import '../../Util/cores.dart';
+import '../../Util/custom_styles.dart';
+import '../status_flag.dart';
+import '../verified_badge.dart';
 
 class TournamentCard extends StatelessWidget {
-  const TournamentCard({Key? key}) : super(key: key);
+  const TournamentCard({Key? key, required this.tournament}) : super(key: key);
+
+  final Tournament tournament;
 
   @override
   Widget build(BuildContext context) {
+    DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+    String formattedStartDate = dateFormat.format(tournament.startDate);
+
     return InkWell(
       onTap: () {
+        final tournamentProvider =
+            Provider.of<TournamentProvider>(context, listen: false);
+        tournamentProvider
+            .setCurrentTournament(tournament); // Define o torneio atual
         Navigator.pushNamed(context, '/tournamentpage');
       },
       child: SizedBox(
@@ -39,26 +55,37 @@ class TournamentCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Tucuna Free',
-                        style: CustomTextStyles.cardsTitles,
+                      Row(
+                        children: [
+                          Text(
+                            tournament.name,
+                            style: CustomTextStyles.cardsTitles,
+                          ),
+                          if (tournament.isUserVerified &&
+                              tournament.isTournamentVerified)
+                            const SizedBox(width: 4.0),
+                          VerifiedBadge(
+                            isOrganizerVerified: tournament.isUserVerified,
+                            isTournamentVerified: tournament.isTournamentVerified,
+                          ),
+                        ],
                       ),
-                      const Text(
-                        'Santa Fé do Sul',
+                      Text(
+                        tournament.location,
                         style: CustomTextStyles.cardsSubTitles,
                       ),
                       const SizedBox(height: 6),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Row(
-                          children: const [
-                            Icon(
+                          children: [
+                            const Icon(
                               Icons.date_range,
                               color: CoresPersonalizada.white,
                             ),
-                            SizedBox(width: 6),
+                            const SizedBox(width: 6),
                             Text(
-                              '20/09/2023',
+                              formattedStartDate,
                               style: CustomTextStyles.cardsTexts,
                             ),
                           ],
@@ -67,14 +94,14 @@ class TournamentCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Row(
-                          children: const [
-                            Icon(
+                          children: [
+                            const Icon(
                               Icons.location_on,
                               color: CoresPersonalizada.white,
                             ),
-                            SizedBox(width: 6),
+                            const SizedBox(width: 6),
                             Text(
-                              'Virtual',
+                              tournament.type,
                               style: CustomTextStyles.cardsTexts,
                             ),
                           ],
@@ -83,17 +110,25 @@ class TournamentCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Row(
-                          children: const [
-                            Icon(
+                          children: [
+                            const Icon(
                               Icons.group,
                               color: CoresPersonalizada.corPrimariaIcones,
                             ),
-                            SizedBox(width: 6),
+                            const SizedBox(width: 6),
                             Text(
-                              'Equipes',
+                              tournament.modality,
                               style: CustomTextStyles.cardsTexts,
                             ),
                           ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: StatusFlag(
+                          startDate: tournament.startDate,
+                          endDate: tournament.endDate,
                         ),
                       ),
                     ],

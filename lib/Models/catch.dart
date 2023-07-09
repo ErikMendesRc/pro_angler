@@ -1,5 +1,7 @@
 import 'package:pro_angler/Models/participant.dart';
 
+import '../enum/fish_evaluation_status.dart';
+
 class Catch {
   String id;
   Participant participant;
@@ -8,7 +10,7 @@ class Catch {
   String photo;
   String video;
   DateTime dateTime;
-  String evaluationStatus;
+  FishEvaluationStatus fishEvaluationStatus;
 
   Catch({
     required this.id,
@@ -18,6 +20,6 @@ class Catch {
     required this.photo,
     required this.video,
     required this.dateTime,
-    this.evaluationStatus = 'Aguardando Avaliação',
+    this.fishEvaluationStatus = FishEvaluationStatus.aguardandoAvaliacao,
   });
 }

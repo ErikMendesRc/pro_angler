@@ -20,6 +20,7 @@ class Tournament {
   String rules;
   bool isUserVerified;
   bool isTournamentVerified;
+  bool isRegistered;
 
   Tournament({
     required this.id,
@@ -39,6 +40,7 @@ class Tournament {
     required this.rules,
     required this.isUserVerified,
     this.isTournamentVerified = false,
+    this.isRegistered = false
   });
 
 }

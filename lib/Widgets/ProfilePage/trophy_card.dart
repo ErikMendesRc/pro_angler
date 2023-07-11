@@ -35,12 +35,12 @@ class TrophyCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               title,
-              style: CustomTextStyles.cardProfilePageTitle,
+              style: CustomTextStyles.destaque14Bold,
             ),
             const SizedBox(height: 4),
             Text(
               subtitle,
-              style: CustomTextStyles.cardProfilePageSubTitle,
+              style: CustomTextStyles.texto12Branco,
             ),
           ],
         ),

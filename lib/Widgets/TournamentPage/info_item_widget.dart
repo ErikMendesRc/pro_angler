@@ -22,7 +22,7 @@ class InfoItemWidget extends StatelessWidget {
           const SizedBox(width: 12), // Espaçamento horizontal entre o ícone e o texto
           Text(
             label,
-            style: CustomTextStyles.cardsTitles,
+            style: CustomTextStyles.texto16Normal,
           ),
         ],
       ),

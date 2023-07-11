@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.only(bottom: 2.0),
                 child: TournamentSection(
                   title: 'Torneios em andamento',
-                  textStyle: CustomTextStyles.sessionTitles,
+                  textStyle: CustomTextStyles.text20Bold,
                   status: TournamentStatus.emAndamento,
                 ),
               ),
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                 padding:EdgeInsets.only(bottom: 2.0),
                 child: TournamentSection(
                   title: 'Ver todos os Torneios',
-                  textStyle: CustomTextStyles.sessionTitles,
+                  textStyle: CustomTextStyles.text20Bold,
                   status: TournamentStatus.todos,
                 ),
               ),
@@ -76,15 +76,10 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: CoresPersonalizada.corPrimaria,
-        ),
-        child: BottomNavigationBarWidget(
+      bottomNavigationBar: BottomNavigationBarWidget(
           currentIndex: _currentIndex,
           onTabTapped: _onTabTapped,
         ),
-      ),
     );
   }
 }

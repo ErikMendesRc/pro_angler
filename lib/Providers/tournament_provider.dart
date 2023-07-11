@@ -4,7 +4,7 @@ import 'package:pro_angler/Models/tournament.dart';
 import '../Mock/tournament_mock.dart';
 
 class TournamentProvider with ChangeNotifier {
-  final List<Tournament> _tournaments = MockData.getTodosOsTorneios();
+  final List<Tournament> _tournaments = MockTournaments.getTodosOsTorneios();
   
   bool _isLoading = false;
   String _error = '';

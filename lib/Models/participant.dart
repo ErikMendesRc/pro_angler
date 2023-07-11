@@ -9,6 +9,7 @@ class Participant {
   Team? team;
   String status;
 
+
   Participant({
     required this.id,
     required this.tournament,

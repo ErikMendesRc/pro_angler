@@ -29,7 +29,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
     await Future.delayed(const Duration(seconds: 0));
 
     // Obter os torneios em andamento do mock
-    final tournaments = MockData.getTorneiosEmAndamento();
+    final tournaments = MockTournaments.getTorneiosEmAndamento();
 
     if (tournaments.isNotEmpty) {
       setState(() {

@@ -70,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Conquistas',
-                      style: CustomTextStyles.sessionTitles,
+                      style: CustomTextStyles.text20Bold,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -96,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Troféus',
-                      style: CustomTextStyles.sessionTitles,
+                      style: CustomTextStyles.text20Bold,
                     ),
                   ),
                   const SizedBox(height: 8),

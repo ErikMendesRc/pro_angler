@@ -1,16 +1,8 @@
-import 'package:pro_angler/Models/tournament.dart';
-import 'package:pro_angler/Models/participant.dart';
-import 'package:pro_angler/Models/team.dart';
-import 'package:pro_angler/Models/catch.dart';
-import 'package:pro_angler/Models/user.dart';
-import 'package:pro_angler/enum/fish_evaluation_status.dart';
-import 'package:pro_angler/enum/tournament_team_based.dart';
+import '../Models/tournament.dart';
+import '../enum/tournament_team_based.dart';
 
-class MockData {
-
-  
+class MockTournaments {
   static List<Tournament> getTodosOsTorneios() {
-    
     return [
       Tournament(
         id: '1',
@@ -28,7 +20,7 @@ class MockData {
         teamBased: TournamentTeamBased.Equipe,
         rules: 'Regras do torneio 1',
         isUserVerified: true,
-        isTournamentVerified: true
+        isTournamentVerified: true,
       ),
       Tournament(
         id: '2',
@@ -46,7 +38,7 @@ class MockData {
         teamBased: TournamentTeamBased.Individual,
         rules: 'Regras do torneio 2',
         isUserVerified: true,
-        isTournamentVerified: true
+        isTournamentVerified: true,
       ),
       Tournament(
         id: '3',
@@ -64,7 +56,7 @@ class MockData {
         teamBased: TournamentTeamBased.Equipe,
         rules: 'Regras do torneio 3',
         isUserVerified: true,
-        isTournamentVerified: true
+        isTournamentVerified: true,
       ),
       Tournament(
         id: '4',
@@ -82,7 +74,7 @@ class MockData {
         teamBased: TournamentTeamBased.Equipe,
         rules: 'Regras do torneio 4',
         isUserVerified: true,
-        isTournamentVerified: true
+        isTournamentVerified: true,
       ),
       Tournament(
         id: '5',
@@ -100,7 +92,7 @@ class MockData {
         teamBased: TournamentTeamBased.Individual,
         rules: 'Regras do torneio 5',
         isUserVerified: false,
-        isTournamentVerified: false
+        isTournamentVerified: false,
       ),
     ];
   }
@@ -123,7 +115,7 @@ class MockData {
         teamBased: TournamentTeamBased.Equipe,
         rules: 'Regras do torneio 5',
         isUserVerified: false,
-        isTournamentVerified: false
+        isTournamentVerified: false,
       ),
       Tournament(
         id: '2',
@@ -141,88 +133,7 @@ class MockData {
         teamBased: TournamentTeamBased.Equipe,
         rules: 'Regras do torneio 6',
         isUserVerified: false,
-        isTournamentVerified: false
-      ),
-    ];
-  }
-
-  
-  static List<Participant> getParticipantsForTournament(String tournamentId) {
-    Tournament tournament = getTournamentById(tournamentId);
-    return [
-      Participant(
-        id: '1',
-        tournament: tournament,
-        participant: User(id: '1', name: 'John Doe', email: 'john@example.com', password: 'password'),
-        team: null,
-        status: 'Enviou capturas',
-      ),
-      Participant(
-        id: '2',
-        tournament: tournament,
-        participant: User(id: '2', name: 'Jane Smith', email: 'jane@example.com', password: 'password'),
-        team: Team(id: '1', name: 'Team A', participants: []),
-        status: 'Aguardando avaliação',
-      ),
-    ];
-  }
-  
-  static List<Team> getTeamsForTournament(String tournamentId) {
-    return [
-      Team(
-        id: '1',
-        name: 'Team A',
-        participants: [
-          User(id: '1', name: 'John Doe', email: 'john@example.com', password: 'password'),
-          User(id: '2', name: 'Jane Smith', email: 'jane@example.com', password: 'password'),
-        ],
-      ),
-      Team(
-        id: '2',
-        name: 'Team B',
-        participants: [
-          User(id: '3', name: 'Bob Johnson', email: 'bob@example.com', password: 'password'),
-          User(id: '4', name: 'Alice Brown', email: 'alice@example.com', password: 'password'),
-        ],
-      ),
-    ];
-  }
-  
-  static List<Catch> getCatchesForTournament(String tournamentId) {
-    Tournament tournament = getTournamentById(tournamentId);
-
-    return [
-      Catch(
-        id: '1',
-        participant: Participant(
-          id: '1',
-          tournament: tournament,
-          participant: User(id: '1', name: 'John Doe', email: 'john@example.com', password: 'password'),
-          team: null,
-          status: 'Enviou capturas',
-        ),
-        species: 'Bass',
-        size: 12.5,
-        photo: 'photo1.jpg',
-        video: 'video1.mp4',
-        dateTime: DateTime.now(),
-        fishEvaluationStatus: FishEvaluationStatus.aguardandoAvaliacao,
-      ),
-      Catch(
-        id: '2',
-        participant: Participant(
-          id: '2',
-          tournament: tournament,
-          participant: User(id: '2', name: 'Jane Smith', email: 'jane@example.com', password: 'password'),
-          team: Team(id: '1', name: 'Team A', participants: []),
-          status: 'Aguardando avaliação',
-        ),
-        species: 'Trout',
-        size: 10.2,
-        photo: 'photo2.jpg',
-        video: 'video2.mp4',
-        dateTime: DateTime.now(),
-        fishEvaluationStatus: FishEvaluationStatus.peixeValidado,
+        isTournamentVerified: false,
       ),
     ];
   }
@@ -250,7 +161,7 @@ class MockData {
       teamBased: TournamentTeamBased.Equipe,
       rules: '',
       isUserVerified: false,
-      isTournamentVerified: false
+      isTournamentVerified: false,
     );
   }
 }

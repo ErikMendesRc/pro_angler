@@ -10,6 +10,7 @@ class User {
   String? photo;
   List<Achievement>? achievements;
   List<Tournament>? myTournaments;
+  String city;
 
   User({
     required this.id,
@@ -18,6 +19,7 @@ class User {
     required this.password,
     this.photo,
     this.achievements,
-    this.myTournaments
+    this.myTournaments,
+    required this.city,
   });
 }

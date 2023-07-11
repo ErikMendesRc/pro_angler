@@ -59,7 +59,7 @@ class TournamentCard extends StatelessWidget {
                         children: [
                           Text(
                             tournament.name,
-                            style: CustomTextStyles.cardsTitles,
+                            style: CustomTextStyles.texto16Normal,
                           ),
                           if (tournament.isUserVerified &&
                               tournament.isTournamentVerified)

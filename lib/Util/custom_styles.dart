@@ -15,16 +15,29 @@ class CustomTextStyles {
     color: CoresPersonalizada.corTextoDestaque,
   );
 
-  static const TextStyle sessionTitles = TextStyle(
-    fontSize: 16,
+  static const TextStyle text20Bold = TextStyle(
+    fontSize: 20,
     fontWeight: FontWeight.bold,
     color: CoresPersonalizada.corTextoDestaque,
   );
 
     //Cards Horizontal
-    static const TextStyle cardsTitles = TextStyle(
+    static const TextStyle texto16Normal = TextStyle(
     fontSize: 16,
     color: CoresPersonalizada.white,
+  );
+
+  static const TextStyle texto16Bold = TextStyle(
+    fontSize: 16,
+    color: CoresPersonalizada.white,
+    fontWeight: FontWeight.bold
+  );
+
+  static const TextStyle texto16BoldUnderline = TextStyle(
+    fontSize: 15,
+    color: CoresPersonalizada.white,
+    fontWeight: FontWeight.bold,
+    decoration: TextDecoration.underline
   );
 
   static const TextStyle cardsSubTitles = TextStyle(
@@ -52,15 +65,21 @@ class CustomTextStyles {
 
   //Cards Troféus e Conquistas
 
-  static const TextStyle cardProfilePageTitle= TextStyle(
+  static const TextStyle destaque14Bold= TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.bold,
     color: CoresPersonalizada.white,
   );
 
-  static const TextStyle cardProfilePageSubTitle = TextStyle(
+  static const TextStyle texto12Branco = TextStyle(
     fontSize: 12,
     color: CoresPersonalizada.white,
+  );
+
+  static const TextStyle texto12BrancoBold = TextStyle(
+    fontSize: 12,
+    color: CoresPersonalizada.white,
+    fontWeight: FontWeight.bold
   );
 
   static const TextStyle profileLocal = TextStyle(

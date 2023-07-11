@@ -31,7 +31,7 @@ class MyTournamentCard extends StatelessWidget {
                     children: [
                       Text(
                         tournament.name,
-                        style: CustomTextStyles.cardsTitles,
+                        style: CustomTextStyles.texto16Normal,
                       ),
                       const SizedBox(width: 4.0),
                       if (tournament.isTournamentVerified)

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "86510746527",
+    "project_id": "proangler-e22d6",
+    "storage_bucket": "proangler-e22d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86510746527:android:1719f18a7d913f5b9d5baa",
+        "android_client_info": {
+          "package_name": "com.tucuna.proangler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "86510746527-q2rhficnar3mm89apdd8amnb4j7i89is.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tucuna.proangler",
+            "certificate_hash": "8ecae8cbe676e36aa0e4db9fd997fed729b99c46"
+          }
+        },
+        {
+          "client_id": "86510746527-7rniemvkoge5g2m1h3raejal3ll3tu3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn0hiwOw7AKh0g4IK_A0BxCXMO-jgSVwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "86510746527-7rniemvkoge5g2m1h3raejal3ll3tu3h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

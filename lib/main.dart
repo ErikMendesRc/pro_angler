@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Providers/user_provider.dart';
 import 'package:pro_angler/Views/home_page.dart';
 import 'package:pro_angler/Views/login_page.dart';
 import 'package:pro_angler/Views/my_team_page.dart';
@@ -22,6 +23,10 @@ void main() {
         ChangeNotifierProvider<TeamProvider>(
           create: (_) => TeamProvider(),
         ),
+        ChangeNotifierProvider<UserProvider>(
+          create: (_) => UserProvider(),
+        ),
+        
       ],
       child: const MyApp(),
     ),

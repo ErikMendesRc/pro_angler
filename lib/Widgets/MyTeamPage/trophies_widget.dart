@@ -13,7 +13,7 @@ class TrophiesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Achievement> trophies =
+    final List<ChampionTrophys> trophies =
         Provider.of<TeamProvider>(context).team?.achievements ?? [];
     final TeamProvider teamProvider = Provider.of<TeamProvider>(context);
     final DateFormat dateFormat = DateFormat('yyyy');
@@ -33,7 +33,7 @@ class TrophiesWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: trophies.length,
               itemBuilder: (BuildContext context, int index) {
-                final Achievement trophy = trophies[index];
+                final ChampionTrophys trophy = trophies[index];
                 final Tournament? tournament =
                     teamProvider.getTournamentById(trophy.tournamentId);
 

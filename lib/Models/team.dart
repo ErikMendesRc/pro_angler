@@ -8,7 +8,7 @@ class Team {
   String description;
   DateTime creationDate;
   List<User> participants;
-  List<Achievement> achievements;
+  List<ChampionTrophys> achievements;
   String city;
   String creatorId; 
   String? photo;// Propriedade para armazenar o ID do usuário criador

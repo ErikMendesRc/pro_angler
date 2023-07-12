@@ -45,7 +45,7 @@ class CreateTournamentCard extends StatelessWidget {
                         style: CustomTextStyles.cardTournamentTitle,
                       ),
                       Text('É rápido, fácil e seguro',
-                      style: CustomTextStyles.cardTournamentSubTitle,),
+                      style: CustomTextStyles.texto14Normal,),
                     ],
                   ),
                 ),

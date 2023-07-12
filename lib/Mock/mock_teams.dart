@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 import '../Models/achiviement.dart';
 import '../Models/team.dart';
 import 'mock_users.dart';
@@ -6,35 +8,39 @@ class MockTeams {
   static List<Team> getAllTeams() {
     return [
       Team(
-        id: '1',
-        name: 'Os F.E.R.A',
-        captain: MockUsers.getUserById('1'),
-        description: 'This is Team A',
-        creationDate: DateTime.now(),
-        participants: [
-          MockUsers.getUserById('1'),
-          MockUsers.getUserById('2'),
-          MockUsers.getUserById('3'),
-          MockUsers.getUserById('4'),
-        ],
-        achievements: [
-          Achievement(
-            id: '1',
-            name: 'Campeão',
-            description: 'Foi campeão',
-            tournamentId: '2',
-          ),
-          Achievement(
-            id: '2',
-            name: 'Trabalho em Equipe',
-            description: 'Melhor Equipe',
-            tournamentId: '3',
-          ),
-        ],
-        city: 'Rio Claro-SP',
-        creatorId: '1',
-        photo: 'https://pps.whatsapp.net/v/t61.24694-24/341259005_2412805818889557_5350470179841899005_n.jpg?ccb=11-4&oh=01_AdQaPslGf2BNliQMg2QNkj_AMmnZSyNoGZ6ujk_kVHXirg&oe=64B96A2B'
-      ),
+          id: '1',
+          name: 'Os F.E.R.A',
+          captain: MockUsers.getUserById('1'),
+          description: 'This is Team A',
+          creationDate: DateTime.now(),
+          participants: [
+            MockUsers.getUserById('1'),
+            MockUsers.getUserById('2'),
+            MockUsers.getUserById('3'),
+            MockUsers.getUserById('4'),
+          ],
+          achievements: [
+            ChampionTrophys(
+              userId: '',
+              teamId: '1',
+              id: '1',
+              name: 'Campeão',
+              description: 'Foi campeão',
+              tournamentId: '2',
+            ),
+            ChampionTrophys(
+              userId: '',
+              teamId: '1',
+              id: '2',
+              name: 'Trabalho em Equipe',
+              description: 'Melhor Equipe',
+              tournamentId: '3',
+            ),
+          ],
+          city: 'Rio Claro-SP',
+          creatorId: '1',
+          photo:
+              'https://pps.whatsapp.net/v/t61.24694-24/341259005_2412805818889557_5350470179841899005_n.jpg?ccb=11-4&oh=01_AdQaPslGf2BNliQMg2QNkj_AMmnZSyNoGZ6ujk_kVHXirg&oe=64B96A2B'),
       Team(
         id: '2',
         name: 'Team B',
@@ -48,8 +54,9 @@ class MockTeams {
           MockUsers.getUserById('4'),
         ],
         achievements: [
-          Achievement(
+          ChampionTrophys(
             id: '3',
+            teamId: '',
             name: 'Second Place',
             description: 'Segundo Lugar',
             tournamentId: '1',
@@ -74,13 +81,13 @@ class MockTeams {
           MockUsers.getUserById('2'),
         ],
         achievements: [
-          Achievement(
+          ChampionTrophys(
             id: '1',
             name: 'First Place',
             description: 'Primeiro Lugar',
             tournamentId: '2',
           ),
-          Achievement(
+          ChampionTrophys(
             id: '2',
             name: 'Best Teamwork',
             description: 'Melhor Equipe',
@@ -103,7 +110,7 @@ class MockTeams {
           MockUsers.getUserById('4'),
         ],
         achievements: [
-          Achievement(
+          ChampionTrophys(
             id: '3',
             name: 'Second Place',
             description: 'Segundo Lugar',
@@ -114,6 +121,10 @@ class MockTeams {
         creatorId: '3',
       ),
     ];
+  }
+
+  static Team? getTeamByCreatorId(String creatorId) {
+    return getAllTeams().firstWhereOrNull((team) => team.creatorId == creatorId);
   }
 
   static Team getTeamById(String teamId) {

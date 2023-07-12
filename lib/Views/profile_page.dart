@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../Util/cores.dart';
 import '../Util/custom_styles.dart';
-import '../Widgets/ProfilePage/achievement_card.dart';
-import '../Widgets/ProfilePage/trophy_card.dart';
+import '../Widgets/ProfilePage/achiviement_list.dart';
+import '../Widgets/ProfilePage/profile_header.dart';
+import '../Widgets/ProfilePage/score_card.dart';
+import '../Widgets/ProfilePage/trophy_list.dart';
 import '../Widgets/bottom_navigation_bar_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,7 +16,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   int _currentIndex = 3;
 
   void _onTabTapped(int index) {
@@ -50,73 +51,30 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const CircleAvatar(
-                    radius: 60,
-                    backgroundImage: AssetImage('path_to_avatar_image'),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Nome da Pessoa',
-                    style: CustomTextStyles.titleText,
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Localização da Pessoa',
-                    style: CustomTextStyles.profileLocal,
-                  ),
-                  const SizedBox(height: 32),
-                  const Align(
+                children: const [
+                  ProfileHeader(),
+                  SizedBox(height: 8.0),
+                  ScoreCard(),
+                  SizedBox(height: 32),
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Conquistas',
                       style: CustomTextStyles.text20Bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          width: 150,
-                          child: AchievementCard(
-                            imagePath: 'path_to_achievement_image',
-                            title: 'Conquista $index',
-                            subtitle: 'Descrição curta',
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  const Align(
+                  SizedBox(height: 8),
+                  AchievementList(),
+                  SizedBox(height: 32),
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Troféus',
                       style: CustomTextStyles.text20Bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        return const SizedBox(
-                          width: 150,
-                          child: TrophyCard(
-                            imagePath: 'assets/images/trofeu.png',
-                            title: 'CAMPEÃO',
-                            subtitle: 'Campeão CIP 2022',
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  SizedBox(height: 8),
+                  TrophyList(),
                 ],
               ),
             ),

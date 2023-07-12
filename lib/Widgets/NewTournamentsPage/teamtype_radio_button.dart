@@ -32,13 +32,13 @@ class _TeamTypeRadioButtonsState extends State<TeamTypeRadioButtons> {
       children: [
         const Text(
           'Torneio para Equipe ou Individual ?',
-          style: CustomTextStyles.cardTournamentSubTitle
+          style: CustomTextStyles.texto14Normal
         ),
         Row(
           children: [
             const Text(
               'Equipe',
-              style: CustomTextStyles.cardTournamentSubTitle,
+              style: CustomTextStyles.texto14Normal,
             ),
             Radio<TournamentTeamBased>(
               value: TournamentTeamBased.Equipe,
@@ -52,7 +52,7 @@ class _TeamTypeRadioButtonsState extends State<TeamTypeRadioButtons> {
             ),
             const Text(
               'Individual',
-              style: CustomTextStyles.cardTournamentSubTitle,
+              style: CustomTextStyles.texto14Normal,
             ),
             Radio<TournamentTeamBased>(
               value: TournamentTeamBased.Individual,

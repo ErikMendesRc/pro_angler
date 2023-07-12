@@ -1,3 +1,4 @@
+import 'package:pro_angler/Models/personal_achievement.dart';
 import 'package:pro_angler/Models/tournament.dart';
 
 import 'achiviement.dart';
@@ -8,7 +9,8 @@ class User {
   String email;
   String password;
   String? photo;
-  List<Achievement>? achievements;
+  List<ChampionTrophys>? championTrophys;
+  List<PersonalAchieviments>? personalAchiviements;
   List<Tournament>? myTournaments;
   String city;
 
@@ -18,8 +20,9 @@ class User {
     required this.email,
     required this.password,
     this.photo,
-    this.achievements,
+    this.championTrophys,
     this.myTournaments,
     required this.city,
+    this.personalAchiviements
   });
 }

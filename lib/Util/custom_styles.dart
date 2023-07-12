@@ -58,7 +58,7 @@ class CustomTextStyles {
     color: CoresPersonalizada.white,
   );
 
-  static const TextStyle cardTournamentSubTitle = TextStyle(
+  static const TextStyle texto14Normal = TextStyle(
     fontSize: 14,
     color: CoresPersonalizada.white,
   );

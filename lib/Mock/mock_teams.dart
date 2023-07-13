@@ -123,6 +123,10 @@ class MockTeams {
     ];
   }
 
+  static List<Team> getTeamsByParticipantId(String participantId) {
+  return getAllTeams().where((team) => team.getMembers().any((user) => user.id == participantId)).toList();
+}
+
   static Team? getTeamByCreatorId(String creatorId) {
     return getAllTeams().firstWhereOrNull((team) => team.creatorId == creatorId);
   }

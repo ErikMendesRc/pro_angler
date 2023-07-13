@@ -8,6 +8,7 @@ import '../Widgets/TournamentPage/description_card_widget.dart';
 import '../Widgets/TournamentPage/general_infocard_widget.dart';
 import '../Widgets/TournamentPage/header_widget.dart';
 import '../Widgets/TournamentPage/prize_card_widget.dart';
+import '../Widgets/TournamentPage/register_button.dart';
 import '../Widgets/TournamentPage/registration_fee_widget.dart';
 import '../Widgets/TournamentPage/rules_card_widget.dart';
 import '../Widgets/TournamentPage/tournament_ranking_widget.dart';
@@ -46,13 +47,14 @@ class _TournamentPageState extends State<TournamentPage> {
               tournamentProvider.currentTournament?.name ??
                   'Detalhes do Torneio',
             ),
-            if (tournamentProvider.currentTournament?.isTournamentVerified == true &&
+            if (tournamentProvider.currentTournament?.isTournamentVerified ==
+                    true &&
                 tournamentProvider.currentTournament?.isUserVerified == true)
-                const SizedBox(width: 4.0),
-              const VerifiedBadge(
-                isOrganizerVerified: true,
-                isTournamentVerified: true,
-              ),
+              const SizedBox(width: 4.0),
+            const VerifiedBadge(
+              isOrganizerVerified: true,
+              isTournamentVerified: true,
+            ),
             const SizedBox(width: 4.0),
           ],
         ),
@@ -94,12 +96,14 @@ class _TournamentPageState extends State<TournamentPage> {
           onTabTapped: _onTabTapped,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: RegisterFloatingActionButton(
+        startDate: tournamentProvider.currentTournament?.startDate,
+        endDate: tournamentProvider.currentTournament?.endDate,
         onPressed: () {
-          // Lógica para os botões de ação
+          // Logic for tournament registration
         },
-        child: const Icon(Icons.share),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

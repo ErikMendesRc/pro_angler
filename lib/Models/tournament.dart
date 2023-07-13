@@ -21,6 +21,7 @@ class Tournament {
   bool isUserVerified;
   bool isTournamentVerified;
   bool isRegistered;
+  List<String>? participatingUsers;
 
   Tournament({
     required this.id,
@@ -40,7 +41,8 @@ class Tournament {
     required this.rules,
     required this.isUserVerified,
     this.isTournamentVerified = false,
-    this.isRegistered = false
+    this.isRegistered = false,
+    this.participatingUsers
   });
 
 }

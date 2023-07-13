@@ -13,6 +13,7 @@ class User {
   List<PersonalAchieviments>? personalAchiviements;
   List<Tournament>? myTournaments;
   String city;
+  List<Tournament>? participatingTournaments;
 
   User({
     required this.id,
@@ -23,6 +24,7 @@ class User {
     this.championTrophys,
     this.myTournaments,
     required this.city,
-    this.personalAchiviements
+    this.personalAchiviements,
+    this.participatingTournaments,
   });
 }

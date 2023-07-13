@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Util/custom_styles.dart';
 import 'package:provider/provider.dart';
 
 import '../Providers/tournament_provider.dart';
+import '../Providers/user_provider.dart';
 import '../Util/cores.dart';
 import '../Widgets/MyTournamentPage/my_tournaments_cards.dart';
 import '../Widgets/bottom_navigation_bar_widget.dart';
@@ -24,6 +26,13 @@ class _MyTournamentsPageState extends State<MyTournamentsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final tournamentProvider = Provider.of<TournamentProvider>(context);
+
+    final isUserParticipatingInAnyTournament =
+        tournamentProvider.isUserParticipatingInAnyTournament(
+            userProvider.currentUser?.id ?? '');
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CoresPersonalizada.corPrimaria,
@@ -42,27 +51,28 @@ class _MyTournamentsPageState extends State<MyTournamentsPage> {
             ],
           ),
         ),
-        child: Consumer<TournamentProvider>(
-          builder: (context, tournamentProvider, _) {
-            if (tournamentProvider.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (tournamentProvider.error.isNotEmpty) {
-              return Center(
-                child: Text(tournamentProvider.error),
-              );
-            } else {
-              return ListView.builder(
+        child: isUserParticipatingInAnyTournament
+            ? ListView.builder(
                 itemCount: tournamentProvider.tournaments.length,
                 itemBuilder: (context, index) {
                   final tournament = tournamentProvider.tournaments[index];
-                  return MyTournamentCard(tournament);
+                  final isUserParticipating = tournament.participatingUsers
+                          ?.contains(userProvider.currentUser?.id) ??
+                      false;
+
+                  if (isUserParticipating) {
+                    return MyTournamentCard(tournament);
+                  } else {
+                    return const SizedBox.shrink();
+                  }
                 },
-              );
-            }
-          },
-        ),
+              )
+            : const Center(
+                child: Text(
+                  "Você ainda não participa de torneios :(",
+                  style: CustomTextStyles.text20Bold,
+                ),
+              ),
       ),
       bottomNavigationBar: BottomNavigationBarWidget(
         currentIndex: _currentIndex,
@@ -71,4 +81,3 @@ class _MyTournamentsPageState extends State<MyTournamentsPage> {
     );
   }
 }
-

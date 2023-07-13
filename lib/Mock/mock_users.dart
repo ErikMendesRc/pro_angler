@@ -1,3 +1,5 @@
+import 'package:pro_angler/Mock/tournament_mock.dart';
+
 import '../Models/user.dart';
 import 'mock_champion_trophys.dart';
 import 'mock_personal_achiviementes.dart';
@@ -16,6 +18,7 @@ class MockUsers {
         championTrophys: MockChampionTrophys.getAllChampionTrophys(),
         personalAchiviements:
             MockPersonalAchievements.getAllPersonalAchievements(),
+        participatingTournaments: MockTournaments.getTournamentsByUserId('1'), // IDs dos torneios em que o usuário é participante
       ),
       User(
         id: '2',

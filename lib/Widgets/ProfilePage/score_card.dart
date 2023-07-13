@@ -12,10 +12,11 @@ class ScoreCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final user = userProvider.user;
+    final participatingTournaments = userProvider.getParticipatingTournaments();
 
     final totalConquistas = user?.personalAchiviements?.length ?? 0;
     final totalTrofeus = user?.championTrophys?.length ?? 0;
-    final totalTorneios = user?.myTournaments?.length ?? 0;
+    final totalTorneios = participatingTournaments.length;
 
     return Card(
       color: CoresPersonalizada.corPrimaria,

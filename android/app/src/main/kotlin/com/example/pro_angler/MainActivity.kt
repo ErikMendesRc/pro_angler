@@ -1,4 +1,4 @@
-package com.example.pro_angler
+package com.tucuna.proangler
 
 import io.flutter.embedding.android.FlutterActivity
 

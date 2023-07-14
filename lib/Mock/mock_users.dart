@@ -10,11 +10,10 @@ class MockUsers {
       User(
         id: '1',
         name: 'Erik Mendes',
-        email: 'erik@teste.com',
+        email: 'kjteste@teste.com',
         password: '*****',
         city: 'Rio Claro-SP',
-        photo:
-            'https://scontent.fsod8-1.fna.fbcdn.net/v/t39.30808-6/352534722_630875185763465_7425860999607094935_n.jpg?_nc_cat=100&cb=99be929b-59f725be&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeHFTybivfe4l2WzMcxLIeQc_GuYq-PdV5H8a5ir491XkZMsGjHHT3KjwBc7Xxwcg1GaCqEx8_bh3vubn3Y-IF9S&_nc_ohc=j83erq402XoAX_Baj1U&_nc_ht=scontent.fsod8-1.fna&oh=00_AfDO_CuF9bGwPwmkK7Z4K7MV8So__zMey9YxYwPzQO7y8w&oe=64B2C39F',
+        photo:'https://pps.whatsapp.net/v/t61.24694-24/347722236_261144279716590_4381646561866404461_n.jpg?ccb=11-4&oh=01_AdQSxMnaY42_GvvwACV6CUO57YplC_P4ElD4hBxe9qpzdg&oe=64BDD665',
         championTrophys: MockChampionTrophys.getAllChampionTrophys(),
         personalAchiviements:
             MockPersonalAchievements.getAllPersonalAchievements(),

@@ -28,6 +28,10 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  User? getCurrentUser() {
+    return _currentUser;
+  }
+
   List<User> getAllUsers() {
     return _allUsers;
   }
@@ -43,5 +47,41 @@ class UserProvider with ChangeNotifier {
     } else {
       return [];
     }
+  }
+
+  Future<List<User>> searchUsers(String query) async {
+    // Simulação de pesquisa assíncrona
+    await Future.delayed(const Duration(seconds: 5));
+
+    // Lógica de busca de usuários (substitua pelo seu próprio código de pesquisa)
+    List<User> results = [];
+    List<User> allUsers = getAllUsers();
+
+    for (User user in allUsers) {
+      String name = user.name.toLowerCase();
+      String email = user.email.toLowerCase();
+      String searchQuery = query.toLowerCase();
+
+      if (name.startsWith(searchQuery) || email.startsWith(searchQuery)) {
+        results.add(user);
+      }
+    }
+    return results;
+  }
+
+      User getUserById(String userId) {
+      for (User user in getAllUsers()) {
+        if (user.id == userId) {
+          return user;
+        }
+      }
+      // Caso não encontre o usuário, pode retornar null ou um objeto vazio
+      return User(
+        id: '',
+        name: '',
+        email: '',
+        password: '',
+        city: '',
+      );
   }
 }

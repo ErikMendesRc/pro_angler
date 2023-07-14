@@ -11,7 +11,7 @@ class Team {
   List<ChampionTrophys> achievements;
   String city;
   String creatorId; 
-  String? photo;// Propriedade para armazenar o ID do usuário criador
+  String? photo;
 
   Team({
     required this.id,

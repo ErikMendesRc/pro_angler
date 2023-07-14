@@ -13,6 +13,7 @@ import 'Providers/team_provider.dart';
 import 'Providers/tournament_provider.dart';
 import 'Views/new_tournament_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'Views/tournament_pay.dart';
 import 'Views/tournament_user_register.dart';
 import 'firebase_options.dart';
 
@@ -62,7 +63,8 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const ProfilePage(),
         '/mytournaments': (context) => const MyTournamentsPage(),
         '/myteam': (context) => const MyTeamPage(),
-        '/inscriptionPage': (context) => InscriptionPage(),
+        '/inscriptionPage': (context) => const InscriptionPage(),
+        '/payment': (context) => const PaymentPage(),
       },
     );
   }

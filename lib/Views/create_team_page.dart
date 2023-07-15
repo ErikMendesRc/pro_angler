@@ -257,6 +257,9 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
     return Scaffold(
       backgroundColor: CoresPersonalizada.corPrimaria,
       appBar: AppBar(
+        backgroundColor: CoresPersonalizada.corPrimaria,
+        elevation: 0,
+        centerTitle: true,
         title: const Text('Criar Equipe'),
       ),
       body: SingleChildScrollView(

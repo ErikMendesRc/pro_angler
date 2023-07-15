@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/createteam',
+      initialRoute: '/homepage',
       routes: {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
         '/myteam': (context) => const MyTeamPage(),
         '/inscriptionPage': (context) => const InscriptionPage(),
         '/payment': (context) => const PaymentPage(),
-        '/createteam': (context) => CreateTeamPage(),
+        '/createteam': (context) => const CreateTeamPage(),
       },
     );
   }

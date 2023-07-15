@@ -6,6 +6,7 @@ import 'package:pro_angler/enum/tournament_status.dart';
 import '../Widgets/HomePage/create_tournament_card.dart';
 import '../Widgets/HomePage/tournament_section.dart';
 import '../Widgets/HomePage/welcome_section.dart';
+import '../Widgets/side_bar_navigation.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,7 +26,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -37,6 +37,16 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(
             color: CoresPersonalizada.corTextoDestaque,
           ),
+        ),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
         ),
       ),
       body: Container(
@@ -65,7 +75,7 @@ class _HomePageState extends State<HomePage> {
               ),
               CreateTournamentCard(),
               Padding(
-                padding:EdgeInsets.only(bottom: 2.0),
+                padding: EdgeInsets.only(bottom: 2.0),
                 child: TournamentSection(
                   title: 'Ver todos os Torneios',
                   textStyle: CustomTextStyles.text20Bold,
@@ -76,10 +86,11 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      drawer: SideBarNavigation(),
       bottomNavigationBar: BottomNavigationBarWidget(
-          currentIndex: _currentIndex,
-          onTabTapped: _onTabTapped,
-        ),
+        currentIndex: _currentIndex,
+        onTabTapped: _onTabTapped,
+      ),
     );
   }
 }

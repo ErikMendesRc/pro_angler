@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'Providers/team_provider.dart';
 import 'Providers/tournament_provider.dart';
+import 'Views/create_team_page.dart';
 import 'Views/new_tournament_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'Views/tournament_pay.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/login',
+      initialRoute: '/createteam',
       routes: {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
         '/myteam': (context) => const MyTeamPage(),
         '/inscriptionPage': (context) => const InscriptionPage(),
         '/payment': (context) => const PaymentPage(),
+        '/createteam': (context) => CreateTeamPage(),
       },
     );
   }

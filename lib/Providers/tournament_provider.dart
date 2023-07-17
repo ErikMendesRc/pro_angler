@@ -53,7 +53,7 @@ class TournamentProvider with ChangeNotifier {
   }
 
   void setCurrentTournament(Tournament tournament) {
-    _currentTournament = tournament; // Atualiza o valor corretamente
+    _currentTournament = tournament;
     notifyListeners();
   }
 }

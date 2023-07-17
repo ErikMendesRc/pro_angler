@@ -51,10 +51,10 @@ class SideBarNavigation extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const FaIcon(FontAwesomeIcons.star),
-            title: const Text('Conquistas'),
+            leading: const FaIcon(FontAwesomeIcons.fish),
+            title: const Text('Enviar Capturas'),
             onTap: () {
-              // Implementar a navegação para a tela Conquistas
+              Navigator.pushNamed(context, '/sendCatches');
             },
           ),
           ListTile(

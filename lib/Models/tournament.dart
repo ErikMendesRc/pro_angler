@@ -1,3 +1,4 @@
+import 'package:pro_angler/Models/catch.dart';
 import 'package:pro_angler/Models/user.dart';
 
 import '../enum/tournament_team_based.dart';
@@ -22,6 +23,8 @@ class Tournament {
   bool isTournamentVerified;
   bool isRegistered;
   List<String>? participatingUsers;
+  List<User>? moderators;
+  List<Catch>? catches;
 
   Tournament({
     required this.id,
@@ -42,7 +45,9 @@ class Tournament {
     required this.isUserVerified,
     this.isTournamentVerified = false,
     this.isRegistered = false,
-    this.participatingUsers
+    this.participatingUsers,
+    this.moderators,
+    this.catches
   });
 
 }

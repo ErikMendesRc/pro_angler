@@ -14,14 +14,12 @@ class MockParticipants {
         tournament: tournament,
         participant: MockUsers.getUserById('1'),
         team: null,
-        status: 'Enviou capturas',
       ),
       Participant(
         id: '2',
         tournament: tournament,
         participant: MockUsers.getUserById('2'),
         team: MockTeams.getTeamById('1'),
-        status: 'Aguardando avaliação',
       ),
     ];
   }

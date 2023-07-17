@@ -1,3 +1,4 @@
+import 'package:pro_angler/Models/catch.dart';
 import 'package:pro_angler/Models/personal_achievement.dart';
 import 'package:pro_angler/Models/tournament.dart';
 
@@ -14,6 +15,7 @@ class User {
   List<Tournament>? myTournaments;
   String city;
   List<Tournament>? participatingTournaments;
+  List<Catch>? myCatches;
 
   User({
     required this.id,
@@ -26,5 +28,6 @@ class User {
     required this.city,
     this.personalAchiviements,
     this.participatingTournaments,
+    this.myCatches
   });
 }

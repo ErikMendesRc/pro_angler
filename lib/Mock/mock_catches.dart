@@ -4,6 +4,7 @@ import '../Models/catch.dart';
 import '../Models/tournament.dart';
 import '../enum/fish_evaluation_status.dart';
 import 'mock_participants.dart';
+import 'mock_users.dart';
 
 class MockCatches {
   static List<Catch> getCatchesForTournament(String tournamentId) {
@@ -19,6 +20,10 @@ class MockCatches {
         video: 'video1.mp4',
         dateTime: DateTime.now(),
         fishEvaluationStatus: FishEvaluationStatus.aguardandoAvaliacao,
+        captureLocal: 'Planura-MG',
+        description: '',
+        tournament: tournament,
+        validatingAdmin: MockUsers.getUserById('2')
       ),
       Catch(
         id: '2',
@@ -29,6 +34,10 @@ class MockCatches {
         video: 'video2.mp4',
         dateTime: DateTime.now(),
         fishEvaluationStatus: FishEvaluationStatus.peixeValidado,
+        captureLocal: 'Presidente Epitácio-SP',
+        description: '',
+        tournament: tournament,
+        validatingAdmin: MockUsers.getUserById('1')
       ),
     ];
   }

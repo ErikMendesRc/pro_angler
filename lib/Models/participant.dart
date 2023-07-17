@@ -7,7 +7,6 @@ class Participant {
   Tournament tournament;
   User participant;
   Team? team;
-  String status;
 
 
   Participant({
@@ -15,6 +14,5 @@ class Participant {
     required this.tournament,
     required this.participant,
     this.team,
-    required this.status,
   });
 }

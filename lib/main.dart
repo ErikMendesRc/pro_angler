@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import 'Providers/team_provider.dart';
 import 'Providers/tournament_provider.dart';
+import 'Views/catch_details.dart';
 import 'Views/create_team_page.dart';
 import 'Views/new_tournament_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
         '/createteam': (context) => const CreateTeamPage(),
         '/sendCatches': (context) => const SendCatchesPage(),
         '/mycaptures': (context) => const MyCatchesPage(),
+        '/catchdetails': (context) => const CatchDetails(catchId:''),
       },
     );
   }

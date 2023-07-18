@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pro_angler/Util/cores.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 class FormWidget extends StatelessWidget {
   const FormWidget({
     Key? key,

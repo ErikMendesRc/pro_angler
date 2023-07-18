@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pro_angler/Util/cores.dart';
+import '../../Util/fish_especies.dart';
 
-class FormWidget extends StatelessWidget {
+class FormWidget extends StatefulWidget {
   const FormWidget({
     Key? key,
     required this.checkFieldsFilled,
@@ -11,15 +12,25 @@ class FormWidget extends StatelessWidget {
   final VoidCallback checkFieldsFilled;
 
   @override
+  _FormWidgetState createState() => _FormWidgetState();
+}
+
+class _FormWidgetState extends State<FormWidget> {
+  FishSpecies? selectedSpecies;
+  List<FishSpecies> speciesList = FishSpecies.speciesList;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SizedBox(height: 16),
-        TextFormField(
+        DropdownButtonFormField<FishSpecies>(
+          dropdownColor: CoresPersonalizada.corPrimaria,
+          value: selectedSpecies, 
           style: const TextStyle(color: CoresPersonalizada.white),
           decoration: const InputDecoration(
             labelText: 'Espécie do Peixe',
-            hintText: 'Digite a espécie do peixe',
+            hintText: 'Selecione a espécie do peixe',
             labelStyle: TextStyle(color: CoresPersonalizada.white),
             hintStyle: TextStyle(color: CoresPersonalizada.white),
             enabledBorder: UnderlineInputBorder(
@@ -29,7 +40,21 @@ class FormWidget extends StatelessWidget {
               borderSide: BorderSide(color: CoresPersonalizada.white),
             ),
           ),
-          onChanged: (_) => checkFieldsFilled(),
+          items: speciesList.map((species) {
+            return DropdownMenuItem(
+              value: species,
+              child: Text(
+                species.name,
+                style: const TextStyle(color: CoresPersonalizada.white),
+              ),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              selectedSpecies = value;
+            });
+            widget.checkFieldsFilled();
+          },
         ),
         const SizedBox(height: 16),
         TextFormField(
@@ -50,17 +75,17 @@ class FormWidget extends StatelessWidget {
           inputFormatters: [
             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
           ],
-          onChanged: (_) => checkFieldsFilled(),
+          onChanged: (_) => widget.checkFieldsFilled(),
         ),
         const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
-              child: DropdownButtonFormField<String>(
+              child: TextFormField(
                 style: const TextStyle(color: CoresPersonalizada.white),
                 decoration: const InputDecoration(
                   labelText: 'Estado',
-                  hintText: 'Selecione o estado',
+                  hintText: 'Digite o nome do estado',
                   labelStyle: TextStyle(color: CoresPersonalizada.white),
                   hintStyle: TextStyle(color: CoresPersonalizada.white),
                   enabledBorder: UnderlineInputBorder(
@@ -70,24 +95,7 @@ class FormWidget extends StatelessWidget {
                     borderSide: BorderSide(color: CoresPersonalizada.white),
                   ),
                 ),
-                items: [
-                  const DropdownMenuItem(
-                    value: 'estado1',
-                    child: Text(
-                      'Estado 1',
-                      style: TextStyle(color: CoresPersonalizada.white),
-                    ),
-                  ),
-                  const DropdownMenuItem(
-                    value: 'estado2',
-                    child: Text(
-                      'Estado 2',
-                      style: TextStyle(color: CoresPersonalizada.white),
-                    ),
-                  ),
-                  // Adicione mais itens de estado aqui
-                ],
-                onChanged: (_) => checkFieldsFilled(),
+                onChanged: (_) => widget.checkFieldsFilled(),
               ),
             ),
             const SizedBox(width: 16),
@@ -106,7 +114,7 @@ class FormWidget extends StatelessWidget {
                     borderSide: BorderSide(color: CoresPersonalizada.white),
                   ),
                 ),
-                onChanged: (_) => checkFieldsFilled(),
+                onChanged: (_) => widget.checkFieldsFilled(),
               ),
             ),
           ],
@@ -127,7 +135,7 @@ class FormWidget extends StatelessWidget {
             ),
           ),
           maxLines: 3,
-          onChanged: (_) => checkFieldsFilled(),
+          onChanged: (_) => widget.checkFieldsFilled(),
         ),
       ],
     );

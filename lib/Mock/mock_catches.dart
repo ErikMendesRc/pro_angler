@@ -1,5 +1,4 @@
 import 'package:pro_angler/Mock/tournament_mock.dart';
-
 import '../Models/catch.dart';
 import '../Models/tournament.dart';
 import '../enum/fish_evaluation_status.dart';
@@ -82,5 +81,24 @@ class MockCatches {
         validatingAdmin: MockUsers.getUserById('2')
       ),
     ];
+  }
+
+  static Catch createEmptyCatch(String id, String tournamentId) {
+    Tournament tournament = MockTournaments.getTournamentById(tournamentId);
+
+    return Catch(
+      id: id,
+      participant:MockParticipants.getParticipantsForTournament(tournamentId)[0] ,
+      species: '',
+      size: 0.0,
+      photo: '',
+      video: '',
+      dateTime: DateTime.now(),
+      fishEvaluationStatus: FishEvaluationStatus.aguardandoAvaliacao,
+      captureLocal: '',
+      description: '',
+      tournament: tournament,
+      validatingAdmin: null,
+    );
   }
 }

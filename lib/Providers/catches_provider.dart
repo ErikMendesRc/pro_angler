@@ -69,4 +69,8 @@ class CatchesProvider extends ChangeNotifier {
 
     return pendingCatches;
   }
+
+  Catch getCatchById(String catchId) {
+    return _catches.firstWhere((fishCatch) => fishCatch.id == catchId, orElse: () => MockCatches.createEmptyCatch('1', '1'));
+  }
 }

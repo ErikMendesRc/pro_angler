@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Providers/catches_provider.dart';
 import 'package:pro_angler/Providers/user_provider.dart';
 import 'package:pro_angler/Views/home_page.dart';
 import 'package:pro_angler/Views/login_page.dart';
+import 'package:pro_angler/Views/my_catches_page.dart';
 import 'package:pro_angler/Views/my_team_page.dart';
 import 'package:pro_angler/Views/my_tournaments_page.dart';
 import 'package:pro_angler/Views/profile_page.dart';
@@ -22,8 +24,8 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MultiProvider(
       providers: [
@@ -36,7 +38,9 @@ void main() async {
         ChangeNotifierProvider<UserProvider>(
           create: (_) => UserProvider(),
         ),
-        
+        ChangeNotifierProvider<CatchesProvider>(
+          create: (_) => CatchesProvider(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -45,7 +49,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +72,7 @@ class MyApp extends StatelessWidget {
         '/payment': (context) => const PaymentPage(),
         '/createteam': (context) => const CreateTeamPage(),
         '/sendCatches': (context) => const SendCatchesPage(),
+        '/mycaptures': (context) => const MyCatchesPage(),
       },
     );
   }

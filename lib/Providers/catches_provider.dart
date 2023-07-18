@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Mock/mock_catches.dart';
+import 'package:pro_angler/Mock/tournament_mock.dart';
 import 'package:pro_angler/Models/catch.dart';
 import 'package:pro_angler/Models/participant.dart';
 import 'package:pro_angler/Models/tournament.dart';
@@ -6,8 +8,9 @@ import 'package:pro_angler/Models/user.dart';
 import 'package:pro_angler/enum/fish_evaluation_status.dart';
 
 class CatchesProvider extends ChangeNotifier {
-  late List<Catch> _catches = [];
-  late List<Tournament> _tournaments = [];
+  final List<Catch> _catches = MockCatches.getCatchesForTournament('1');
+  final List<Tournament> _tournaments =  MockTournaments.getTodosOsTorneios();
+
 
   List<Catch> get catches => _catches;
 

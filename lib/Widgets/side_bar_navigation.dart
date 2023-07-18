@@ -58,6 +58,13 @@ class SideBarNavigation extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const FaIcon(FontAwesomeIcons.fishFins),
+            title: const Text('Minhas Capturas'),
+            onTap: () {
+              Navigator.pushNamed(context, '/mycaptures');
+            },
+          ),
+          ListTile(
             leading: const FaIcon(FontAwesomeIcons.gear),
             title: const Text('Configurações'),
             onTap: () {

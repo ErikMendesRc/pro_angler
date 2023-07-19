@@ -14,12 +14,16 @@ class MockParticipants {
         tournament: tournament,
         participant: MockUsers.getUserById('1'),
         team: null,
+        totalScore: '189,4',
+        registrationNumber: '1'
       ),
       Participant(
         id: '2',
         tournament: tournament,
         participant: MockUsers.getUserById('2'),
         team: MockTeams.getTeamById('1'),
+        totalScore: '100,3',
+        registrationNumber: '2'
       ),
     ];
   }

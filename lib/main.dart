@@ -8,6 +8,7 @@ import 'package:pro_angler/Views/my_team_page.dart';
 import 'package:pro_angler/Views/my_tournaments_page.dart';
 import 'package:pro_angler/Views/profile_page.dart';
 import 'package:pro_angler/Views/signup_page.dart';
+import 'package:pro_angler/Views/tournament_admin_page.dart';
 import 'package:pro_angler/Views/tournaments_page.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/homepage',
+      initialRoute: '/admintournament',
       routes: {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         '/sendCatches': (context) => const SendCatchesPage(),
         '/mycaptures': (context) => const MyCatchesPage(),
         '/catchdetails': (context) => const CatchDetails(catchId:''),
+        '/admintournament':(context) =>  TournamentAdminPage(),
       },
     );
   }

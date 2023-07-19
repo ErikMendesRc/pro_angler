@@ -1,3 +1,5 @@
+import 'package:pro_angler/Mock/mock_users.dart';
+
 import '../Models/tournament.dart';
 import '../enum/tournament_team_based.dart';
 
@@ -21,7 +23,10 @@ class MockTournaments {
           rules: 'Regras do torneio 1',
           isUserVerified: true,
           isTournamentVerified: true,
-          participatingUsers: ['1']),
+          participatingUsers: ['1', '2', '3'],
+          administrators: MockUsers.getUserById('2'),
+          moderators: [MockUsers.getUserById('1'), MockUsers.getUserById('3'), ]
+          ),
       Tournament(
         id: '2',
         organizerName: 'Fernando',
@@ -39,6 +44,7 @@ class MockTournaments {
         rules: 'Regras do torneio 2',
         isUserVerified: true,
         isTournamentVerified: true,
+        administrators: MockUsers.getUserById('3')
       ),
       Tournament(
         id: '3',
@@ -57,6 +63,7 @@ class MockTournaments {
         rules: 'Regras do torneio 3',
         isUserVerified: true,
         isTournamentVerified: true,
+        administrators: MockUsers.getUserById('1')
       ),
       Tournament(
         id: '4',
@@ -75,6 +82,7 @@ class MockTournaments {
         rules: 'Regras do torneio 4',
         isUserVerified: true,
         isTournamentVerified: true,
+        administrators: MockUsers.getUserById('3')
       ),
       Tournament(
         id: '5',
@@ -93,6 +101,7 @@ class MockTournaments {
         rules: 'Regras do torneio 5',
         isUserVerified: false,
         isTournamentVerified: false,
+        administrators: MockUsers.getUserById('1')
       ),
     ];
   }
@@ -116,7 +125,9 @@ class MockTournaments {
           rules: 'Regras do torneio 5',
           isUserVerified: false,
           isTournamentVerified: false,
-          participatingUsers: ['1']),
+          participatingUsers: ['1'],
+          administrators: MockUsers.getUserById('2')
+          ),
       Tournament(
           id: '2',
           organizerName: 'Organizador 2',
@@ -134,7 +145,9 @@ class MockTournaments {
           rules: 'Regras do torneio 6',
           isUserVerified: false,
           isTournamentVerified: false,
-          participatingUsers: ['1']),
+          participatingUsers: ['1'],
+          administrators: MockUsers.getUserById('2')
+          ),
     ];
   }
 
@@ -177,6 +190,7 @@ class MockTournaments {
       rules: '',
       isUserVerified: false,
       isTournamentVerified: false,
+      administrators: MockUsers.getUserById('')
     );
   }
 }

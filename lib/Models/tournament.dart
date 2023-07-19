@@ -6,7 +6,7 @@ import '../enum/tournament_team_based.dart';
 class Tournament {
   String id;
   String organizerName;
-  List<User>? administrators;
+  User administrators;
   String name;
   String description;
   DateTime startDate;
@@ -29,7 +29,7 @@ class Tournament {
   Tournament({
     required this.id,
     required this.organizerName,
-    this.administrators,
+    required this.administrators,
     required this.name,
     required this.description,
     required this.startDate,
@@ -47,7 +47,6 @@ class Tournament {
     this.isRegistered = false,
     this.participatingUsers,
     this.moderators,
-    this.catches
+    this.catches,
   });
-
 }

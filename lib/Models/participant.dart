@@ -7,6 +7,8 @@ class Participant {
   Tournament tournament;
   User participant;
   Team? team;
+  String? registrationNumber;
+  String? totalScore;
 
 
   Participant({
@@ -14,5 +16,7 @@ class Participant {
     required this.tournament,
     required this.participant,
     this.team,
+    this.registrationNumber,
+    this.totalScore
   });
 }

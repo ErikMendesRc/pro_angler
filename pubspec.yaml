@@ -9,10 +9,15 @@ environment:
 dependencies:
   cloud_firestore: ^4.8.2
   collection: ^1.17.0
+  firebase: ^9.0.3
+  firebase_auth: ^4.7.1
   firebase_core: ^2.14.0
+  firebase_storage: ^11.2.5
   flutter:
     sdk: flutter
+  fluttertoast: ^8.2.2
   font_awesome_flutter: ^10.4.0
+  google_sign_in: ^6.1.4
   image_picker: ^1.0.0
   intl: ^0.18.1
   provider: ^6.0.5

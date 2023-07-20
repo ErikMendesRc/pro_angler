@@ -1,12 +1,13 @@
-import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:pro_angler/Models/user.dart';
+import 'package:pro_angler/Providers/user_provider.dart';
+import 'package:pro_angler/Util/cores.dart';
+import 'package:pro_angler/Util/custom_styles.dart';
 import 'package:provider/provider.dart';
-
-import '../Models/user.dart';
-import '../Providers/user_provider.dart';
-import '../Util/cores.dart';
-import '../Util/custom_styles.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreateTeamPage extends StatefulWidget {
   const CreateTeamPage({Key? key}) : super(key: key);
@@ -51,9 +52,9 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
         searchResults.clear();
       });
     } else {
-      // Exibir mensagem de validação
-      final snackBar = SnackBar(
-        content: Text('Você será adicionado automaticamente à lista de participantes.'),
+      const snackBar = SnackBar(
+        content: Text(
+            'Você será adicionado automaticamente à lista de participantes.'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
@@ -71,13 +72,29 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
     final String teamName = _teamNameController.text;
     final String city = _cityController.text;
 
-    // Verificar se o usuário atual está na lista de participantes
     if (!participants.contains(currentUser?.id)) {
       participants.add(currentUser?.id ?? '');
     }
 
-    // Adicione a lógica para criar a equipe com os dados fornecidos e exibir uma mensagem de confirmação.
-    // ...
+    String imageUrl = '';
+    if (_teamImage != null) {
+      final String imagePath =
+          'team_images/${DateTime.now().millisecondsSinceEpoch.toString()}.jpg';
+      final Reference storageReference =
+          FirebaseStorage.instance.ref().child(imagePath);
+      final UploadTask uploadTask = storageReference.putFile(_teamImage!);
+      await uploadTask.whenComplete(() async {
+        imageUrl = await storageReference.getDownloadURL();
+      });
+    }
+
+    // Criação do time no Firestore
+    await FirebaseFirestore.instance.collection('teams').add({
+      'name': teamName,
+      'city': city,
+      'participants': participants,
+      'imageUrl': imageUrl,
+    });
 
     // Limpar os campos após a criação da equipe
     setState(() {
@@ -154,56 +171,71 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
   }
 
   Widget _buildSearchResults() {
-    return searchResults.isNotEmpty
-        ? Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 2.0,
-                  blurRadius: 4.0,
-                ),
-              ],
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: searchResults.length,
-              itemBuilder: (context, index) {
-                final String participant = searchResults[index];
-                final User user =
-                    Provider.of<UserProvider>(context).getUserById(participant);
+  return searchResults.isNotEmpty
+      ? Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(4.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2.0,
+                blurRadius: 4.0,
+              ),
+            ],
+          ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: searchResults.length,
+            itemBuilder: (context, index) {
+              final String participant = searchResults[index];
+              final Future<User> userFuture =
+                  Provider.of<UserProvider>(context).getUserById(participant);
 
-                return Card(
-                  child: ListTile(
-                    leading: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(8.0),
-                        bottomLeft: Radius.circular(8.0),
-                      ),
-                      child: SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: Image.network(
-                          user.photo ?? '',
-                          fit: BoxFit.cover,
+              return FutureBuilder<User>(
+                future: userFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return const Text('Erro ao carregar usuário');
+                  } else if (!snapshot.hasData) {
+                    return const SizedBox.shrink();
+                  }
+
+                  final User user = snapshot.data!;
+
+                  return Card(
+                    child: ListTile(
+                      leading: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(8.0),
+                          bottomLeft: Radius.circular(8.0),
+                        ),
+                        child: SizedBox(
+                          width: 60,
+                          height: 60,
+                          child: Image.network(
+                            user.photo ?? '',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
+                      title: Text(user.name),
+                      subtitle: Text(user.city),
+                      onTap: () {
+                        _addParticipant(user.id);
+                      },
                     ),
-                    title: Text(user.name),
-                    subtitle: Text(user.city),
-                    onTap: () {
-                      _addParticipant(user.id);
-                    },
-                  ),
-                );
-              },
-            ),
-          )
-        : const SizedBox.shrink();
-  }
+                  );
+                },
+              );
+            },
+          ),
+        )
+      : const SizedBox.shrink();
+}
 
   Widget _buildAddedParticipantsList() {
     return ListView.builder(
@@ -212,41 +244,60 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
       itemCount: participants.length,
       itemBuilder: (context, index) {
         final String participant = participants[index];
-        final User user =
+        final Future<User> userFuture =
             Provider.of<UserProvider>(context).getUserById(participant);
 
-        return Card(
-          child: ListTile(
-            leading: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(8.0),
-                bottomLeft: Radius.circular(8.0),
-              ),
-              child: SizedBox(
-                width: 60,
-                height: 60,
-                child: Image.network(
-                  user.photo ?? '',
-                  fit: BoxFit.cover,
+        return FutureBuilder<User>(
+          future: userFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              // Caso ainda esteja carregando, exiba um indicador de progresso ou algo do tipo.
+              return const CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              // Caso ocorra um erro, exiba uma mensagem de erro.
+              return const Text('Erro ao carregar usuário');
+            } else if (!snapshot.hasData) {
+              // Caso não exista dados, você pode exibir uma mensagem alternativa ou simplesmente retornar um SizedBox.shrink() para não renderizar nada.
+              return const SizedBox.shrink();
+            }
+
+            final User user = snapshot.data!;
+
+            return Card(
+              child: ListTile(
+                leading: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    bottomLeft: Radius.circular(8.0),
+                  ),
+                  child: SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: Image.network(
+                      user.photo ?? '',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
+                trailing: const Icon(Icons.remove_circle, color: Colors.red),
+                title: Text(user.name),
+                subtitle: Text(user.city),
+                onTap: () {
+                  // Verificar se o usuário está clicando no próprio card
+                  if (participant == currentUser?.id) {
+                    // Exibir mensagem de validação
+                    const snackBar = SnackBar(
+                      content: Text(
+                          'Você será adicionado automaticamente à lista de participantes.'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    _removeParticipant(user.id);
+                  }
+                },
               ),
-            ),
-            trailing: const Icon(Icons.remove_circle, color: Colors.red),
-            title: Text(user.name),
-            subtitle: Text(user.city),
-            onTap: () {
-              // Verificar se o usuário está clicando no próprio card
-              if (participant == currentUser?.id) {
-                // Exibir mensagem de validação
-                final snackBar = SnackBar(
-                  content: Text('Você será adicionado automaticamente à lista de participantes.'),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              } else {
-                _removeParticipant(user.id);
-              }
-            },
-          ),
+            );
+          },
         );
       },
     );

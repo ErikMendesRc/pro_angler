@@ -17,7 +17,7 @@ class TeamTypeRadioButtons extends StatefulWidget {
 }
 
 class _TeamTypeRadioButtonsState extends State<TeamTypeRadioButtons> {
-  TournamentTeamBased _selectedValue = TournamentTeamBased.Equipe;
+  TournamentTeamBased _selectedValue = TournamentTeamBased.equipe;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class _TeamTypeRadioButtonsState extends State<TeamTypeRadioButtons> {
               style: CustomTextStyles.texto14Normal,
             ),
             Radio<TournamentTeamBased>(
-              value: TournamentTeamBased.Equipe,
+              value: TournamentTeamBased.equipe,
               groupValue: _selectedValue,
               onChanged: (value) {
                 setState(() {
@@ -55,7 +55,7 @@ class _TeamTypeRadioButtonsState extends State<TeamTypeRadioButtons> {
               style: CustomTextStyles.texto14Normal,
             ),
             Radio<TournamentTeamBased>(
-              value: TournamentTeamBased.Individual,
+              value: TournamentTeamBased.individual,
               groupValue: _selectedValue,
               onChanged: (value) {
                 setState(() {

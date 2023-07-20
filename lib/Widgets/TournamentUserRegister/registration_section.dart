@@ -26,9 +26,9 @@ class _RegistrationSectionState extends State<RegistrationSection> {
     final TournamentProvider tournamentProvider = Provider.of<TournamentProvider>(context);
      final screenHeight = MediaQuery.of(context).size;
 
-    final TournamentTeamBased teamBased = tournamentProvider.currentTournament?.teamBased ?? TournamentTeamBased.Individual;
+    final TournamentTeamBased teamBased = tournamentProvider.currentTournament?.teamBased ?? TournamentTeamBased.individual;
 
-    if (teamBased == TournamentTeamBased.Individual) {
+    if (teamBased == TournamentTeamBased.individual) {
       final User? currentUser = userProvider.currentUser;
       return Container(
         height: screenHeight.height, // Definindo a altura para ocupar toda a tela

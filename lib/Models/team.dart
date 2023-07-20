@@ -29,4 +29,47 @@ class Team {
   List<User> getMembers() {
     return participants;
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "description": description,
+      "creationDate": creationDate.toIso8601String(),
+      "participants": participants.map((user) => user.toJson()).toList(),
+      "achievements": achievements.map((trophy) => trophy.toJson()).toList(),
+      "city": city,
+      "creatorId": creatorId,
+      "photo": photo,
+    };
+  }
+
+  factory Team.fromJson(Map<String, dynamic> json) {
+    return Team(
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      creationDate: DateTime.parse(json['creationDate']),
+      participants: _parseParticipants(json['participants']),
+      achievements: _parseChampionTrophys(json['achievements']),
+      city: json['city'],
+      creatorId: json['creatorId'],
+      photo: json['photo'],
+      captain: json['captain'],
+    );
+  }
+
+  static List<User> _parseParticipants(List<dynamic>? list) {
+    if (list != null) {
+      return list.map((item) => User.fromJson(item)).toList();
+    }
+    return [];
+  }
+
+  static List<ChampionTrophys> _parseChampionTrophys(List<dynamic>? list) {
+    if (list != null) {
+      return list.map((item) => ChampionTrophys.fromJson(item)).toList();
+    }
+    return [];
+  }
 }

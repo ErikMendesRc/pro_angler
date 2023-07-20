@@ -1,11 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:pro_angler/Models/tournament.dart';
-
-import '../Mock/tournament_mock.dart';
+import 'package:pro_angler/Services/tournament_service.dart';
 
 class TournamentProvider with ChangeNotifier {
-  final List<Tournament> _tournaments = MockTournaments.getTodosOsTorneios();
-
+  final TournamentService _tournamentService = TournamentService();
+  List<Tournament> _tournaments = [];
   bool _isLoading = false;
   String _error = '';
   Tournament? _currentTournament;
@@ -21,14 +20,7 @@ class TournamentProvider with ChangeNotifier {
       _error = '';
       notifyListeners();
 
-      await Future.delayed(const Duration(seconds: 2));
-
-      List<Tournament> filteredTournaments = _tournaments
-          .where((tournament) => tournament.status == 'Em Andamento')
-          .toList();
-      _currentTournament = null;
-      _tournaments.clear();
-      _tournaments.addAll(filteredTournaments);
+      _tournaments = await _tournamentService.getAllTournaments();
 
       final currentDate = DateTime.now();
       for (var tournament in _tournaments) {

@@ -1,22 +1,95 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pro_angler/Util/Validators/signup_validator.dart';
 import 'package:pro_angler/Util/cores.dart';
-import 'package:pro_angler/Widgets/SignUpPage/confirm_password_field.dart';
-import 'package:pro_angler/Widgets/SignUpPage/email_form_field.dart';
-import 'package:pro_angler/Widgets/SignUpPage/login_text.dart';
 import 'package:pro_angler/Widgets/SignUpPage/logo_image.dart';
-import 'package:pro_angler/Widgets/SignUpPage/password_form_field.dart';
-import 'package:pro_angler/Widgets/SignUpPage/register_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final _emailController = TextEditingController();
+    final _passwordController = TextEditingController();
+    final _confirmPasswordController = TextEditingController();
+
+    void _mostrarSnackBar(BuildContext context, String mensagem) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(mensagem), backgroundColor: Colors.redAccent,));
+    }
+
+    void _registerWithEmail(BuildContext context) async {
+      final email = _emailController.text.trim();
+      final password = _passwordController.text;
+      final confirmPassword = _confirmPasswordController.text;
+
+      void _mostrarToast(String mensagem) {
+        Fluttertoast.showToast(
+          msg: mensagem,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green.shade300,
+          textColor: Colors.black,
+          fontSize: 16.0,
+        );
+      }
+
+      void _navegarParaPaginaDeLogin(BuildContext context) {
+        Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
+      }
+
+      // Validar e-mail e senha
+      final emailError = SignupValidator.validateEmail(email);
+      final passwordError = SignupValidator.validatePassword(password);
+      final confirmPasswordError =
+          SignupValidator.validateConfirmPassword(password, confirmPassword);
+
+      if (emailError != null) {
+        _mostrarSnackBar(context, emailError);
+        return;
+      }
+
+      if (passwordError != null) {
+        _mostrarSnackBar(context, passwordError);
+        return;
+      }
+
+      if (confirmPasswordError != null) {
+        _mostrarSnackBar(context, confirmPasswordError);
+        return;
+      }
+
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        _mostrarToast('Cadastro realizado com sucesso!');
+        _navegarParaPaginaDeLogin(context);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          _mostrarSnackBar(context, 'A senha é muito fraca.');
+        } else if (e.code == 'email-already-in-use') {
+          _mostrarSnackBar(
+              context, 'Este e-mail já está sendo usado por outra conta.');
+        } else {
+          _mostrarSnackBar(context, 'Erro ao criar a conta: $e');
+        }
+      } catch (e) {
+        _mostrarSnackBar(context, 'Erro ao criar a conta: $e');
+      }
+    }
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
           gradient: RadialGradient(
-            colors: [CoresPersonalizada.corSecundaria, CoresPersonalizada.corPrimaria],
+            colors: [
+              CoresPersonalizada.corSecundaria,
+              CoresPersonalizada.corPrimaria
+            ],
             center: Alignment.center,
             radius: 1.0,
           ),
@@ -29,15 +102,111 @@ class SignupPage extends StatelessWidget {
               children: [
                 LogoImage(),
                 const SizedBox(height: 16),
-                const EmailFormField(),
+                TextFormField(
+                  controller: _emailController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email, color: Colors.white),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    labelStyle: TextStyle(color: Colors.white),
+                    prefixStyle: TextStyle(color: Colors.white),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira um e-mail.';
+                    }
+                    if (!value.contains('@')) {
+                      return 'E-mail inválido.';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                ),
                 const SizedBox(height: 16),
-                const PasswordFormField(),
+                TextFormField(
+                  controller: _passwordController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Senha',
+                    prefixIcon: Icon(Icons.lock, color: Colors.white),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    labelStyle: TextStyle(color: Colors.white),
+                    prefixStyle: TextStyle(color: Colors.white),
+                  ),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira uma senha.';
+                    }
+                    if (value.length < 6) {
+                      return 'A senha deve conter pelo menos 6 caracteres.';
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.next,
+                ),
                 const SizedBox(height: 16),
-                const ConfirmPasswordFormField(),
+                TextFormField(
+                  controller: _confirmPasswordController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Repetir Senha',
+                    prefixIcon: Icon(Icons.lock, color: Colors.white),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    labelStyle: TextStyle(color: Colors.white),
+                    prefixStyle: TextStyle(color: Colors.white),
+                  ),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, repita a senha.';
+                    }
+                    if (value != _passwordController.text) {
+                      return 'As senhas não correspondem.';
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) => _registerWithEmail(context),
+                ),
                 const SizedBox(height: 16),
-                const RegisterButton(),
+                ElevatedButton(
+                  onPressed: () => _registerWithEmail(context),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: const Text('Cadastrar'),
+                ),
                 const SizedBox(height: 16),
-                const LoginText(),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/login');
+                  },
+                  child: const Text(
+                    'Já tem uma conta? Entre',
+                    style: TextStyle(
+                      color: Colors.white,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

@@ -37,6 +37,13 @@
             {
               "client_id": "86510746527-7rniemvkoge5g2m1h3raejal3ll3tu3h.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "86510746527-luo9imioddt98goke46vc10v5uua6l5o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tucuna.proangler"
+              }
             }
           ]
         }

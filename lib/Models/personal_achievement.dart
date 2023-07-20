@@ -14,4 +14,26 @@ class PersonalAchieviments {
     this.userId='',
     this.photo=''
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "tournamentId": tournamentId,
+      "name": name,
+      "description": description,
+      "userId": userId,
+      "photo": photo,
+    };
+  }
+
+  factory PersonalAchieviments.fromJson(Map<String, dynamic> json) {
+    return PersonalAchieviments(
+      id: json['id'],
+      tournamentId: json['tournamentId'],
+      name: json['name'],
+      description: json['description'],
+      userId: json['userId'],
+      photo: json['photo'],
+    );
+  }
 }

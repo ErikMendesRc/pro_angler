@@ -1,75 +1,93 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pro_angler/Mock/mock_catches.dart';
-import 'package:pro_angler/Mock/tournament_mock.dart';
 import 'package:pro_angler/Models/catch.dart';
 import 'package:pro_angler/Models/participant.dart';
 import 'package:pro_angler/Models/tournament.dart';
-import 'package:pro_angler/Models/user.dart';
+import 'package:pro_angler/Services/catch_service.dart';
+import 'package:pro_angler/Services/tournament_service.dart';
 import 'package:pro_angler/enum/fish_evaluation_status.dart';
 
 class CatchesProvider extends ChangeNotifier {
-  final List<Catch> _catches = MockCatches.getCatchesForTournament('1');
-  final List<Tournament> _tournaments = MockTournaments.getTodosOsTorneios();
+  final CatchService _catchService = CatchService();
+  final TournamentService _tournamentService = TournamentService();
+
+  List<Catch> _catches = [];
+  List<Tournament> _tournaments = [];
 
   List<Catch> get catches => _catches;
 
-  void addCatch(Catch fishCatches) {
-    _catches.add(fishCatches);
-    notifyListeners();
-  }
-
-  void updateCatch(Catch updatedCatch) {
-    final index =
-        _catches.indexWhere((fishCatches) => fishCatches.id == updatedCatch.id);
-    if (index >= 0) {
-      _catches[index] = updatedCatch;
+  Future<void> fetchCatches(String tournamentId) async {
+    try {
+      _catches = await _catchService.getCatchesByTournamentId(tournamentId);
       notifyListeners();
+    } catch (e) {
+      print('Falha ao buscar as capturas: $e');
     }
   }
 
-  void deleteCatch(String catchId) {
-    _catches.removeWhere((fishCatches) => fishCatches.id == catchId);
-    notifyListeners();
+  Future<void> addCatch(Catch fishCatch) async {
+    try {
+      await _catchService.createCatch(fishCatch);
+      _catches.add(fishCatch);
+      notifyListeners();
+    } catch (e) {
+      print('Falha ao adicionar a captura: $e');
+    }
   }
 
-  List<Catch> getCatchesByParticipant(Participant participant) {
-    return _catches
-        .where((fishCatches) => fishCatches.participant == participant)
-        .toList();
-  }
-
-  List<Catch> getCatchesByTournament(Tournament tournament) {
-    return _catches
-        .where((fishCatches) => fishCatches.tournament == tournament)
-        .toList();
-  }
-
-  List<Catch> getCatchesByValidationStatus(FishEvaluationStatus status) {
-    return _catches
-        .where((fishCatches) => fishCatches.fishEvaluationStatus == status)
-        .toList();
-  }
-
-  List<Catch> getPendingCatchesByAdmin(User user) {
-    List<Catch> pendingCatches = [];
-
-    for (Tournament tournament in _tournaments) {
-      bool isAdminOrModerator = false;
-
-      // Verifica se o usuário é um administrador do torneio
-      if (tournament.administrators == user) {
-        isAdminOrModerator = true;
+  Future<void> updateCatch(Catch updatedCatch) async {
+    try {
+      await _catchService.updateCatch(updatedCatch);
+      final index =
+          _catches.indexWhere((fishCatch) => fishCatch.id == updatedCatch.id);
+      if (index >= 0) {
+        _catches[index] = updatedCatch;
+        notifyListeners();
       }
+    } catch (e) {
+      print('Falha ao atualizar a captura: $e');
+    }
+  }
 
-      // Verifica se o usuário é um moderador do torneio
-      if (!isAdminOrModerator && tournament.moderators != null) {
-        if (tournament.moderators!.contains(user)) {
-          isAdminOrModerator = true;
-        }
-      }
+  Future<void> deleteCatch(String catchId) async {
+    try {
+      await _catchService.deleteCatch(catchId);
+      _catches.removeWhere((fishCatch) => fishCatch.id == catchId);
+      notifyListeners();
+    } catch (e) {
+      print('Falha ao excluir a captura: $e');
+    }
+  }
 
-      if (isAdminOrModerator) {
-        for (Catch fishCatch in tournament.catches!) {
+  Future<List<Catch>> getCatchesByParticipant(Participant participant) async {
+    try {
+      return await _catchService.getCatchesByParticipant(participant.id);
+    } catch (e) {
+      print('Falha ao buscar as capturas por participante: $e');
+      return [];
+    }
+  }
+
+  Future<List<Catch>> getCatchesByValidationStatus(
+      FishEvaluationStatus status) async {
+    try {
+      return await _catchService.getCatchesByValidationStatus(status);
+    } catch (e) {
+      print('Falha ao buscar as capturas por status de validação: $e');
+      return [];
+    }
+  }
+
+  Future<List<Catch>> getPendingCatchesByAdmin(User user) async {
+    try {
+      _tournaments = await _tournamentService.getTournamentsByAdmin(user.uid);
+      List<Catch> pendingCatches = [];
+
+      for (Tournament tournament in _tournaments) {
+        List<Catch> tournamentCatches =
+            await _catchService.getCatchesByTournamentId(tournament.id);
+
+        for (Catch fishCatch in tournamentCatches) {
           if (fishCatch.fishEvaluationStatus ==
                   FishEvaluationStatus.aguardandoAvaliacao &&
               fishCatch.validatingAdmin == null) {
@@ -77,13 +95,104 @@ class CatchesProvider extends ChangeNotifier {
           }
         }
       }
-    }
 
-    return pendingCatches;
+      return pendingCatches;
+    } catch (e) {
+      print('Falha ao buscar as capturas pendentes por administrador: $e');
+      return [];
+    }
   }
 
-  Catch getCatchById(String catchId) {
-    return _catches.firstWhere((fishCatch) => fishCatch.id == catchId,
-        orElse: () => MockCatches.createEmptyCatch('1', '1'));
+  Future<Catch?> getCatchById(String catchId) async {
+    try {
+      return await _catchService.getCatchById(catchId);
+    } catch (e) {
+      print('Falha ao buscar a captura pelo ID: $e');
+      return Catch.empty();
+    }
+  }
+
+  Future<List<Catch>> getCatchesByUserId(String userId) async {
+    try {
+      return await _catchService.getCatchesByParticipant(userId);
+    } catch (e) {
+      print('Falha ao buscar as capturas por ID de usuário: $e');
+      return [];
+    }
+  }
+
+  Future<User?> _getCurrentUser() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      return user;
+    } catch (e) {
+      print('Falha ao obter o usuário atual: $e');
+      return null;
+    }
+  }
+
+  Future<List<Catch>> getPendingCatches() async {
+    try {
+      final pendingCatches = await _catchService.getCatchesByValidationStatus(
+          FishEvaluationStatus.aguardandoAvaliacao);
+
+      final currentUser = await _getCurrentUser();
+      final userIsParticipant =
+          _checkUserIsParticipant(currentUser, pendingCatches);
+
+      if (!userIsParticipant) {
+        for (Catch fishCatch in pendingCatches) {
+          await _addParticipantToCatch(currentUser, fishCatch);
+        }
+      }
+
+      return pendingCatches;
+    } catch (e) {
+      print('Falha ao buscar as capturas pendentes: $e');
+      return [];
+    }
+  }
+
+  Future<List<Catch>> getValidatedCatches() async {
+    try {
+      return await _catchService
+          .getCatchesByValidationStatus(FishEvaluationStatus.peixeValidado);
+    } catch (e) {
+      print('Falha ao buscar as capturas válidas: $e');
+      return [];
+    }
+  }
+
+  Future<List<Catch>> getInvalidatedCatches() async {
+    try {
+      return await _catchService
+          .getCatchesByValidationStatus(FishEvaluationStatus.peixeInvalidado);
+    } catch (e) {
+      print('Falha ao buscar as capturas inválidas: $e');
+      return [];
+    }
+  }
+
+  bool _checkUserIsParticipant(User? user, List<Catch> catches) {
+    if (user == null) return false;
+
+    final userId = user.uid;
+    for (Catch fishCatch in catches) {
+      if (fishCatch.participant.id.contains(userId)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  Future<void> _addParticipantToCatch(User? user, Catch fishCatch) async {
+    if (user == null) return;
+
+    final userId = user.uid;
+    if (fishCatch.participant.id != userId) {
+      fishCatch.participant.id = userId;
+      await _catchService.updateCatch(fishCatch);
+    }
   }
 }

@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:pro_angler/Mock/mock_teams.dart';
-import '../Mock/mock_users.dart';
-import '../Mock/tournament_mock.dart';
 import '../Models/team.dart';
 import '../Models/tournament.dart';
 import '../Models/user.dart';
+import 'package:pro_angler/Services/user_service.dart';
+import 'package:pro_angler/Services/team_service.dart';
+import 'package:pro_angler/Services/tournament_service.dart';
 
 class UserProvider with ChangeNotifier {
-  User? _user = MockUsers.getAllUsers().first;
-  User? _currentUser = MockUsers.getAllUsers().first;
-  late Team? _team;
+  User? _user;
+  User? _currentUser;
+  Team? _team;
 
-  final List<User> _allUsers = MockUsers.getAllUsers();
+  final UserService _userService = UserService();
+  final TeamService _teamService = TeamService();
+  final TournamentService _tournamentService = TournamentService();
 
   User? get user => _user;
   User? get currentUser => _currentUser;
 
-  void setUserById(String userId) {
-    _user = MockUsers.getUserById(userId);
+  Future<void> setUserById(String userId) async {
+    _user = await _userService.getUserById(userId);
     _currentUser = _user;
-    _team = getTeamByCreatorId(userId);
+    _team = await _teamService.getTeamByCreatorId(userId);
     notifyListeners();
   }
 
@@ -32,56 +34,28 @@ class UserProvider with ChangeNotifier {
     return _currentUser;
   }
 
-  List<User> getAllUsers() {
-    return _allUsers;
+  Future<List<User>> getAllUsers() async {
+    return _userService.getAllUsers();
   }
 
-  Team? getTeamByCreatorId(String creatorId) {
-    return MockTeams.getTeamByCreatorId(creatorId);
+  Future<Team?> getTeamByCreatorId(String creatorId) async {
+    return _teamService.getTeamByCreatorId(creatorId);
   }
 
-  List<Tournament> getParticipatingTournaments() {
+  Future<List<Tournament>> getParticipatingTournaments() async {
     final user = _user;
     if (user != null) {
-      return MockTournaments.getTournamentsByUserId(user.id);
+      return _tournamentService.getTournamentsByUserId(user.id);
     } else {
       return [];
     }
   }
 
   Future<List<User>> searchUsers(String query) async {
-    // Simulação de pesquisa assíncrona
-    await Future.delayed(const Duration(seconds: 5));
-
-    // Lógica de busca de usuários (substitua pelo seu próprio código de pesquisa)
-    List<User> results = [];
-    List<User> allUsers = getAllUsers();
-
-    for (User user in allUsers) {
-      String name = user.name.toLowerCase();
-      String email = user.email.toLowerCase();
-      String searchQuery = query.toLowerCase();
-
-      if (name.startsWith(searchQuery) || email.startsWith(searchQuery)) {
-        results.add(user);
-      }
-    }
-    return results;
+    return _userService.searchUsers(query);
   }
 
-      User getUserById(String userId) {
-      for (User user in getAllUsers()) {
-        if (user.id == userId) {
-          return user;
-        }
-      }
-      // Caso não encontre o usuário, pode retornar null ou um objeto vazio
-      return User(
-        id: '',
-        name: '',
-        email: '',
-        password: '',
-        city: '',
-      );
+  Future<User> getUserById(String userId) async {
+    return _userService.getUserById(userId);
   }
 }

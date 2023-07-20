@@ -60,9 +60,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/admintournament',
+      initialRoute: '/login',
       routes: {
-        '/login': (context) => const LoginPage(),
+        '/login': (context) => LoginPage(),
         '/signup': (context) => const SignupPage(),
         '/homepage': (context) => const HomePage(),
         '/tournamentpage': (context) => const TournamentPage(),

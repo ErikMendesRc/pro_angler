@@ -19,4 +19,37 @@ class Participant {
     this.registrationNumber,
     this.totalScore
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "tournament": tournament.toJson(),
+      "participant": participant.toJson(),
+      "team": team != null ? team!.toJson() : null,
+      "registrationNumber": registrationNumber,
+      "totalScore": totalScore,
+    };
+  }
+
+  factory Participant.fromJson(Map<String, dynamic> json) {
+    return Participant(
+      id: json['id'],
+      tournament: Tournament.fromJson(json['tournament']),
+      participant: User.fromJson(json['participant']),
+      team: json['team'] != null ? Team.fromJson(json['team']) : null,
+      registrationNumber: json['registrationNumber'],
+      totalScore: json['totalScore'],
+    );
+  }
+
+  factory Participant.empty() {
+    return Participant(
+      id: '',
+      tournament: Tournament.empty(),
+      participant: User.empty(),
+      team: null,
+      registrationNumber: null,
+      totalScore: null,
+    );
+  }
 }

@@ -31,7 +31,7 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
   final TextEditingController _entryFeeController = TextEditingController();
   final picker = ImagePicker();
   File? _pickedImage;
-  TournamentTeamBased _teamBase = TournamentTeamBased.Equipe;
+  TournamentTeamBased _teamBase = TournamentTeamBased.equipe;
 
   int _currentIndex = 2;
 

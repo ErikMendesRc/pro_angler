@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Models/team.dart';
+import 'package:pro_angler/Models/tournament.dart';
 import 'package:pro_angler/Providers/tournament_provider.dart';
-import '../Mock/mock_teams.dart';
-import '../Models/team.dart';
-import '../Models/tournament.dart';
+import 'package:pro_angler/Services/team_service.dart';
 
-class TeamProvider extends ChangeNotifier {
-  Team? _team = MockTeams.getAllTeams().first;
+class TeamProvider with ChangeNotifier {
+  final TeamService _teamService = TeamService();
   final TournamentProvider _tournamentProvider = TournamentProvider();
+  Team? _team;
 
   Team? get team => _team;
 
-  Tournament? getTournamentById(String tournamentId) {
-    try {
-      return _tournamentProvider.tournaments.firstWhere(
-        (tournament) => tournament.id == tournamentId,
-      );
-    } catch (e) {
-      return null;
-    }
+  Tournament getTournamentById(String tournamentId) {
+    final tournament = _tournamentProvider.tournaments.firstWhere(
+      (tournament) => tournament.id == tournamentId,
+      orElse: () => Tournament.empty(),
+    );
+    return tournament;
   }
 
-  void fetchTeamData(String teamId) {
-
-    Future.delayed(const Duration(seconds: 5), () {
-      final fetchedTeam =
-          MockTeams.getTeamById(teamId);
-      _team = fetchedTeam;
+  Future<void> fetchTeamData(String teamId) async {
+    try {
+      _team = await _teamService.getTeamById(teamId);
       notifyListeners();
-    });
+    } catch (e) {
+      print('Falha ao buscar os dados da equipe: $e');
+    }
   }
 }

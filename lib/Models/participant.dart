@@ -5,7 +5,7 @@ import 'package:pro_angler/Models/user.dart';
 class Participant {
   String id;
   Tournament tournament;
-  User participant;
+  UserData participant;
   Team? team;
   String? registrationNumber;
   String? totalScore;
@@ -35,7 +35,7 @@ class Participant {
     return Participant(
       id: json['id'],
       tournament: Tournament.fromJson(json['tournament']),
-      participant: User.fromJson(json['participant']),
+      participant: UserData.fromJson(json['participant']),
       team: json['team'] != null ? Team.fromJson(json['team']) : null,
       registrationNumber: json['registrationNumber'],
       totalScore: json['totalScore'],
@@ -46,7 +46,7 @@ class Participant {
     return Participant(
       id: '',
       tournament: Tournament.empty(),
-      participant: User.empty(),
+      participant: UserData.empty(),
       team: null,
       registrationNumber: null,
       totalScore: null,

@@ -66,7 +66,7 @@ class MembersWidget extends StatelessWidget {
                                 width: 60,
                                 height: 60,
                                 child: Image.network(
-                                  members[index].photo ?? '',
+                                  members[index].photoURL ?? '',
                                   fit: BoxFit.cover,
                                 ),
                               ),

@@ -16,7 +16,7 @@ class Catch {
   FishEvaluationStatus fishEvaluationStatus;
   String captureLocal;
   String description;
-  User? validatingAdmin;
+  UserData? validatingAdmin;
 
   Catch({
     required this.id,
@@ -63,7 +63,7 @@ class Catch {
       fishEvaluationStatus: _parseFishEvaluationStatus(json['fishEvaluationStatus']),
       captureLocal: json['captureLocal'],
       description: json['description'],
-      validatingAdmin: json['validatingAdmin'] != null ? User.fromJson(json['validatingAdmin']) : null,
+      validatingAdmin: json['validatingAdmin'] != null ? UserData.fromJson(json['validatingAdmin']) : null,
     );
   }
 

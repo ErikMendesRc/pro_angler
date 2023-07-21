@@ -29,7 +29,7 @@ class _RegistrationSectionState extends State<RegistrationSection> {
     final TournamentTeamBased teamBased = tournamentProvider.currentTournament?.teamBased ?? TournamentTeamBased.individual;
 
     if (teamBased == TournamentTeamBased.individual) {
-      final User? currentUser = userProvider.currentUser;
+      final UserData? currentUser = userProvider.currentUser;
       return Container(
         height: screenHeight.height, // Definindo a altura para ocupar toda a tela
         child: SingleChildScrollView(
@@ -118,7 +118,7 @@ class _RegistrationSectionState extends State<RegistrationSection> {
         ),
       );
     } else {
-      final User? currentUser = userProvider.currentUser;
+      final UserData? currentUser = userProvider.currentUser;
       final List<Team> userTeams = currentUser != null ? MockTeams.getTeamsByParticipantId(currentUser.id) : [];
       final bool hasTeam = userTeams.isNotEmpty;
 

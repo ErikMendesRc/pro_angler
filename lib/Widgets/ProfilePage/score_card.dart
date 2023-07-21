@@ -8,26 +8,22 @@ import '../../Models/user.dart';
 import '../../Providers/user_provider.dart';
 
 class ScoreCard extends StatelessWidget {
-  const ScoreCard({Key? key}) : super(key: key);
+  final String userId;
+
+  const ScoreCard({required this.userId, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<User?>(
-      future: Future.delayed(Duration.zero, () => Provider.of<UserProvider>(context).getCurrentUser()),
-      builder: (context, userSnapshot) {
-        if (userSnapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (userSnapshot.hasError) {
-          return Text('Erro ao carregar usuário: ${userSnapshot.error}');
-        }
+    return Consumer<UserProvider>(
+      builder: (context, userProvider, _) {
+        final UserData? user = userProvider.getCurrentUser();
 
-        final User? user = userSnapshot.data;
         if (user == null) {
           return const Text('Usuário não logado.');
         }
 
         return FutureBuilder<List<Tournament>>(
-          future: Provider.of<UserProvider>(context).getParticipatingTournaments(),
+          future: userProvider.getParticipatingTournaments(),
           builder: (context, tournamentsSnapshot) {
             if (tournamentsSnapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();

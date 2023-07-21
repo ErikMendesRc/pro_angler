@@ -1,22 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../Models/team.dart';
-import '../Models/tournament.dart';
-import '../Models/user.dart';
+import 'package:pro_angler/Models/tournament.dart';
+import 'package:pro_angler/Models/user.dart';
+import 'package:pro_angler/Models/team.dart';
 import 'package:pro_angler/Services/user_service.dart';
 import 'package:pro_angler/Services/team_service.dart';
 import 'package:pro_angler/Services/tournament_service.dart';
 
 class UserProvider with ChangeNotifier {
-  User? _user;
-  User? _currentUser;
+  UserData? _user;
+  UserData? _currentUser;
   Team? _team;
 
   final UserService _userService = UserService();
   final TeamService _teamService = TeamService();
   final TournamentService _tournamentService = TournamentService();
 
-  User? get user => _user;
-  User? get currentUser => _currentUser;
+  UserData? get user => _user;
+  UserData? get currentUser => _currentUser;
 
   Future<void> setUserById(String userId) async {
     _user = await _userService.getUserById(userId);
@@ -25,16 +26,22 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setCurrentUser(User user) {
+  void setCurrentUser(UserData user) {
     _currentUser = user;
     notifyListeners();
   }
 
-  User? getCurrentUser() {
+  void setUser(UserData user) {
+    _user = user;
+    _currentUser = user;
+    notifyListeners();
+  }
+
+  UserData? getCurrentUser() {
     return _currentUser;
   }
 
-  Future<List<User>> getAllUsers() async {
+  Future<List<UserData>> getAllUsers() async {
     return _userService.getAllUsers();
   }
 
@@ -51,11 +58,35 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<List<User>> searchUsers(String query) async {
+  Future<List<UserData>> searchUsers(String query) async {
     return _userService.searchUsers(query);
   }
 
-  Future<User> getUserById(String userId) async {
+  Future<UserData> getUserById(String userId) async {
     return _userService.getUserById(userId);
+  }
+
+  Future<void> fetchUser(String userId) async {
+    try {
+      final userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      if (userSnapshot.exists) {
+        _user = UserData.fromJson(userSnapshot.data()!);
+        _currentUser = _user;
+        _team = await _teamService.getTeamByCreatorId(userId);
+        notifyListeners();
+      } else {
+        // Usuário não encontrado no Firestore
+        _user = null;
+        _currentUser = null;
+        _team = null;
+        notifyListeners();
+      }
+    } catch (error) {
+      // Tratamento de erro ao buscar o usuário
+      print('Erro ao buscar dados do usuário: $error');
+    }
   }
 }

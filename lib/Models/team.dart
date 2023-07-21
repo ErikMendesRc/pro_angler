@@ -7,7 +7,7 @@ class Team {
   String name;
   String description;
   DateTime creationDate;
-  List<User> participants;
+  List<UserData> participants;
   List<ChampionTrophys> achievements;
   String city;
   String creatorId; 
@@ -26,7 +26,7 @@ class Team {
     this.photo
   });
 
-  List<User> getMembers() {
+  List<UserData> getMembers() {
     return participants;
   }
 
@@ -59,9 +59,9 @@ class Team {
     );
   }
 
-  static List<User> _parseParticipants(List<dynamic>? list) {
+  static List<UserData> _parseParticipants(List<dynamic>? list) {
     if (list != null) {
-      return list.map((item) => User.fromJson(item)).toList();
+      return list.map((item) => UserData.fromJson(item)).toList();
     }
     return [];
   }

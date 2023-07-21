@@ -26,7 +26,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
   final List<String> searchResults = [];
   bool isLoading = false;
 
-  User? currentUser;
+  UserData? currentUser;
 
   @override
   void initState() {
@@ -117,7 +117,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
 
   Future<List<String>> _searchParticipants(String query) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final List<User> results = await userProvider.searchUsers(query);
+    final List<UserData> results = await userProvider.searchUsers(query);
     return results.map((user) => user.id).toList();
   }
 
@@ -190,10 +190,10 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
             itemCount: searchResults.length,
             itemBuilder: (context, index) {
               final String participant = searchResults[index];
-              final Future<User> userFuture =
+              final Future<UserData> userFuture =
                   Provider.of<UserProvider>(context).getUserById(participant);
 
-              return FutureBuilder<User>(
+              return FutureBuilder<UserData>(
                 future: userFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -204,7 +204,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                     return const SizedBox.shrink();
                   }
 
-                  final User user = snapshot.data!;
+                  final UserData user = snapshot.data!;
 
                   return Card(
                     child: ListTile(
@@ -217,7 +217,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                           width: 60,
                           height: 60,
                           child: Image.network(
-                            user.photo ?? '',
+                            user.photoURL ?? '',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -244,10 +244,10 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
       itemCount: participants.length,
       itemBuilder: (context, index) {
         final String participant = participants[index];
-        final Future<User> userFuture =
+        final Future<UserData> userFuture =
             Provider.of<UserProvider>(context).getUserById(participant);
 
-        return FutureBuilder<User>(
+        return FutureBuilder<UserData>(
           future: userFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -261,7 +261,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
               return const SizedBox.shrink();
             }
 
-            final User user = snapshot.data!;
+            final UserData user = snapshot.data!;
 
             return Card(
               child: ListTile(
@@ -274,7 +274,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                     width: 60,
                     height: 60,
                     child: Image.network(
-                      user.photo ?? '',
+                      user.photoURL ?? '',
                       fit: BoxFit.cover,
                     ),
                   ),

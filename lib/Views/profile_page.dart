@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../Util/cores.dart';
@@ -26,6 +27,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    final userId = firebaseUser?.uid ?? '';
+    final mediaQuery = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Perfil'),
@@ -35,6 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
+          height: mediaQuery.height,
           decoration: const BoxDecoration(
             gradient: RadialGradient(
               radius: 1.2,
@@ -51,30 +57,30 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  ProfileHeader(),
-                  SizedBox(height: 8.0),
-                  ScoreCard(),
-                  SizedBox(height: 32),
-                  Align(
+                children: [
+                  const ProfileHeader(),
+                  const SizedBox(height: 8.0),
+                  ScoreCard(userId: userId),
+                  const SizedBox(height: 32),
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Conquistas',
                       style: CustomTextStyles.text20Bold,
                     ),
                   ),
-                  SizedBox(height: 8),
-                  AchievementList(),
-                  SizedBox(height: 32),
-                  Align(
+                  const SizedBox(height: 50.0),
+                  AchievementList(userId: userId),
+                  const SizedBox(height: 50),
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Troféus',
                       style: CustomTextStyles.text20Bold,
                     ),
                   ),
-                  SizedBox(height: 8),
-                  TrophyList(),
+                  const SizedBox(height: 100.0),
+                  TrophyList(userId: userId),
                 ],
               ),
             ),

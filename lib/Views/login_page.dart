@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pro_angler/Providers/user_provider.dart';
 import 'package:pro_angler/Util/Validators/login_validator.dart';
 import 'package:pro_angler/Util/cores.dart';
 import 'package:pro_angler/Util/custom_styles.dart';
 import 'package:pro_angler/Widgets/LoginPage/logo_image.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -16,6 +16,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
@@ -92,7 +93,8 @@ class LoginPage extends StatelessWidget {
                 //   label: const Text('Login com o Google'), // Texto do botão
                 // ),
                 // const SizedBox(height: 8.0),
-                const Text("Ou Registre-se agora:", style: CustomTextStyles.destaque14Bold),
+                const Text("Ou Registre-se agora:",
+                    style: CustomTextStyles.destaque14Bold),
                 const SizedBox(height: 8.0),
                 GestureDetector(
                   onTap: () {
@@ -138,7 +140,19 @@ class LoginPage extends StatelessWidget {
       return;
     }
 
-    _navegarParaPaginaInicial(context);
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Provider.of<UserProvider>(context, listen: false).setUserById(user.uid);
+      final metadata = user.metadata;
+      final createdTime = metadata.creationTime?.minute;
+      final lastSignInTime = metadata.lastSignInTime?.minute;
+
+      if (createdTime == lastSignInTime) {
+        Navigator.pushReplacementNamed(context, '/filluserinfo');
+      } else {
+        _navegarParaPaginaInicial(context);
+      }
+    }
   }
 
   void _navegarParaPaginaInicial(BuildContext context) {

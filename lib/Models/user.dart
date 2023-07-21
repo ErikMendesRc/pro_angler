@@ -4,11 +4,11 @@ import 'package:pro_angler/Models/tournament.dart';
 
 import 'achiviement.dart';
 
-class User {
+class UserData {
   String id;
   String name;
   String email;
-  String? photo;
+  String? photoURL;
   List<ChampionTrophys>? championTrophys;
   List<PersonalAchieviments>? personalAchiviements;
   List<Tournament>? myTournaments;
@@ -16,11 +16,11 @@ class User {
   List<Tournament>? participatingTournaments;
   List<Catch>? myCatches;
 
-  User({
+  UserData({
     required this.id,
     required this.name,
     required this.email,
-    this.photo,
+    this.photoURL,
     this.championTrophys,
     this.myTournaments,
     required this.city,
@@ -29,12 +29,13 @@ class User {
     this.myCatches
   });
 
+
   Map<String, dynamic> toJson() {
     return {
       "id": id,
       "name": name,
       "email": email,
-      "photo": photo,
+      "photoURL": photoURL,
       "championTrophys": championTrophys?.map((trophy) => trophy.toJson()).toList(),
       "personalAchiviements": personalAchiviements?.map((achievement) => achievement.toJson()).toList(),
       "myTournaments": myTournaments?.map((tournament) => tournament.toJson()).toList(),
@@ -44,12 +45,12 @@ class User {
     };
   }
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    return UserData(
       id: json['id'],
       name: json['name'],
       email: json['email'],
-      photo: json['photo'],
+      photoURL: json['photoURL'],
       championTrophys: _parseChampionTrophys(json['championTrophys']),
       personalAchiviements: _parsePersonalAchieviments(json['personalAchiviements']),
       myTournaments: _parseTournaments(json['myTournaments']),
@@ -88,11 +89,11 @@ class User {
     return null;
   }
 
-  User.empty()
+  UserData.empty()
       : id = '',
         name = '',
         email = '',
-        photo = null,
+        photoURL = null,
         championTrophys = null,
         personalAchiviements = null,
         myTournaments = null,

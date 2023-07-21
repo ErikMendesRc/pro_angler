@@ -4,7 +4,7 @@ import 'package:pro_angler/Models/user.dart';
 class Admin {
   String id;
   Tournament tournament;
-  User administrator;
+  UserData administrator;
 
   Admin({
     required this.id,

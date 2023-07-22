@@ -62,7 +62,7 @@ class UserProvider with ChangeNotifier {
     return _userService.searchUsers(query);
   }
 
-  Future<UserData> getUserById(String userId) async {
+  Future<UserData?> getUserById(String userId) async {
     return _userService.getUserById(userId);
   }
 

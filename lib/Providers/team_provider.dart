@@ -27,4 +27,15 @@ class TeamProvider with ChangeNotifier {
       print('Falha ao buscar os dados da equipe: $e');
     }
   }
+
+  Future<Team?> fetchUserTeam(String userId) async {
+    try {
+      _team = await _teamService.getTeamByUserId(userId);
+      notifyListeners();
+      return _team;
+    } catch (e) {
+      print('Failed to fetch user team: $e');
+      return null;
+    }
+  }
 }

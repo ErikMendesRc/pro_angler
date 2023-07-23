@@ -66,7 +66,7 @@ class MembersWidget extends StatelessWidget {
                                 width: 60,
                                 height: 60,
                                 child: Image.network(
-                                  members[index].photoURL ?? '',
+                                  members[index],
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -76,11 +76,11 @@ class MembersWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  members[index].name,
+                                  members[index],
                                   style: CustomTextStyles.destaque14Bold
                                 ),
                                 Text(
-                                  members[index].city,
+                                  members[index],
                                   style: CustomTextStyles.texto12Branco
                                 ),
                               ],

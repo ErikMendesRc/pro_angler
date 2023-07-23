@@ -10,6 +10,7 @@ class MyTeamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -24,6 +25,7 @@ class MyTeamPage extends StatelessWidget {
         title: const Text('Minha Equipe'),
       ),
       body: Container(
+        height: mq.height,
         decoration: const BoxDecoration(
           gradient: RadialGradient(
             colors: [

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pro_angler/Providers/catches_provider.dart';
-import 'package:pro_angler/Providers/user_provider.dart';
+import 'package:pro_angler/Providers/user_provider.dart'; 
 import 'package:pro_angler/Views/fill_user_info.dart';
 import 'package:pro_angler/Views/home_page.dart';
 import 'package:pro_angler/Views/login_page.dart';

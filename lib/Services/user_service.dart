@@ -15,6 +15,10 @@ class UserService {
     return UserData.fromJson(userData!);
   }
 
+  Future<List<UserData>> getUsersByIds(List<String> userIds) async {
+    return await Future.wait(userIds.map((id) => getUserById(id)));
+  }
+
   Future<void> updateUser(UserData user) async {
     await _usersCollection.doc(user.id).update(user.toJson());
   }

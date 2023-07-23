@@ -66,6 +66,10 @@ class UserProvider with ChangeNotifier {
     return _userService.getUserById(userId);
   }
 
+  Future<List<UserData>> getUsersByIds(List<String> userIds) async {
+    return _userService.getUsersByIds(userIds);
+  }
+
   Future<void> fetchUser(String userId) async {
     try {
       final userSnapshot = await FirebaseFirestore.instance

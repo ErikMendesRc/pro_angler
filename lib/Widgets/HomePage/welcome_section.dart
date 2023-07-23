@@ -8,7 +8,7 @@ class WelcomeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 16, bottom: 8), // Espaçamento vertical desejado
+      padding: const EdgeInsets.only(top: 16, bottom: 8),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(

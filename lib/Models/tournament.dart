@@ -7,7 +7,7 @@ import '../enum/tournament_team_based.dart';
 class Tournament {
   String id;
   String organizerName;
-  User administrators;
+  UserData administrators;
   String name;
   String description;
   DateTime startDate;
@@ -24,7 +24,7 @@ class Tournament {
   bool isTournamentVerified;
   bool isRegistered;
   List<String>? participatingUsers;
-  List<User>? moderators;
+  List<UserData>? moderators;
   List<Catch>? catches;
 
   Tournament({
@@ -77,7 +77,7 @@ class Tournament {
     return Tournament(
       id: json['id'],
       organizerName: json['organizerName'],
-      administrators: User.fromJson(json['administrators']),
+      administrators: UserData.fromJson(json['administrators']),
       name: json['name'],
       description: json['description'],
       startDate: DateTime.parse(json['startDate']),
@@ -110,7 +110,7 @@ class Tournament {
   Tournament.empty()
       : id = '',
         organizerName = '',
-        administrators = User.empty(),
+        administrators = UserData.empty(),
         name = '',
         description = '',
         startDate = DateTime.now(),

@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pro_angler/Models/user.dart';
+import 'package:pro_angler/Providers/user_provider.dart';
 import 'package:pro_angler/Util/Validators/signup_validator.dart';
 import 'package:pro_angler/Util/cores.dart';
 import 'package:pro_angler/Widgets/SignUpPage/logo_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -15,30 +19,34 @@ class SignupPage extends StatelessWidget {
     final _confirmPasswordController = TextEditingController();
 
     void _mostrarSnackBar(BuildContext context, String mensagem) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(mensagem), backgroundColor: Colors.redAccent,));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(mensagem),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
+
+    void _mostrarToast(String mensagem) {
+      Fluttertoast.showToast(
+        msg: mensagem,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green.shade300,
+        textColor: Colors.black,
+        fontSize: 16.0,
+      );
+    }
+
+    void _navegarParaPaginaDeLogin(BuildContext context) {
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
     }
 
     void _registerWithEmail(BuildContext context) async {
       final email = _emailController.text.trim();
       final password = _passwordController.text;
       final confirmPassword = _confirmPasswordController.text;
-
-      void _mostrarToast(String mensagem) {
-        Fluttertoast.showToast(
-          msg: mensagem,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green.shade300,
-          textColor: Colors.black,
-          fontSize: 16.0,
-        );
-      }
-
-      void _navegarParaPaginaDeLogin(BuildContext context) {
-        Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
-      }
 
       // Validar e-mail e senha
       final emailError = SignupValidator.validateEmail(email);
@@ -62,10 +70,33 @@ class SignupPage extends StatelessWidget {
       }
 
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
+
+        final userData = UserData(
+          id: userCredential.user!.uid,
+          name: '',
+          email: email,
+          photoURL: '',
+          championTrophys: [],
+          personalAchiviements: [],
+          myTournaments: [],
+          city: '',
+          participatingTournaments: [],
+          myCatches: [],
+        );
+
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        userProvider.setUser(userData);
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userData.id)
+            .set(userData.toJson());
+
         _mostrarToast('Cadastro realizado com sucesso!');
         _navegarParaPaginaDeLogin(context);
       } on FirebaseAuthException catch (e) {

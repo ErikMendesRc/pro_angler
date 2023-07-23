@@ -5,17 +5,21 @@ class UserService {
   final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection('users');
 
-  Future<void> addUser(User user) async {
+  Future<void> addUser(UserData user) async {
     await _usersCollection.doc(user.id).set(user.toJson());
   }
 
-  Future<User> getUserById(String userId) async {
+  Future<UserData> getUserById(String userId) async {
     final snapshot = await _usersCollection.doc(userId).get();
     final userData = snapshot.data() as Map<String, dynamic>?;
-    return User.fromJson(userData!);
+    return UserData.fromJson(userData!);
   }
 
-  Future<void> updateUser(User user) async {
+  Future<List<UserData>> getUsersByIds(List<String> userIds) async {
+    return await Future.wait(userIds.map((id) => getUserById(id)));
+  }
+
+  Future<void> updateUser(UserData user) async {
     await _usersCollection.doc(user.id).update(user.toJson());
   }
 
@@ -23,34 +27,34 @@ class UserService {
     await _usersCollection.doc(userId).delete();
   }
 
-  Future<List<User>> searchUsers(String query) async {
+  Future<List<UserData>> searchUsers(String query) async {
     QuerySnapshot snapshot =
         await _usersCollection.where('name', isEqualTo: query).get();
 
     QuerySnapshot emailSnapshot =
         await _usersCollection.where('email', isEqualTo: query).get();
 
-    List<User> users = [];
+    List<UserData> users = [];
 
     users.addAll(snapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      return User.fromJson(data);
+      return UserData.fromJson(data);
     }));
 
     users.addAll(emailSnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      return User.fromJson(data);
+      return UserData.fromJson(data);
     }));
 
     return users;
   }
 
-  Future<List<User>> getAllUsers() async {
+  Future<List<UserData>> getAllUsers() async {
     QuerySnapshot snapshot = await _usersCollection.get();
     
-    List<User> users = snapshot.docs.map((doc) {
+    List<UserData> users = snapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      return User.fromJson(data);
+      return UserData.fromJson(data);
     }).toList();
     
     return users;

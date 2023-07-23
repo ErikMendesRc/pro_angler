@@ -7,7 +7,7 @@ class TournamentAdmin extends Tournament {
   TournamentAdmin({
     required String id,
     required String organizerName,
-    required User administrators,
+    required UserData administrators,
     required String name,
     required String description,
     required DateTime startDate,

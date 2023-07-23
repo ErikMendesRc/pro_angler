@@ -32,7 +32,7 @@ class CatchService {
         .update({'fishEvaluationStatus': status.toString()});
   }
 
-  Future<void> validateCatch(String catchId, User validatingAdmin) async {
+  Future<void> validateCatch(String catchId, UserData validatingAdmin) async {
     await _catchesCollection
         .doc(catchId)
         .update({'validatingAdmin': validatingAdmin.toJson()});

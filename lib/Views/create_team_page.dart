@@ -26,7 +26,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
   final List<String> searchResults = [];
   bool isLoading = false;
 
-  User? currentUser;
+  UserData? currentUser;
 
   @override
   void initState() {
@@ -88,22 +88,38 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
       });
     }
 
-    // Criação do time no Firestore
-    await FirebaseFirestore.instance.collection('teams').add({
+    final teamData = {
       'name': teamName,
       'city': city,
       'participants': participants,
       'imageUrl': imageUrl,
-    });
+    };
 
-    // Limpar os campos após a criação da equipe
-    setState(() {
-      _teamNameController.clear();
-      _participantController.clear();
-      _cityController.clear();
-      participants.clear();
-      _teamImage = null;
-    });
+    try {
+      final docRef =
+          await FirebaseFirestore.instance.collection('teams').add(teamData);
+      print('Time criado com o ID: ${docRef.id}');
+
+      setState(() {
+        _teamNameController.clear();
+        _participantController.clear();
+        _cityController.clear();
+        participants.clear();
+        _teamImage = null;
+      });
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: CoresPersonalizada.corSecundaria,
+          content: Text('Time criado com sucesso!', style:  CustomTextStyles.texto12BrancoBold,),
+          duration: Duration(
+              seconds:
+                  3),
+        ),
+      );
+    } catch (e) {
+      print('Erro ao criar o time: $e');
+    }
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -117,7 +133,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
 
   Future<List<String>> _searchParticipants(String query) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final List<User> results = await userProvider.searchUsers(query);
+    final List<UserData> results = await userProvider.searchUsers(query);
     return results.map((user) => user.id).toList();
   }
 
@@ -171,71 +187,72 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
   }
 
   Widget _buildSearchResults() {
-  return searchResults.isNotEmpty
-      ? Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(4.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 2.0,
-                blurRadius: 4.0,
-              ),
-            ],
-          ),
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: searchResults.length,
-            itemBuilder: (context, index) {
-              final String participant = searchResults[index];
-              final Future<User> userFuture =
-                  Provider.of<UserProvider>(context).getUserById(participant);
+    return searchResults.isNotEmpty
+        ? Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 2.0,
+                  blurRadius: 4.0,
+                ),
+              ],
+            ),
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: searchResults.length,
+              itemBuilder: (context, index) {
+                final String participant = searchResults[index];
+                final Future<UserData?> userFuture =
+                    Provider.of<UserProvider>(context).getUserById(participant);
 
-              return FutureBuilder<User>(
-                future: userFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return const Text('Erro ao carregar usuário');
-                  } else if (!snapshot.hasData) {
-                    return const SizedBox.shrink();
-                  }
+                return FutureBuilder<UserData?>(
+                  future: userFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return const Text('Erro ao carregar usuário');
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return const SizedBox.shrink();
+                    }
 
-                  final User user = snapshot.data!;
+                    final UserData user = snapshot.data!;
 
-                  return Card(
-                    child: ListTile(
-                      leading: ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(8.0),
-                          bottomLeft: Radius.circular(8.0),
-                        ),
-                        child: SizedBox(
-                          width: 60,
-                          height: 60,
-                          child: Image.network(
-                            user.photo ?? '',
-                            fit: BoxFit.cover,
+                    return Card(
+                      child: ListTile(
+                        leading: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(8.0),
+                            bottomLeft: Radius.circular(8.0),
+                          ),
+                          child: SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: Image.network(
+                              user.photoURL ?? '',
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
+                        title: Text(user.name),
+                        subtitle: Text(user.city),
+                        onTap: () {
+                          // Add the participant when the card is tapped
+                          _addParticipant(user.id);
+                        },
                       ),
-                      title: Text(user.name),
-                      subtitle: Text(user.city),
-                      onTap: () {
-                        _addParticipant(user.id);
-                      },
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-        )
-      : const SizedBox.shrink();
-}
+                    );
+                  },
+                );
+              },
+            ),
+          )
+        : const SizedBox.shrink();
+  }
 
   Widget _buildAddedParticipantsList() {
     return ListView.builder(
@@ -244,24 +261,21 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
       itemCount: participants.length,
       itemBuilder: (context, index) {
         final String participant = participants[index];
-        final Future<User> userFuture =
+        final Future<UserData?> userFuture =
             Provider.of<UserProvider>(context).getUserById(participant);
 
-        return FutureBuilder<User>(
+        return FutureBuilder<UserData?>(
           future: userFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // Caso ainda esteja carregando, exiba um indicador de progresso ou algo do tipo.
               return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              // Caso ocorra um erro, exiba uma mensagem de erro.
               return const Text('Erro ao carregar usuário');
-            } else if (!snapshot.hasData) {
-              // Caso não exista dados, você pode exibir uma mensagem alternativa ou simplesmente retornar um SizedBox.shrink() para não renderizar nada.
+            } else if (!snapshot.hasData || snapshot.data == null) {
               return const SizedBox.shrink();
             }
 
-            final User user = snapshot.data!;
+            final UserData user = snapshot.data!;
 
             return Card(
               child: ListTile(
@@ -274,7 +288,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                     width: 60,
                     height: 60,
                     child: Image.network(
-                      user.photo ?? '',
+                      user.photoURL ?? '',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -283,17 +297,8 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                 title: Text(user.name),
                 subtitle: Text(user.city),
                 onTap: () {
-                  // Verificar se o usuário está clicando no próprio card
-                  if (participant == currentUser?.id) {
-                    // Exibir mensagem de validação
-                    const snackBar = SnackBar(
-                      content: Text(
-                          'Você será adicionado automaticamente à lista de participantes.'),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else {
-                    _removeParticipant(user.id);
-                  }
+                  // Remove the participant when the card is tapped
+                  _removeParticipant(user.id);
                 },
               ),
             );

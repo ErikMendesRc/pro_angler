@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../Providers/team_provider.dart';
 import '../../Providers/user_provider.dart';
 import '../../Util/custom_styles.dart';
@@ -10,32 +9,46 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
     final teamProvider = Provider.of<TeamProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context);
+    
+    final user = userProvider.getCurrentUser();
+    if (user == null) {
+      return const CircularProgressIndicator();
+    }
 
-    return Consumer<UserProvider>(
-      builder: (context, userProvider, _) {
-        final user = userProvider.user;
-        final team = teamProvider.team;
+    return FutureBuilder(
+      future: teamProvider.fetchUserTeam(user.id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        }
+        
+        if (snapshot.hasError) {
+          // Opcional: você pode retornar algum widget para exibir um erro aqui
+          return Text('Ocorreu um erro ao carregar a equipe');
+        }
+
+        final teamName = teamProvider.team?.name;
 
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CircleAvatar(
-              radius: 60, // Reduzindo o tamanho do avatar
-              backgroundImage: NetworkImage("${user?.photo}"),
+              radius: 60,
+              backgroundImage: NetworkImage(user.photoURL ?? ''),
             ),
             const SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user?.name ?? 'Carregando...',
+                  user.name,
                   style: CustomTextStyles.titleText,
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  user?.city ?? 'Carregando...',
+                  user.city,
                   style: CustomTextStyles.profileLocal,
                 ),
                 const SizedBox(height: 16),
@@ -52,13 +65,13 @@ class ProfileHeader extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        team != null ? team.name : 'Sem equipe',
-                        style:CustomTextStyles.texto16Bold
+                       teamName ?? 'Sem equipe',
+                        style: CustomTextStyles.texto16Bold,
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 16), // Aumentando o espaçamento vertical
+                const SizedBox(height: 16),
               ],
             ),
           ],

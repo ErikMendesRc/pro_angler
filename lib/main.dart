@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pro_angler/Providers/catches_provider.dart';
-import 'package:pro_angler/Providers/user_provider.dart';
+import 'package:pro_angler/Providers/user_provider.dart'; 
+import 'package:pro_angler/Views/fill_user_info.dart';
 import 'package:pro_angler/Views/home_page.dart';
 import 'package:pro_angler/Views/login_page.dart';
 import 'package:pro_angler/Views/my_catches_page.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
         '/mycaptures': (context) => const MyCatchesPage(),
         '/catchdetails': (context) => const CatchDetails(catchId:''),
         '/admintournament':(context) =>  TournamentAdminPage(),
+        '/filluserinfo':(context) =>  FillUserInfoScreen(),
       },
     );
   }

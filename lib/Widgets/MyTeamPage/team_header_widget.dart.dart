@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pro_angler/Models/user.dart';
 import 'package:pro_angler/Providers/team_provider.dart';

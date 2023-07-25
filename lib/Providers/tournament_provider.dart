@@ -15,7 +15,6 @@ class TournamentProvider with ChangeNotifier {
   String get error => _error;
   Tournament? get currentTournament => _currentTournament;
 
-  // Métodos para definir estado
   void setCurrentTournament(Tournament tournament) {
     _currentTournament = tournament;
     notifyListeners();
@@ -32,37 +31,42 @@ class TournamentProvider with ChangeNotifier {
     }
   }
 
-  // Métodos para busca
-  Future<void> fetchTournaments() async {
-    try {
-      _isLoading = true;
-      _error = '';
-      notifyListeners();
+  bool _isFetched = false;
+  Future<void> fetchTournamentsByUserId(String userId) async {
+    if (!_isFetched) {
+      try {
+        _isLoading = true;
+        _error = '';
+        notifyListeners();
+        _tournaments = await _tournamentService.getTournamentsByUserId(userId);
 
-      _tournaments = await _tournamentService.getAllTournaments();
-
-      final currentDate = DateTime.now();
-      for (var tournament in _tournaments) {
-        DateTime tournamentEndDate = tournament.endDate.toDate();
-
-        if (tournamentEndDate.isBefore(currentDate) &&
-            tournament.status != 'Finalizado') {
-          tournament.status = 'Finalizado';
+        for (var tournament in _tournaments) {
+          _updateTournamentStatus(tournament);
         }
-      }
 
-      _isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      _isLoading = false;
-      _error = 'Falha ao buscar os torneios: $e';
-      notifyListeners();
+        _isFetched = true;
+        _isLoading = false;
+        notifyListeners();
+      } catch (e) {
+        _isLoading = false;
+        _error = 'Falha ao buscar os torneios: $e';
+        notifyListeners();
+      }
     }
   }
 
-  // Métodos para verificar participação
-  bool isUserParticipatingInAnyTournament(String userId) {
-    return _tournaments.any(
-        (tournament) => tournament.competitorsIds?.contains(userId) ?? false);
+  void _updateTournamentStatus(Tournament tournament) {
+    final currentDate = DateTime.now();
+    DateTime tournamentStartDate = tournament.startDate.toDate();
+    DateTime tournamentEndDate = tournament.endDate.toDate();
+
+    if (currentDate.isBefore(tournamentStartDate)) {
+      tournament.status = 'Aguardando';
+    } else if (currentDate.isAfter(tournamentStartDate) &&
+        currentDate.isBefore(tournamentEndDate)) {
+      tournament.status = 'Em Andamento';
+    } else {
+      tournament.status = 'Finalizado';
+    }
   }
 }

@@ -90,7 +90,7 @@ class Tournament {
       location: json['location'],
       modality: json['modality'],
       type: json['type'],
-      entryFee: json['entryFee'].toDouble(),
+      entryFee: double.tryParse(json['entryFee'].toString()) ?? 0.0,
       prizes: json['prizes'],
       status: json['status'],
       teamBased: _parseTournamentTeamBased(json['teamBased']),
@@ -98,9 +98,9 @@ class Tournament {
       isUserVerified: json['isUserVerified'],
       isTournamentVerified: json['isTournamentVerified'],
       isRegistered: json['isRegistered'],
-      competitorsIds: json['competitorsIds'],
-      moderatorsIds: json['moderatorsIds'],
-      catchesIds: json['catchesIds'],
+      competitorsIds: List<String>.from(json['competitorsIds'] ?? []),
+      moderatorsIds: List<String>.from(json['moderatorsIds'] ?? []),
+      catchesIds: List<String>.from(json['catchesIds'] ?? []),
       imageUrl: json['imageUrl'],
     );
   }

@@ -52,8 +52,10 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
   List<String> catchesIds = [''];
 
   final _modalidadeController = TextEditingControllerNotifier('barco');
-  final TextEditingControllerNotifier _cityController = TextEditingControllerNotifier('SP');
-  final TextEditingControllerNotifier _stateController =TextEditingControllerNotifier('');
+  final TextEditingControllerNotifier _cityController =
+      TextEditingControllerNotifier('SP');
+  final TextEditingControllerNotifier _stateController =
+      TextEditingControllerNotifier('');
   final TextEditingController _rulesController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
@@ -127,6 +129,13 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
       });
     }
 
+    double entryFeeValue = 0.0;
+    if (_hasEntryFee) {
+      final entryFeeString = _entryFeeController.text;
+      final numericEntryFee = entryFeeString.replaceAll(RegExp(r'[^0-9.]'), '');
+      entryFeeValue = double.tryParse(numericEntryFee) ?? 0.0;
+    }
+
     final Tournament newTournament = Tournament(
       id: '',
       organizerName: _organizerName,
@@ -138,7 +147,7 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
       location: '${_stateController.value} - ${_cityController.value}',
       modality: _modalidadeController.value,
       type: _tournamentType,
-      entryFee: _hasEntryFee ? double.parse(_entryFeeController.text) : 0,
+      entryFee: entryFeeValue,
       prizes: _prizesController.text,
       status: 'Em andamento',
       teamBased: _teamBase,
@@ -177,7 +186,8 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushNamedAndRemoveUntil(context, '/mytournaments', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/mytournaments', (route) => false);
     });
   }
 

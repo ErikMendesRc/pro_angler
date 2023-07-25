@@ -32,7 +32,7 @@ class TournamentProvider with ChangeNotifier {
   }
 
   bool _isFetched = false;
-  Future<void> fetchTournamentsByUserId(String userId) async {
+  Future<List<Tournament>?> fetchTournamentsByUserId(String userId) async {
     if (!_isFetched) {
       try {
         _isLoading = true;
@@ -47,11 +47,15 @@ class TournamentProvider with ChangeNotifier {
         _isFetched = true;
         _isLoading = false;
         notifyListeners();
+        return _tournaments;
       } catch (e) {
         _isLoading = false;
         _error = 'Falha ao buscar os torneios: $e';
         notifyListeners();
+        return null;
       }
+    } else {
+      return _tournaments;
     }
   }
 

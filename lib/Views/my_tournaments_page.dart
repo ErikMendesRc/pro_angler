@@ -17,6 +17,7 @@ class MyTournamentsPage extends StatefulWidget {
 
 class _MyTournamentsPageState extends State<MyTournamentsPage> {
   int _currentIndex = 1;
+  late String userId;
 
   void _onTabTapped(int index) {
     setState(() {
@@ -28,8 +29,9 @@ class _MyTournamentsPageState extends State<MyTournamentsPage> {
   void initState() {
     super.initState();
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final tournamentProvider = Provider.of<TournamentProvider>(context, listen: false);
-    final String userId = userProvider.currentUser?.id ?? '';
+    final tournamentProvider =
+        Provider.of<TournamentProvider>(context, listen: false);
+    userId = userProvider.currentUser?.id ?? '';
     tournamentProvider.fetchTournamentsByUserId(userId);
   }
 
@@ -55,8 +57,8 @@ class _MyTournamentsPageState extends State<MyTournamentsPage> {
             ],
           ),
         ),
-        child: FutureBuilder<List<Tournament>>(
-          future: Future.value(tournamentProvider.tournaments),
+        child: FutureBuilder<List<Tournament>?>(
+          future: tournamentProvider.fetchTournamentsByUserId(userId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());

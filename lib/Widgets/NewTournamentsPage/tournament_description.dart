@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:pro_angler/Util/cores.dart';
 
 class TournamentDescriptionFormField extends StatelessWidget {
-  const TournamentDescriptionFormField({Key? key}) : super(key: key);
+  final TextEditingController controller;
+
+  TournamentDescriptionFormField({Key? key, required this.controller})
+      : super(key: key);
+
+  String? _validateDescription(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, descreva os detalhes do torneio.';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      style: const TextStyle(color: CoresPersonalizada.white),
+      controller: controller,
+      style: const TextStyle(color: Colors.white),
       decoration: const InputDecoration(
-        labelText: 'Descrição',
-        prefixIcon: Icon(Icons.description, color: CoresPersonalizada.white),
-        labelStyle: TextStyle(color: CoresPersonalizada.white),
+        labelText: 'Descreva os detalhes do torneio',
+        prefixIcon: Icon(Icons.description, color: Colors.white),
+        labelStyle: TextStyle(color: Colors.white),
       ),
       maxLines: 3,
+      validator: _validateDescription,
     );
   }
 }

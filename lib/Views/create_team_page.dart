@@ -44,7 +44,6 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
   }
 
   void _addParticipant(String participant) {
-    // Verificar se o participante não é o usuário atual antes de adicionar à lista
     if (participant != currentUser?.id) {
       setState(() {
         participants.add(participant);
@@ -67,7 +66,6 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
   }
 
   Future<void> _createTeam() async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     final String teamName = _teamNameController.text;
     final String city = _cityController.text;
@@ -78,10 +76,8 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
 
     String imageUrl = '';
     if (_teamImage != null) {
-      final String imagePath =
-          'team_images/${DateTime.now().millisecondsSinceEpoch.toString()}.jpg';
-      final Reference storageReference =
-          FirebaseStorage.instance.ref().child(imagePath);
+      final String imagePath ='team_images/${DateTime.now().millisecondsSinceEpoch.toString()}.jpg';
+      final Reference storageReference = FirebaseStorage.instance.ref().child(imagePath);
       final UploadTask uploadTask = storageReference.putFile(_teamImage!);
       await uploadTask.whenComplete(() async {
         imageUrl = await storageReference.getDownloadURL();

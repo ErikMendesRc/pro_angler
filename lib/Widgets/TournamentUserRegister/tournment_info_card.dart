@@ -55,7 +55,7 @@ class TournamentInfoCard extends StatelessWidget {
                 const Spacer(),
                 Text(
                   tournament != null
-                      ? dateFormat.format(tournament.startDate)
+                      ? dateFormat.format(tournament.startDate.toDate())
                       : '',
                   style: CustomTextStyles.texto16Normal,
                 ),

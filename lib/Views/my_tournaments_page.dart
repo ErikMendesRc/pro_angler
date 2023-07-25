@@ -56,7 +56,7 @@ class _MyTournamentsPageState extends State<MyTournamentsPage> {
                 itemCount: tournamentProvider.tournaments.length,
                 itemBuilder: (context, index) {
                   final tournament = tournamentProvider.tournaments[index];
-                  final isUserParticipating = tournament.participatingUsers
+                  final isUserParticipating = tournament.competitorsIds
                           ?.contains(userProvider.currentUser?.id) ??
                       false;
 

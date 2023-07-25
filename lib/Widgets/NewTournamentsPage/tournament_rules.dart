@@ -9,6 +9,13 @@ class TournamentRulesFormField extends StatelessWidget {
     required this.rulesController,
   }) : super(key: key);
 
+  String? _validateRules(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, informe as regras do torneio.';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -16,7 +23,7 @@ class TournamentRulesFormField extends StatelessWidget {
       maxLines: 4,
       style: const TextStyle(color: Colors.white),
       decoration: const InputDecoration(
-        labelText: 'Regras do Torneio',
+        labelText: 'Informe as regras do torneio',
         labelStyle: CustomTextStyles.cardsTexts,
         border: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
@@ -28,6 +35,7 @@ class TournamentRulesFormField extends StatelessWidget {
           borderSide: BorderSide(color: Colors.white), 
         ),
       ),
+      validator: _validateRules,
     );
   }
 }

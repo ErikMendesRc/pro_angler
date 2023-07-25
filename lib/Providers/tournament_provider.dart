@@ -9,11 +9,30 @@ class TournamentProvider with ChangeNotifier {
   String _error = '';
   Tournament? _currentTournament;
 
+  // Getters
   List<Tournament> get tournaments => _tournaments;
   bool get isLoading => _isLoading;
   String get error => _error;
   Tournament? get currentTournament => _currentTournament;
 
+  // Métodos para definir estado
+  void setCurrentTournament(Tournament tournament) {
+    _currentTournament = tournament;
+    notifyListeners();
+  }
+
+  Future<void> createTournament(Tournament tournament) async {
+    try {
+      await _tournamentService.createTournament(tournament);
+      _tournaments.add(tournament);
+      notifyListeners();
+    } catch (e) {
+      _error = 'Falha ao criar torneio: $e';
+      notifyListeners();
+    }
+  }
+
+  // Métodos para busca
   Future<void> fetchTournaments() async {
     try {
       _isLoading = true;
@@ -24,7 +43,9 @@ class TournamentProvider with ChangeNotifier {
 
       final currentDate = DateTime.now();
       for (var tournament in _tournaments) {
-        if (tournament.endDate.isBefore(currentDate) &&
+        DateTime tournamentEndDate = tournament.endDate.toDate();
+
+        if (tournamentEndDate.isBefore(currentDate) &&
             tournament.status != 'Finalizado') {
           tournament.status = 'Finalizado';
         }
@@ -39,13 +60,9 @@ class TournamentProvider with ChangeNotifier {
     }
   }
 
+  // Métodos para verificar participação
   bool isUserParticipatingInAnyTournament(String userId) {
-    return _tournaments.any((tournament) =>
-        tournament.participatingUsers?.contains(userId) ?? false);
-  }
-
-  void setCurrentTournament(Tournament tournament) {
-    _currentTournament = tournament;
-    notifyListeners();
+    return _tournaments.any(
+        (tournament) => tournament.competitorsIds?.contains(userId) ?? false);
   }
 }

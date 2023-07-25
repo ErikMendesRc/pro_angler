@@ -8,15 +8,26 @@ class TournamentEntryFeeSwitchTile extends StatelessWidget {
   const TournamentEntryFeeSwitchTile({
     Key? key,
     required this.hasEntryFee,
-   required this.onEntryFeeChanged,
+    required this.onEntryFeeChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SwitchListTile(
-      title: const Text('Possui taxa de inscrição?',style: CustomTextStyles.cardsTexts,),
-      value: hasEntryFee,
-      onChanged: onEntryFeeChanged,
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return SwitchListTile(
+          title: const Text(
+            'O torneio possui uma taxa de inscrição?',
+            style: CustomTextStyles.cardsTexts,
+          ),
+          value: hasEntryFee,
+          onChanged: (value) {
+            setState(() {
+              onEntryFeeChanged(value);
+            });
+          },
+        );
+      },
     );
   }
 }

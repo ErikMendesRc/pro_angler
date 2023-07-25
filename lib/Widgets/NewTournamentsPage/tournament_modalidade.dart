@@ -1,25 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:pro_angler/Util/cores.dart';
+
+import 'package:flutter/material.dart';
 
 class TournamentModalidadeFormField extends StatelessWidget {
-  const TournamentModalidadeFormField({Key? key}) : super(key: key);
+  final ValueNotifier<String?> controller;
+
+  TournamentModalidadeFormField({Key? key, required this.controller})
+      : super(key: key);
+
+  String? _validateModalidade(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, escolha a modalidade do Torneio.';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      style: const TextStyle(color: CoresPersonalizada.white),
+      value: controller.value,
+      style: const TextStyle(color: Colors.white),
       decoration: const InputDecoration(
-        labelText: 'Modalidade',
-        prefixIcon: Icon(Icons.sports, color: CoresPersonalizada.white),
-        labelStyle: TextStyle(color: CoresPersonalizada.white),
+        labelText: 'Escolha a modalidade do Torneio',
+        prefixIcon: Icon(Icons.sports, color: Colors.white),
+        labelStyle: TextStyle(color: Colors.white),
       ),
-      items: const [
-        DropdownMenuItem(value: '1', child: Text('Barco', style: TextStyle(color: CoresPersonalizada.white))),
-        DropdownMenuItem(value: '2', child: Text('Caiaque', style: TextStyle(color: CoresPersonalizada.white))),
-        DropdownMenuItem(value: '3', child: Text('Pesqueiro', style: TextStyle(color: CoresPersonalizada.white))),
-      ],
-      dropdownColor: CoresPersonalizada.corPrimaria,
-      onChanged: (value) {},
+      items: _buildDropdownItems(),
+      dropdownColor: Colors.blue,
+      onChanged: (value) {
+        controller.value = value;
+      },
+      validator: _validateModalidade,
+    );
+  }
+
+  static List<DropdownMenuItem<String>> _buildDropdownItems() {
+    return [
+      _buildDropdownItem('barco', 'Torneio de Barco'),
+      _buildDropdownItem('caiaque', 'Torneio de Caiaque'),
+      _buildDropdownItem('pesqueiro', 'Pesqueiro'),
+    ];
+  }
+
+  static DropdownMenuItem<String> _buildDropdownItem(
+      String value, String label) {
+    return DropdownMenuItem(
+      value: value,
+      child: Text(label, style: const TextStyle(color: Colors.white)),
     );
   }
 }

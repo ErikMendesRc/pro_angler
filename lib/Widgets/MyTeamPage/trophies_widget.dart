@@ -61,7 +61,7 @@ class TrophiesWidget extends StatelessWidget {
                                 style: CustomTextStyles.texto16Bold,
                               ),
                               Text(
-                                '${trophy.description} do torneio \n${tournament.name}\n em ${dateFormat.format(tournament.startDate)}',
+                                '${trophy.description} do torneio \n${tournament.name}\n em ${dateFormat.format(tournament.startDate.toDate())}',
                                 style: CustomTextStyles.texto12Branco,
                                 textAlign: TextAlign.center,
                               ),

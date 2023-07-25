@@ -8,7 +8,6 @@ import '../../Util/custom_styles.dart';
 class PrizesCard extends StatelessWidget {
   const PrizesCard({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -28,15 +27,12 @@ class PrizesCard extends StatelessWidget {
                 if (tournaments != null && tournaments.isNotEmpty) {
                   final currentTournamentPrizes = currentTournament != null
                       ? currentTournament.prizes
-                      : [];
+                      : '';
 
                   if (currentTournamentPrizes.isNotEmpty) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: currentTournamentPrizes.map((prize) => Text(
-                        prize.toString(),
-                        style: CustomTextStyles.cardsTexts,
-                      )).toList(),
+                    return Text(
+                      currentTournamentPrizes,
+                      style: CustomTextStyles.cardsTexts,
                     );
                   } else {
                     return const Text('Nenhuma Premiação');

@@ -97,8 +97,8 @@ class _TournamentPageState extends State<TournamentPage> {
         ),
       ),
       floatingActionButton: RegisterFloatingActionButton(
-        startDate: tournamentProvider.currentTournament?.startDate,
-        endDate: tournamentProvider.currentTournament?.endDate,
+        startDate: tournamentProvider.currentTournament?.startDate.toDate(),
+        endDate: tournamentProvider.currentTournament?.endDate.toDate(),
         onPressed: () {
           // Logic for tournament registration
         },

@@ -81,6 +81,6 @@ class TrophyList extends StatelessWidget {
     if (trophy == null || tournament == null) return '';
 
     final dateFormat = DateFormat('yyyy');
-    return '${trophy.description}torneio \n${tournament.name}\n em ${tournament.startDate != null ? dateFormat.format(tournament.startDate) : ''}';
+    return '${trophy.description}torneio \n${tournament.name}\n em ${tournament.startDate != null ? dateFormat.format(tournament.startDate.toDate()) : ''}';
   }
 }

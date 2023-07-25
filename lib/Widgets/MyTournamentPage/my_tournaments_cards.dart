@@ -57,8 +57,8 @@ class MyTournamentCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       StatusFlag(
-                        startDate: tournament.startDate,
-                        endDate: tournament.endDate,
+                        startDate: tournament.startDate.toDate(),
+                        endDate: tournament.endDate.toDate(),
                       ),
                     ],
                   ),
@@ -137,7 +137,7 @@ class MyTournamentCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        dateFormatter.format(tournament.startDate),
+                        dateFormatter.format(tournament.startDate.toDate()),
                         style: CustomTextStyles.cardsTexts,
                       ),
                     ],
@@ -157,7 +157,7 @@ class MyTournamentCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        dateFormatter.format(tournament.endDate),
+                        dateFormatter.format(tournament.endDate.toDate()),
                         style: CustomTextStyles.cardsTexts,
                       ),
                     ],

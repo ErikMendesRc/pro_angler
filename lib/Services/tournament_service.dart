@@ -6,32 +6,12 @@ class TournamentService {
   final CollectionReference _tournamentsRef =
       FirebaseFirestore.instance.collection('tournaments');
 
-  Future<Tournament> createTournament(Tournament tournament) async {
-    final tournamentRef = await _tournamentsRef.add(tournament.toJson());
-    final tournamentId = tournamentRef.id;
-
-    return Tournament(
-      id: tournamentId,
-      organizerName: tournament.organizerName,
-      administrators: tournament.administrators,
-      name: tournament.name,
-      description: tournament.description,
-      startDate: tournament.startDate,
-      endDate: tournament.endDate,
-      location: tournament.location,
-      modality: tournament.modality,
-      type: tournament.type,
-      entryFee: tournament.entryFee,
-      prizes: tournament.prizes,
-      status: tournament.status,
-      teamBased: tournament.teamBased,
-      rules: tournament.rules,
-      isUserVerified: tournament.isUserVerified,
-      isTournamentVerified: tournament.isTournamentVerified,
-      isRegistered: tournament.isRegistered,
-    );
+  // Métodos de criação
+  Future<void> createTournament(Tournament tournament) {
+    return _tournamentsRef.add(tournament.toJson());
   }
 
+  // Métodos de obtenção
   Future<Tournament?> getTournamentById(String id) async {
     final tournamentSnapshot = await _tournamentsRef.doc(id).get();
     if (tournamentSnapshot.exists) {
@@ -54,70 +34,6 @@ class TournamentService {
     }).toList();
 
     return tournaments;
-  }
-
-  Future<void> updateTournament(Tournament tournament) async {
-    await _tournamentsRef.doc(tournament.id).update(tournament.toJson());
-  }
-
-  Future<void> deleteTournament(String id) async {
-    await _tournamentsRef.doc(id).delete();
-  }
-
-  Future<void> addUserToTournament(String userId, String tournamentId) async {
-    final tournamentRef = _tournamentsRef.doc(tournamentId);
-    final participantsRef = tournamentRef.collection('participants');
-
-    await participantsRef.add({'userId': userId});
-  }
-
-  Future<void> removeUserFromTournament(
-      String userId, String tournamentId) async {
-    final tournamentRef = _tournamentsRef.doc(tournamentId);
-    final participantsRef = tournamentRef.collection('participants');
-
-    final querySnapshot =
-        await participantsRef.where('userId', isEqualTo: userId).get();
-    for (final doc in querySnapshot.docs) {
-      await doc.reference.delete();
-    }
-  }
-
-  Future<void> addModeratorToTournament(
-      String userId, String tournamentId) async {
-    final tournamentRef = _tournamentsRef.doc(tournamentId);
-
-    await tournamentRef.update({
-      'moderators': FieldValue.arrayUnion([userId]),
-    });
-  }
-
-  Future<void> removeModeratorFromTournament(
-      String userId, String tournamentId) async {
-    final tournamentRef = _tournamentsRef.doc(tournamentId);
-
-    await tournamentRef.update({
-      'moderators': FieldValue.arrayRemove([userId]),
-    });
-  }
-
-  Future<void> addCatchToTournament(Catch catchs, String tournamentId) async {
-    final tournamentRef = _tournamentsRef.doc(tournamentId);
-    final catchesRef = tournamentRef.collection('catches');
-
-    await catchesRef.add(catchs.toJson());
-  }
-
-  Future<void> removeCatchFromTournament(
-      String catchId, String tournamentId) async {
-    final tournamentRef = _tournamentsRef.doc(tournamentId);
-    final catchesRef = tournamentRef.collection('catches');
-
-    final querySnapshot =
-        await catchesRef.where('id', isEqualTo: catchId).get();
-    for (final doc in querySnapshot.docs) {
-      await doc.reference.delete();
-    }
   }
 
   Future<List<Tournament>> getTournamentsByUserId(String userId) async {
@@ -148,5 +64,81 @@ class TournamentService {
     }).toList();
 
     return tournaments;
+  }
+
+  // Métodos de atualização
+  Future<void> updateTournament(Tournament tournament) async {
+    final tournamentDoc = _tournamentsRef.doc(tournament.id);
+    final tournamentSnapshot = await tournamentDoc.get();
+
+    if (tournamentSnapshot.exists) {
+      await tournamentDoc.update(tournament.toJson());
+    } else {
+      await tournamentDoc.set(tournament.toJson());
+    }
+  }
+
+  // Métodos de exclusão
+  Future<void> deleteTournament(String id) async {
+    await _tournamentsRef.doc(id).delete();
+  }
+
+  // Métodos para lidar com participantes
+  Future<void> addUserToTournament(String userId, String tournamentId) async {
+    final tournamentRef = _tournamentsRef.doc(tournamentId);
+    final participantsRef = tournamentRef.collection('participants');
+
+    await participantsRef.add({'userId': userId});
+  }
+
+  Future<void> removeUserFromTournament(
+      String userId, String tournamentId) async {
+    final tournamentRef = _tournamentsRef.doc(tournamentId);
+    final participantsRef = tournamentRef.collection('participants');
+
+    final querySnapshot =
+        await participantsRef.where('userId', isEqualTo: userId).get();
+    for (final doc in querySnapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  // Métodos para lidar com moderadores
+  Future<void> addModeratorToTournament(
+      String userId, String tournamentId) async {
+    final tournamentRef = _tournamentsRef.doc(tournamentId);
+
+    await tournamentRef.update({
+      'moderators': FieldValue.arrayUnion([userId]),
+    });
+  }
+
+  Future<void> removeModeratorFromTournament(
+      String userId, String tournamentId) async {
+    final tournamentRef = _tournamentsRef.doc(tournamentId);
+
+    await tournamentRef.update({
+      'moderators': FieldValue.arrayRemove([userId]),
+    });
+  }
+
+  // Métodos para lidar com "catches"
+  Future<void> addCatchToTournament(Catch catchs, String tournamentId) async {
+    final tournamentRef = _tournamentsRef.doc(tournamentId);
+    final catchesRef = tournamentRef.collection('catches');
+
+    await catchesRef.add(catchs.toJson());
+  }
+
+  Future<void> removeCatchFromTournament(
+      String catchId, String tournamentId) async {
+    final tournamentRef = _tournamentsRef.doc(tournamentId);
+    final catchesRef = tournamentRef.collection('catches');
+
+    final querySnapshot =
+        await catchesRef.where('id', isEqualTo: catchId).get();
+    for (final doc in querySnapshot.docs) {
+      await doc.reference.delete();
+    }
   }
 }

@@ -11,12 +11,19 @@ class TournamentEntryFeeFormField extends StatelessWidget {
     required this.entryFeeController,
   }) : super(key: key);
 
+  String? _validateEntryFee(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, informe a taxa de inscrição do torneio.';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       style: const TextStyle(color: CoresPersonalizada.white),
       decoration: const InputDecoration(
-        labelText: 'Valor da Inscrição',
+        labelText: 'Informe a taxa de inscrição do torneio',
         prefixIcon: Icon(Icons.attach_money, color: CoresPersonalizada.white),
         labelStyle: TextStyle(color: CoresPersonalizada.white),
       ),
@@ -36,6 +43,7 @@ class TournamentEntryFeeFormField extends StatelessWidget {
           selection: TextSelection.collapsed(offset: formattedValue.length),
         );
       },
+      validator: _validateEntryFee,
     );
   }
 }

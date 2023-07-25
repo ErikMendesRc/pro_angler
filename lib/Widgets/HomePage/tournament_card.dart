@@ -17,7 +17,8 @@ class TournamentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-    String formattedStartDate = dateFormat.format(tournament.startDate);
+    DateTime startDate = tournament.startDate.toDate();
+    String formattedStartDate = dateFormat.format(startDate);
 
     return InkWell(
       onTap: () {
@@ -66,7 +67,8 @@ class TournamentCard extends StatelessWidget {
                             const SizedBox(width: 4.0),
                           VerifiedBadge(
                             isOrganizerVerified: tournament.isUserVerified,
-                            isTournamentVerified: tournament.isTournamentVerified,
+                            isTournamentVerified:
+                                tournament.isTournamentVerified,
                           ),
                         ],
                       ),
@@ -127,8 +129,8 @@ class TournamentCard extends StatelessWidget {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: StatusFlag(
-                          startDate: tournament.startDate,
-                          endDate: tournament.endDate,
+                          startDate: tournament.startDate.toDate(),
+                          endDate: tournament.endDate.toDate(),
                         ),
                       ),
                     ],

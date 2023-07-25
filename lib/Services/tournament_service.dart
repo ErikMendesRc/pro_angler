@@ -38,7 +38,7 @@ class TournamentService {
 
   Future<List<Tournament>> getTournamentsByUserId(String userId) async {
     final querySnapshot = await _tournamentsRef
-        .where('participants', arrayContains: userId)
+        .where('competitorsIds', arrayContains: userId)
         .get();
 
     final List<Tournament> tournaments = querySnapshot.docs.map((snapshot) {
@@ -52,9 +52,8 @@ class TournamentService {
   }
 
   Future<List<Tournament>> getTournamentsByAdmin(String userId) async {
-    final querySnapshot = await _tournamentsRef
-        .where('administrators.id', isEqualTo: userId)
-        .get();
+    final querySnapshot =
+        await _tournamentsRef.where('administratorId', isEqualTo: userId).get();
 
     final List<Tournament> tournaments = querySnapshot.docs.map((snapshot) {
       final tournamentData = snapshot.data() as Map<String, dynamic>;

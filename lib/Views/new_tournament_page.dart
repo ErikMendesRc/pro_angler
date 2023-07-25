@@ -47,6 +47,9 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
   String _organizerName = '';
   String _administratorId = '';
   UserData? _currentUser;
+  List<String> competitorsIds = [''];
+  List<String> moderatorIds = [''];
+  List<String> catchesIds = [''];
 
   final _modalidadeController = TextEditingControllerNotifier('barco');
   final TextEditingControllerNotifier _cityController = TextEditingControllerNotifier('SP');
@@ -142,9 +145,9 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
       rules: _rulesController.text,
       isUserVerified: false,
       isRegistered: false,
-      competitorsIds: [],
-      moderatorsIds: [],
-      catchesIds: [],
+      competitorsIds: competitorsIds,
+      moderatorsIds: moderatorIds,
+      catchesIds: catchesIds,
       isTournamentVerified: false,
       imageUrl: imageUrl,
     );

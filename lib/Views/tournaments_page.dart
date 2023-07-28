@@ -47,14 +47,10 @@ class _TournamentPageState extends State<TournamentPage> {
               tournamentProvider.currentTournament?.name ??
                   'Detalhes do Torneio',
             ),
-            if (tournamentProvider.currentTournament?.isTournamentVerified ==
-                    true &&
-                tournamentProvider.currentTournament?.isUserVerified == true)
-              const SizedBox(width: 4.0),
-            const VerifiedBadge(
-              isOrganizerVerified: true,
-              isTournamentVerified: true,
-            ),
+            const SizedBox(width: 4.0),
+            tournamentProvider.currentTournament!.isTournamentVerified
+                ? VerifiedBadge(enable: true)
+                : VerifiedBadge(enable: false),
             const SizedBox(width: 4.0),
           ],
         ),
@@ -73,15 +69,15 @@ class _TournamentPageState extends State<TournamentPage> {
         child: SafeArea(
           child: ListView(
             padding: const EdgeInsets.all(8.0),
-            children: [
-              const HeaderWidget(),
-              const GeneralInfoCard(),
-              const DescriptionCard(),
-              const RegistrationFeeCard(),
-              const RulesCard(),
+            children: const [
+              HeaderWidget(),
+              GeneralInfoCard(),
+              DescriptionCard(),
+              RegistrationFeeCard(),
+              RulesCard(),
               PrizesCard(),
-              const CaptureListCard(),
-              const TournamentRankingCard(),
+              CaptureListCard(),
+              TournamentRankingCard(),
             ],
           ),
         ),
@@ -97,8 +93,8 @@ class _TournamentPageState extends State<TournamentPage> {
         ),
       ),
       floatingActionButton: RegisterFloatingActionButton(
-        startDate: tournamentProvider.currentTournament?.startDate,
-        endDate: tournamentProvider.currentTournament?.endDate,
+        startDate: tournamentProvider.currentTournament?.startDate.toDate(),
+        endDate: tournamentProvider.currentTournament?.endDate.toDate(),
         onPressed: () {
           // Logic for tournament registration
         },

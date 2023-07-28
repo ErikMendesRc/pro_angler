@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Providers/tournament_provider.dart';
 import 'package:pro_angler/Util/cores.dart';
 import 'package:pro_angler/Util/custom_styles.dart';
+import 'package:pro_angler/Widgets/advertising_card.dart';
 import 'package:pro_angler/Widgets/bottom_navigation_bar_widget.dart';
+import 'package:pro_angler/Widgets/search_widget.dart';
 import 'package:pro_angler/enum/tournament_status.dart';
+import 'package:provider/provider.dart';
 import '../Widgets/HomePage/create_tournament_card.dart';
 import '../Widgets/HomePage/tournament_section.dart';
 import '../Widgets/HomePage/welcome_section.dart';
@@ -17,6 +21,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    final tournamentProvider =
+        Provider.of<TournamentProvider>(context, listen: false);
+
+    tournamentProvider.fetchAllTournaments();
+  }
 
   void _onTabTapped(int index) {
     setState(() {
@@ -65,6 +78,7 @@ class _HomePageState extends State<HomePage> {
             children: const <Widget>[
               WelcomeSection(),
               Divider(),
+              SearchWidget(),
               Padding(
                 padding: EdgeInsets.only(bottom: 2.0),
                 child: TournamentSection(
@@ -73,6 +87,7 @@ class _HomePageState extends State<HomePage> {
                   status: TournamentStatus.emAndamento,
                 ),
               ),
+              AdvertisingCardList(),
               CreateTournamentCard(),
               Padding(
                 padding: EdgeInsets.only(bottom: 2.0),

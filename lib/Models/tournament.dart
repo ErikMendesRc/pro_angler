@@ -1,36 +1,35 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pro_angler/Models/catch.dart';
-import 'package:pro_angler/Models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // necessário para o tipo Timestamp
 
 import '../enum/tournament_team_based.dart';
 
 class Tournament {
   String id;
   String organizerName;
-  UserData administrators;
+  String administratorId;
   String name;
   String description;
-  DateTime startDate;
-  DateTime endDate;
+  Timestamp startDate;
+  Timestamp endDate;
   String location;
   String modality;
   String type;
-  double entryFee;
-  List<String> prizes;
+  double? entryFee;
+  String prizes;
   String status;
   TournamentTeamBased teamBased;
   String rules;
   bool isUserVerified;
   bool isTournamentVerified;
   bool isRegistered;
-  List<String>? participatingUsers;
-  List<UserData>? moderators;
-  List<Catch>? catches;
+  List<String>? competitorsIds;
+  List<String>? moderatorsIds;
+  List<String>? catchesIds;
+  String? imageUrl;
 
   Tournament({
     required this.id,
     required this.organizerName,
-    required this.administrators,
+    required this.administratorId,
     required this.name,
     required this.description,
     required this.startDate,
@@ -46,19 +45,21 @@ class Tournament {
     required this.isUserVerified,
     this.isTournamentVerified = false,
     this.isRegistered = false,
-    this.participatingUsers,
-    this.moderators,
-    this.catches,
+    this.competitorsIds,
+    this.moderatorsIds,
+    this.catchesIds,
+    this.imageUrl,
   });
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       "organizerName": organizerName,
-      "administrators": administrators.toJson(),
+      "administratorId": administratorId,
       "name": name,
       "description": description,
-      "startDate": startDate.toIso8601String(),
-      "endDate": endDate.toIso8601String(),
+      "startDate": startDate,
+      "endDate": endDate,
       "location": location,
       "modality": modality,
       "type": type,
@@ -70,6 +71,10 @@ class Tournament {
       "isUserVerified": isUserVerified,
       "isTournamentVerified": isTournamentVerified,
       "isRegistered": isRegistered,
+      'competitorsIds': competitorsIds,
+      'moderatorsIds': moderatorsIds,
+      'catchesIds': catchesIds,
+      "imageUrl": imageUrl,
     };
   }
 
@@ -77,22 +82,26 @@ class Tournament {
     return Tournament(
       id: json['id'],
       organizerName: json['organizerName'],
-      administrators: UserData.fromJson(json['administrators']),
+      administratorId: json['administratorId'],
       name: json['name'],
       description: json['description'],
-      startDate: DateTime.parse(json['startDate']),
-      endDate: DateTime.parse(json['endDate']),
+      startDate: json['startDate'],
+      endDate: json['endDate'],
       location: json['location'],
       modality: json['modality'],
       type: json['type'],
-      entryFee: json['entryFee'].toDouble(),
-      prizes: List<String>.from(json['prizes']),
+      entryFee: double.tryParse(json['entryFee'].toString()) ?? 0.0,
+      prizes: json['prizes'],
       status: json['status'],
       teamBased: _parseTournamentTeamBased(json['teamBased']),
       rules: json['rules'],
       isUserVerified: json['isUserVerified'],
       isTournamentVerified: json['isTournamentVerified'],
       isRegistered: json['isRegistered'],
+      competitorsIds: List<String>.from(json['competitorsIds'] ?? []),
+      moderatorsIds: List<String>.from(json['moderatorsIds'] ?? []),
+      catchesIds: List<String>.from(json['catchesIds'] ?? []),
+      imageUrl: json['imageUrl'],
     );
   }
 
@@ -110,23 +119,24 @@ class Tournament {
   Tournament.empty()
       : id = '',
         organizerName = '',
-        administrators = UserData.empty(),
+        administratorId = '',
         name = '',
         description = '',
-        startDate = DateTime.now(),
-        endDate = DateTime.now(),
+        startDate = Timestamp.now(),
+        endDate = Timestamp.now(),
         location = '',
         modality = '',
         type = '',
         entryFee = 0.0,
-        prizes = [],
+        prizes = '',
         status = '',
         teamBased = TournamentTeamBased.equipe,
         rules = '',
         isUserVerified = false,
         isTournamentVerified = false,
         isRegistered = false,
-        participatingUsers = null,
-        moderators = null,
-        catches = null;
+        competitorsIds = null,
+        moderatorsIds = null,
+        catchesIds = null,
+        imageUrl = '';
 }

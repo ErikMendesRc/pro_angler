@@ -42,7 +42,7 @@ class GeneralInfoCard extends StatelessWidget {
                           style: CustomTextStyles.cardsTexts
                         ),
                       ),
-                      InfoItemWidget(FontAwesomeIcons.calendar, dateFormatter.format(currentTournament.startDate)),
+                      InfoItemWidget(FontAwesomeIcons.calendar, dateFormatter.format(currentTournament.startDate.toDate())),
                       const SizedBox(height: 8),
                       const Align(
                         alignment: Alignment.centerLeft,
@@ -51,12 +51,12 @@ class GeneralInfoCard extends StatelessWidget {
                           style: CustomTextStyles.cardsTexts
                         ),
                       ),
-                      InfoItemWidget(FontAwesomeIcons.calendarCheck, dateFormatter.format(currentTournament.endDate)),
+                      InfoItemWidget(FontAwesomeIcons.calendarCheck, dateFormatter.format(currentTournament.endDate.toDate())),
                       InfoItemWidget(FontAwesomeIcons.mapLocation, currentTournament.location),
                       const SizedBox(height: 8),
                       StatusFlag(
-                        startDate: currentTournament.startDate,
-                        endDate: currentTournament.endDate,
+                        startDate: currentTournament.startDate.toDate(),
+                        endDate: currentTournament.endDate.toDate(),
                       ),
                     ],
                   );

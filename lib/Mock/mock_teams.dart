@@ -1,8 +1,6 @@
 import 'package:collection/collection.dart';
-
 import '../Models/achiviement.dart';
 import '../Models/team.dart';
-import 'mock_users.dart';
 
 class MockTeams {
   static List<Team> getAllTeams() {
@@ -10,14 +8,9 @@ class MockTeams {
       Team(
           id: '1',
           name: 'Os F.E.R.A',
-          captain: MockUsers.getUserById('1'),
           description: 'This is Team A',
           creationDate: DateTime.now(),
           participants: [
-            MockUsers.getUserById('1'),
-            MockUsers.getUserById('2'),
-            MockUsers.getUserById('3'),
-            MockUsers.getUserById('4'),
           ],
           achievements: [
             ChampionTrophys(
@@ -44,14 +37,9 @@ class MockTeams {
       Team(
         id: '2',
         name: 'Team B',
-        captain: MockUsers.getUserById('3'),
         description: 'This is Team B',
         creationDate: DateTime.now(),
         participants: [
-          MockUsers.getUserById('1'),
-          MockUsers.getUserById('2'),
-          MockUsers.getUserById('3'),
-          MockUsers.getUserById('4'),
         ],
         achievements: [
           ChampionTrophys(
@@ -73,12 +61,9 @@ class MockTeams {
       Team(
         id: '1',
         name: 'Team A',
-        captain: MockUsers.getUserById('1'),
         description: 'This is Team A',
         creationDate: DateTime.now(),
         participants: [
-          MockUsers.getUserById('1'),
-          MockUsers.getUserById('2'),
         ],
         achievements: [
           ChampionTrophys(
@@ -100,14 +85,9 @@ class MockTeams {
       Team(
         id: '2',
         name: 'Team B',
-        captain: MockUsers.getUserById('3'),
         description: 'This is Team B',
         creationDate: DateTime.now(),
         participants: [
-          MockUsers.getUserById('1'),
-          MockUsers.getUserById('2'),
-          MockUsers.getUserById('3'),
-          MockUsers.getUserById('4'),
         ],
         achievements: [
           ChampionTrophys(
@@ -124,7 +104,7 @@ class MockTeams {
   }
 
   static List<Team> getTeamsByParticipantId(String participantId) {
-  return getAllTeams().where((team) => team.getMembers().any((user) => user.id == participantId)).toList();
+  return getAllTeams().where((team) => team.getMembers().any((user) => user == participantId)).toList();
 }
 
   static Team? getTeamByCreatorId(String creatorId) {
@@ -141,7 +121,6 @@ class MockTeams {
     return Team(
       id: '',
       name: '',
-      captain: null,
       description: '',
       creationDate: DateTime.now(),
       participants: [],

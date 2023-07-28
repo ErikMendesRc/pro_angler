@@ -62,8 +62,27 @@ class TeamService {
   }
 
   Future<Team?> getTeamByCreatorId(String creatorId) async {
-    final snapshot = await _teamsCollection.where('creatorId', isEqualTo: creatorId).limit(1).get();
-    final teamData = snapshot.docs.isNotEmpty ? snapshot.docs.first.data() as Map<String, dynamic> : null;
+    final snapshot = await _teamsCollection
+        .where('creatorId', isEqualTo: creatorId)
+        .limit(1)
+        .get();
+    final teamData = snapshot.docs.isNotEmpty
+        ? snapshot.docs.first.data() as Map<String, dynamic>
+        : null;
     return teamData != null ? Team.fromJson(teamData) : null;
+  }
+
+  Future<Team?> getTeamByUserId(String userId) async {
+    final snapshot = await _teamsCollection
+        .where('participants', arrayContains: userId)
+        .get();
+    final teamsData =
+        snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+
+    if (teamsData.isNotEmpty) {
+      return Team.fromJson(teamsData.first);
+    } else {
+      return null;
+    }
   }
 }

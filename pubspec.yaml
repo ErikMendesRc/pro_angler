@@ -15,6 +15,7 @@ dependencies:
   firebase_storage: ^11.2.5
   flutter:
     sdk: flutter
+  flutter_swiper_plus: ^2.0.4
   fluttertoast: ^8.2.2
   font_awesome_flutter: ^10.4.0
   google_sign_in: ^6.1.4
@@ -35,6 +36,9 @@ flutter:
     - assets/images/trophy.png
     - assets/images/teste.jpg
     - assets/images/distintivo.png
+    - assets/images/paraqueda.jpg
+    - assets/images/iscaecia.jpg
+    - assets/images/tuiuiu.jpg
     
     #Conquistas
     - assets/images/conquistas/entusiasta.png
@@ -44,3 +48,8 @@ flutter:
     #Troféus
     - assets/images/trofeus/trofeu.png
     - assets/images/trofeus/peixaria.png
+
+    #onboarding
+    - assets/images/sucesso.png
+    - assets/images/equipe.png
+    - assets/images/torneio.png

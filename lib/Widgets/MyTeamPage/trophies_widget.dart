@@ -25,46 +25,52 @@ class TrophiesWidget extends StatelessWidget {
         children: [
           const Text(
             'Troféus da Equipe',
-            style: CustomTextStyles.text20Bold
+            style: CustomTextStyles.text20Bold,
           ),
           SizedBox(
             height: 200,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: trophies.length,
-              itemBuilder: (BuildContext context, int index) {
-                final ChampionTrophys trophy = trophies[index];
-                final Tournament? tournament =
-                    teamProvider.getTournamentById(trophy.tournamentId);
-
-                return Card(
-                  color: CoresPersonalizada.corPrimaria,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const CircleAvatar(
-                          backgroundImage:
-                              AssetImage('caminho/para/imagem_trofeu.jpg'),
-                          radius: 30,
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          trophy.name,
-                          style: CustomTextStyles.texto16Bold
-                        ),
-                        Text(
-                          '${trophy.description} do torneio \n${tournament?.name ?? ''}\n em ${tournament?.startDate != null ? dateFormat.format(tournament!.startDate) : ''}',
-                          style: CustomTextStyles.texto12Branco,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+            child: trophies.isEmpty
+                ? const Center(
+                    child: Text(
+                      'Ainda não possui troféus :(',
+                      style: CustomTextStyles.texto16Bold,
                     ),
+                  )
+                : ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: trophies.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final ChampionTrophys trophy = trophies[index];
+                      final Tournament tournament =
+                          teamProvider.getTournamentById(trophy.tournamentId);
+                      return Card(
+                        color: CoresPersonalizada.corPrimaria,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const CircleAvatar(
+                                backgroundImage: AssetImage(
+                                    'caminho/para/imagem_trofeu.jpg'),
+                                radius: 30,
+                              ),
+                              const SizedBox(height: 8.0),
+                              Text(
+                                trophy.name,
+                                style: CustomTextStyles.texto16Bold,
+                              ),
+                              Text(
+                                '${trophy.description} do torneio \n${tournament.name}\n em ${dateFormat.format(tournament.startDate.toDate())}',
+                                style: CustomTextStyles.texto12Branco,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),

@@ -17,14 +17,14 @@ class TournamentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-    String formattedStartDate = dateFormat.format(tournament.startDate);
+    DateTime startDate = tournament.startDate.toDate();
+    String formattedStartDate = dateFormat.format(startDate);
 
     return InkWell(
       onTap: () {
         final tournamentProvider =
             Provider.of<TournamentProvider>(context, listen: false);
-        tournamentProvider
-            .setCurrentTournament(tournament); // Define o torneio atual
+        tournamentProvider.setCurrentTournament(tournament);
         Navigator.pushNamed(context, '/tournamentpage');
       },
       child: SizedBox(
@@ -42,7 +42,7 @@ class TournamentCard extends StatelessWidget {
                   top: Radius.circular(8),
                 ),
                 child: Image.network(
-                  'https://atrativefish.com.br/wp-content/uploads/2021/04/ocellaris-comum-peixe-palhaco-comum-300x300.jpg',
+                  tournament.imageUrl ?? '',
                   fit: BoxFit.cover,
                   height: 150,
                   width: double.infinity,
@@ -61,13 +61,10 @@ class TournamentCard extends StatelessWidget {
                             tournament.name,
                             style: CustomTextStyles.texto16Normal,
                           ),
-                          if (tournament.isUserVerified &&
-                              tournament.isTournamentVerified)
                             const SizedBox(width: 4.0),
-                          VerifiedBadge(
-                            isOrganizerVerified: tournament.isUserVerified,
-                            isTournamentVerified: tournament.isTournamentVerified,
-                          ),
+                          tournament.isTournamentVerified
+                              ? VerifiedBadge(enable: true)
+                              : VerifiedBadge(enable: false),
                         ],
                       ),
                       Text(
@@ -127,8 +124,8 @@ class TournamentCard extends StatelessWidget {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: StatusFlag(
-                          startDate: tournament.startDate,
-                          endDate: tournament.endDate,
+                          startDate: tournament.startDate.toDate(),
+                          endDate: tournament.endDate.toDate(),
                         ),
                       ),
                     ],

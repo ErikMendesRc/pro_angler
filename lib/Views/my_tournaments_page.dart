@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pro_angler/Util/custom_styles.dart';
+import 'package:pro_angler/Models/tournament.dart';
 import 'package:provider/provider.dart';
 
 import '../Providers/tournament_provider.dart';
@@ -17,6 +17,7 @@ class MyTournamentsPage extends StatefulWidget {
 
 class _MyTournamentsPageState extends State<MyTournamentsPage> {
   int _currentIndex = 1;
+  late String userId;
 
   void _onTabTapped(int index) {
     setState(() {
@@ -25,13 +26,18 @@ class _MyTournamentsPageState extends State<MyTournamentsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
-    final tournamentProvider = Provider.of<TournamentProvider>(context);
+  void initState() {
+    super.initState();
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final tournamentProvider =
+        Provider.of<TournamentProvider>(context, listen: false);
+    userId = userProvider.currentUser?.id ?? '';
+    tournamentProvider.fetchTournamentsByUserId(userId);
+  }
 
-    final isUserParticipatingInAnyTournament =
-        tournamentProvider.isUserParticipatingInAnyTournament(
-            userProvider.currentUser?.id ?? '');
+  @override
+  Widget build(BuildContext context) {
+    final tournamentProvider = Provider.of<TournamentProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -51,28 +57,25 @@ class _MyTournamentsPageState extends State<MyTournamentsPage> {
             ],
           ),
         ),
-        child: isUserParticipatingInAnyTournament
-            ? ListView.builder(
-                itemCount: tournamentProvider.tournaments.length,
+        child: FutureBuilder<List<Tournament>?>(
+          future: tournamentProvider.fetchTournamentsByUserId(userId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError || snapshot.data == null) {
+              return const Center(child: Text('Error loading tournaments'));
+            } else {
+              List<Tournament> tournaments = snapshot.data!;
+              return ListView.builder(
+                itemCount: tournaments.length,
                 itemBuilder: (context, index) {
-                  final tournament = tournamentProvider.tournaments[index];
-                  final isUserParticipating = tournament.participatingUsers
-                          ?.contains(userProvider.currentUser?.id) ??
-                      false;
-
-                  if (isUserParticipating) {
-                    return MyTournamentCard(tournament);
-                  } else {
-                    return const SizedBox.shrink();
-                  }
+                  final tournament = tournaments[index];
+                  return MyTournamentCard(tournament);
                 },
-              )
-            : const Center(
-                child: Text(
-                  "Você ainda não participa de torneios :(",
-                  style: CustomTextStyles.text20Bold,
-                ),
-              ),
+              );
+            }
+          },
+        ),
       ),
       bottomNavigationBar: BottomNavigationBarWidget(
         currentIndex: _currentIndex,

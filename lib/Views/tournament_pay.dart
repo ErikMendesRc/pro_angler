@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../Models/payment_model.dart';
 import '../Util/cores.dart';
 import '../Widgets/PaymentPage/payment_methods.dart';
 import '../Widgets/TournamentUserRegister/tournment_info_card.dart';

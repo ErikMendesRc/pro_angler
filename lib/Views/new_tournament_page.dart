@@ -53,9 +53,9 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
 
   final _modalidadeController = TextEditingControllerNotifier('barco');
   final TextEditingControllerNotifier _cityController =
-      TextEditingControllerNotifier('SP');
+      TextEditingControllerNotifier('Nenhuma Selecionada');
   final TextEditingControllerNotifier _stateController =
-      TextEditingControllerNotifier('');
+      TextEditingControllerNotifier('Nenhum Selecionado');
   final TextEditingController _rulesController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 

@@ -16,8 +16,10 @@ class RegistrationFeeCard extends StatelessWidget {
     final tournamentProvider = Provider.of<TournamentProvider>(context);
 
     final entryFee = tournamentProvider.currentTournament?.entryFee ?? 0;
-    final formattedEntryFee =
-        NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$').format(entryFee);
+    final formattedEntryFee = NumberFormat.currency(
+      locale: 'pt_BR',
+      symbol: 'R\$',
+    ).format(entryFee / 100);
 
     return Card(
       color: CoresPersonalizada.corCards,

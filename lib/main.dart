@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pro_angler/Providers/catches_provider.dart';
-import 'package:pro_angler/Providers/user_provider.dart'; 
+import 'package:pro_angler/Providers/user_provider.dart';
+import 'package:pro_angler/Views/Onboarding/onboarding_screen.dart'; 
 import 'package:pro_angler/Views/fill_user_info.dart';
 import 'package:pro_angler/Views/home_page.dart';
 import 'package:pro_angler/Views/login_page.dart';
@@ -61,8 +62,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/login',
+      initialRoute: '/onboarding',
       routes: {
+        '/onboarding':(context) => OnboardingScreen(),
         '/login': (context) => LoginPage(),
         '/signup': (context) => const SignupPage(),
         '/homepage': (context) => const HomePage(),

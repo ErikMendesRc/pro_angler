@@ -5,6 +5,7 @@ import 'package:pro_angler/Services/tournament_service.dart';
 class TournamentProvider with ChangeNotifier {
   final TournamentService _tournamentService = TournamentService();
   List<Tournament> _tournaments = [];
+  List<Tournament> _searchResults = [];
   bool _isLoading = false;
   String _error = '';
   Tournament? _currentTournament;
@@ -14,6 +15,7 @@ class TournamentProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String get error => _error;
   Tournament? get currentTournament => _currentTournament;
+  List<Tournament> get searchResults => _searchResults;
 
   void setCurrentTournament(Tournament tournament) {
     _currentTournament = tournament;
@@ -29,6 +31,27 @@ class TournamentProvider with ChangeNotifier {
       _error = 'Falha ao criar torneio: $e';
       notifyListeners();
     }
+  }
+
+  void searchTournaments(String query) {
+    if (query.isEmpty) {
+      _currentTournament = null;
+      notifyListeners();
+      return;
+    }
+
+    _searchResults = _tournaments
+        .where((tournament) =>
+            tournament.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    if (_searchResults.isNotEmpty) {
+      _currentTournament = _searchResults.first;
+    } else {
+      _currentTournament = null;
+    }
+
+    notifyListeners();
   }
 
   Future<List<Tournament>?> fetchAllTournaments() async {

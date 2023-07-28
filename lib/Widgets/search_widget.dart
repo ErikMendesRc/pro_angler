@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Widgets/tournament_search_card.dart';
+import 'package:provider/provider.dart';
+
+import '../Providers/tournament_provider.dart';
 
 class SearchWidget extends StatelessWidget {
   const SearchWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tournamentProvider = Provider.of<TournamentProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
@@ -19,9 +25,12 @@ class SearchWidget extends StatelessWidget {
           ],
         ),
         child: Column(
-          children: const [
+          children: [
             TextField(
-              decoration: InputDecoration(
+              onChanged: (query) {
+                tournamentProvider.searchTournaments(query);
+              },
+              decoration: const InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
                   color: Color(0xff4338CA),
@@ -45,7 +54,11 @@ class SearchWidget extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
+            if (tournamentProvider.isLoading)
+              const CircularProgressIndicator()
+            else if (tournamentProvider.currentTournament != null)
+              TournamentSearchCard(tournamentProvider.currentTournament!)
           ],
         ),
       ),

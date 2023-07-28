@@ -4,25 +4,57 @@ import 'package:pro_angler/Models/tournament.dart';
 class TournamentSearchCard extends StatelessWidget {
   final Tournament tournament;
 
-  const TournamentSearchCard({super.key, required this.tournament});
+  const TournamentSearchCard(this.tournament, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    Color statusColor;
+    Icon statusIcon;
+    String statusText;
+    switch (tournament.status.toLowerCase()) {
+      case 'aguardando':
+        statusColor = Colors.white;
+        statusIcon = const Icon(Icons.alarm, color: Colors.blue);
+        statusText = 'Aguardando';
+        break;
+      case 'em andamento':
+        statusColor = Colors.white;
+        statusIcon = const Icon(Icons.schedule, color: Colors.grey);
+        statusText = 'Em Andamento';
+        break;
+      case 'finalizado':
+        statusColor = Colors.white;
+        statusIcon = const Icon(Icons.close, color: Colors.red);
+        statusText = 'Finalizado';
+        break;
+      default:
+        statusColor = Colors.transparent;
+        statusIcon = const Icon(Icons.error, color: Colors.transparent);
+        statusText = 'Indefinido';
+    }
+
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(tournament.imageUrl ?? ''),
+        ),
+        title: Text(tournament.name),
+        onTap: () {
+          Navigator.pushNamed(context, '/tournamentpage');
+        },
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Image.network(
-              tournament.imageUrl ?? '',
-              width: 40,
-              height: 40,
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: statusColor,
+              ),
+              child: statusIcon,
             ),
-            const SizedBox(width: 10),
-            Text(
-              tournament.name,
-              style: const TextStyle(fontSize: 16),
-            ),
+            const SizedBox(width: 4),
+            Text(statusText),
           ],
         ),
       ),

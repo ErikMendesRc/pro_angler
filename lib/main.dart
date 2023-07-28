@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/onboarding',
+      initialRoute: '/login',
       routes: {
         '/onboarding':(context) => OnboardingScreen(),
         '/login': (context) => LoginPage(),

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Models/user.dart';
+import 'package:pro_angler/Providers/user_provider.dart';
 import 'package:pro_angler/Util/custom_styles.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeSection extends StatelessWidget {
-  const WelcomeSection({super.key});
-
+  const WelcomeSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: true);
+    final UserData? user = userProvider.getCurrentUser();
+
     return Container(
       padding: const EdgeInsets.only(top: 16, bottom: 8),
       child: Padding(
@@ -15,26 +20,21 @@ class WelcomeSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             RichText(
-              text: const TextSpan(
+              text: TextSpan(
                 children: [
-                  TextSpan(
+                  const TextSpan(
                     text: 'Bem Vindo, ',
                     style: CustomTextStyles.titleText,
                   ),
                   TextSpan(
-                    text: ' Pescador',
+                    text: user?.name,
                     style: CustomTextStyles.subtitleText,
                   ),
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, '/profile');
-              },
-              child: const CircleAvatar(
-                child: Icon(Icons.person),
-              ),
+            CircleAvatar(
+              backgroundImage: NetworkImage(user?.photoURL ?? ''),
             ),
           ],
         ),

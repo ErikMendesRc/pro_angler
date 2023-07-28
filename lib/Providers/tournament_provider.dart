@@ -31,6 +31,28 @@ class TournamentProvider with ChangeNotifier {
     }
   }
 
+  Future<List<Tournament>?> fetchAllTournaments() async {
+    try {
+      _isLoading = true;
+      _error = '';
+      notifyListeners();
+      _tournaments = await _tournamentService.getAllTournaments();
+
+      for (var tournament in _tournaments) {
+        _updateTournamentStatus(tournament);
+      }
+
+      _isLoading = false;
+      notifyListeners();
+      return _tournaments;
+    } catch (e) {
+      _isLoading = false;
+      _error = 'Falha ao buscar os torneios: $e';
+      notifyListeners();
+      return null;
+    }
+  }
+
   bool _isFetched = false;
   Future<List<Tournament>?> fetchTournamentsByUserId(String userId) async {
     if (!_isFetched) {

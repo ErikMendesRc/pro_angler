@@ -35,6 +35,9 @@ flutter:
     - assets/images/trophy.png
     - assets/images/teste.jpg
     - assets/images/distintivo.png
+    - assets/images/paraqueda.jpg
+    - assets/images/iscaecia.jpg
+    - assets/images/tuiuiu.jpg
     
     #Conquistas
     - assets/images/conquistas/entusiasta.png

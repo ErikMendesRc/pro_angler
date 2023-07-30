@@ -12,6 +12,7 @@ import 'package:pro_angler/Views/profile_page.dart';
 import 'package:pro_angler/Views/signup_page.dart';
 import 'package:pro_angler/Views/tournament_admin_page.dart';
 import 'package:pro_angler/Views/tournaments_page.dart';
+import 'package:pro_angler/Views/users_profile_page.dart';
 import 'package:provider/provider.dart';
 
 import 'Providers/team_provider.dart';
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
         '/catchdetails': (context) => const CatchDetails(catchId:''),
         '/admintournament':(context) =>  TournamentAdminPage(),
         '/filluserinfo':(context) =>  FillUserInfoScreen(),
+        '/usersprofile':(context) =>  UsersProfilePage(),
       },
     );
   }

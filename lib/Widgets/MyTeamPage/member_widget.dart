@@ -20,7 +20,9 @@ class MembersWidget extends StatelessWidget {
       future: userProvider.getUsersByIds(membersIds),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(),);
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
 
         if (snapshot.hasError || !snapshot.hasData) {
@@ -37,12 +39,12 @@ class MembersWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Membros da Equipe', style: CustomTextStyles.text20Bold),
+                  const Text('Membros da Equipe',
+                      style: CustomTextStyles.text20Bold),
                   GestureDetector(
-                    onTap: () {
-                      // Action when tapping on "Add Member"
-                    },
-                    child: const Text('Adicionar Membro', style: CustomTextStyles.destaque14Bold),
+                    onTap: () {},
+                    child: const Text('Adicionar Membro',
+                        style: CustomTextStyles.destaque14Bold),
                   ),
                 ],
               ),
@@ -53,7 +55,10 @@ class MembersWidget extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      // Action when tapping on the card, for example, opening the member's profile
+                      final selectedUser = members[index];
+                      userProvider.setSelectedUser(selectedUser);
+                      Navigator.pushNamed(context, '/usersprofile',
+                          arguments: selectedUser);
                     },
                     child: Card(
                       color: CoresPersonalizada.corPrimaria,
@@ -85,22 +90,16 @@ class MembersWidget extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      members[index].name,
-                                      style: CustomTextStyles.destaque14Bold
-                                    ),
-                                    Text(
-                                      members[index].city,
-                                      style: CustomTextStyles.texto12Branco
-                                    ),
+                                    Text(members[index].name,
+                                        style: CustomTextStyles.destaque14Bold),
+                                    Text(members[index].city,
+                                        style: CustomTextStyles.texto12Branco),
                                   ],
                                 ),
                               ],
                             ),
-                            const Text(
-                              'Ver Perfil',
-                              style: CustomTextStyles.texto12BrancoBold
-                            ),
+                            const Text('Ver Perfil',
+                                style: CustomTextStyles.texto12BrancoBold),
                           ],
                         ),
                       ),

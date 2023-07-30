@@ -1,35 +1,35 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Models/user.dart';
+import 'package:pro_angler/Providers/user_provider.dart';
+import 'package:pro_angler/Util/cores.dart';
+import 'package:pro_angler/Util/custom_styles.dart';
+import 'package:pro_angler/Widgets/ProfilePage/achiviement_list.dart';
+import 'package:pro_angler/Widgets/ProfilePage/score_card.dart';
+import 'package:pro_angler/Widgets/ProfilePage/trophy_list.dart';
 
-import '../Util/cores.dart';
-import '../Util/custom_styles.dart';
-import '../Widgets/ProfilePage/achiviement_list.dart';
 import '../Widgets/ProfilePage/profile_header.dart';
-import '../Widgets/ProfilePage/score_card.dart';
-import '../Widgets/ProfilePage/trophy_list.dart';
-import '../Widgets/bottom_navigation_bar_widget.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
-
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  int _currentIndex = 3;
-
-  void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+class UsersProfilePage extends StatelessWidget {
+  const UsersProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = FirebaseAuth.instance.currentUser;
-    final userId = firebaseUser?.uid ?? '';
+    final UserData? user = ModalRoute.of(context)?.settings.arguments as UserData?;
     final mediaQuery = MediaQuery.of(context).size;
+
+    if (user == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Perfil'),
+          centerTitle: true,
+          elevation: 0.0,
+          backgroundColor: CoresPersonalizada.corPrimaria,
+        ),
+        body: const Center(
+          child: Text('Nenhum usuário selecionado.'),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -58,9 +58,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ProfileHeader(),
+                  ProfileHeader(user: user),
                   const SizedBox(height: 8.0),
-                  ScoreCard(userId: userId),
+                  ScoreCard(userId: user.id),// Pass the selected user data here
                   const SizedBox(height: 32),
                   const Align(
                     alignment: Alignment.centerLeft,
@@ -70,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 50.0),
-                  AchievementList(userId: userId),
+                  AchievementList(userId: user.id),
                   const SizedBox(height: 50),
                   const Align(
                     alignment: Alignment.centerLeft,
@@ -80,20 +80,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 100.0),
-                  TrophyList(userId: userId),
+                  TrophyList(userId: user.id),
                 ],
               ),
             ),
           ),
-        ),
-      ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: CoresPersonalizada.corPrimaria,
-        ),
-        child: BottomNavigationBarWidget(
-          currentIndex: _currentIndex,
-          onTabTapped: _onTabTapped,
         ),
       ),
     );

@@ -89,6 +89,8 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
       'city': city,
       'participants': participants,
       'imageUrl': imageUrl,
+      'creatorId': currentUser?.id ?? '',
+      'creationDate': Timestamp.now()
     };
 
     try {

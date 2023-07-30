@@ -10,6 +10,7 @@ import 'package:pro_angler/Services/tournament_service.dart';
 class UserProvider with ChangeNotifier {
   UserData? _user;
   UserData? _currentUser;
+  UserData? _selectedUser;
   Team? _team;
 
   final UserService _userService = UserService();
@@ -18,11 +19,17 @@ class UserProvider with ChangeNotifier {
 
   UserData? get user => _user;
   UserData? get currentUser => _currentUser;
+  UserData? get selectedUser => _selectedUser;
 
   Future<void> setUserById(String userId) async {
     _user = await _userService.getUserById(userId);
     _currentUser = _user;
     _team = await _teamService.getTeamByCreatorId(userId);
+    notifyListeners();
+  }
+
+  void setSelectedUser(UserData user){
+    _selectedUser = user;
     notifyListeners();
   }
 
@@ -35,6 +42,10 @@ class UserProvider with ChangeNotifier {
     _user = user;
     _currentUser = user;
     notifyListeners();
+  }
+
+  UserData? getSelectedUser(){
+    return _selectedUser; 
   }
 
   UserData? getCurrentUser() {

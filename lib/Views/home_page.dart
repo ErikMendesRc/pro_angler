@@ -87,7 +87,29 @@ class _HomePageState extends State<HomePage> {
                   status: TournamentStatus.emAndamento,
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Text(
+                  'Compre com as lojas abaixo:',
+                  style: TextStyle(
+                    color: CoresPersonalizada.corTextoDestaque,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               AdvertisingCardList(),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Text(
+                  'Crie seu torneio conosco:',
+                  style: TextStyle(
+                    color: CoresPersonalizada.corTextoDestaque,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               CreateTournamentCard(),
               Padding(
                 padding: EdgeInsets.only(bottom: 2.0),

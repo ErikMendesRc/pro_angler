@@ -1,5 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Models/advertising.dart';
+import 'package:pro_angler/Providers/advertising_provider.dart';
+import 'package:provider/provider.dart';
 
 class AdvertisingCardList extends StatefulWidget {
   const AdvertisingCardList({Key? key}) : super(key: key);
@@ -11,16 +15,13 @@ class AdvertisingCardList extends StatefulWidget {
 class _AdvertisingCardListState extends State<AdvertisingCardList> {
   final PageController _pageController = PageController();
   int currentIndex = 0;
-  final List<String> imagePaths = [
-    'assets/images/paraqueda.jpg',
-    'assets/images/tuiuiu.jpg',
-    'assets/images/iscaecia.jpg',
-  ];
+  List<Advertising> advertisements = [];
 
   @override
   void initState() {
     super.initState();
     startTimer();
+    loadAdvertisements();
   }
 
   @override
@@ -35,45 +36,52 @@ class _AdvertisingCardListState extends State<AdvertisingCardList> {
   void startTimer() {
     const duration = Duration(seconds: 5);
     _timer = Timer.periodic(duration, (_) {
-      if (currentIndex == imagePaths.length - 1) {
-        // If it's the last card, animate back to the first card
+      if (currentIndex == advertisements.length - 1) {
         _pageController.animateToPage(0,
-            duration: Duration(milliseconds: 500), curve: Curves.ease);
+            duration: const Duration(milliseconds: 500), curve: Curves.ease);
       } else {
-        // Otherwise, animate to the next card
         _pageController.nextPage(
-            duration: Duration(milliseconds: 500), curve: Curves.ease);
+            duration: const Duration(milliseconds: 500), curve: Curves.ease);
       }
+    });
+  }
+
+  Future<void> loadAdvertisements() async {
+    final advertisingProvider = Provider.of<AdvertisingProvider>(context, listen: false);
+    await advertisingProvider.loadAdvertisements();
+    setState(() {
+      advertisements = advertisingProvider.advertisements;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       height: 140,
       child: PageView.builder(
         controller: _pageController,
-        itemCount: imagePaths.length,
+        itemCount: advertisements.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: InkWell(
               borderRadius: BorderRadius.circular(8),
               onTap: () {
-                Navigator.pushNamed(context, '/newtournament');
+                Navigator.pushNamed(context, '/advertising', arguments: advertisements[index]);
               },
               child: SizedBox(
                 width: 300,
                 height: 140,
                 child: Card(
-                  color: Colors.blueGrey, // You can change the color as desired
+                  color: Colors.blueGrey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      imagePaths[index], // Display the current image
+                    child: Image.network(
+                      advertisements[index].imageUrl,
                       fit: BoxFit.cover,
                     ),
                   ),

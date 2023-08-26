@@ -144,7 +144,7 @@ class _NewTournamentPageState extends State<NewTournamentPage> {
       description: _descriptionController.text,
       startDate: _startDate!,
       endDate: _endDate!,
-      location: '${_stateController.value} - ${_cityController.value}',
+      location: '${_cityController.value}-${_stateController.value}',
       modality: _modalidadeController.value,
       type: _tournamentType,
       entryFee: entryFeeValue,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pro_angler/Models/user.dart';
-import 'package:pro_angler/Providers/user_provider.dart';
 import 'package:pro_angler/Util/cores.dart';
 import 'package:pro_angler/Util/custom_styles.dart';
 import 'package:pro_angler/Widgets/ProfilePage/achiviement_list.dart';

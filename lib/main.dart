@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Models/advertising.dart';
+import 'package:pro_angler/Providers/advertising_provider.dart';
 import 'package:pro_angler/Providers/catches_provider.dart';
 import 'package:pro_angler/Providers/user_provider.dart';
-import 'package:pro_angler/Views/Onboarding/onboarding_screen.dart'; 
+import 'package:pro_angler/Views/Onboarding/onboarding_screen.dart';
+import 'package:pro_angler/Views/advertising_page.dart'; 
 import 'package:pro_angler/Views/fill_user_info.dart';
 import 'package:pro_angler/Views/home_page.dart';
 import 'package:pro_angler/Views/login_page.dart';
@@ -46,6 +49,9 @@ void main() async {
         ChangeNotifierProvider<CatchesProvider>(
           create: (_) => CatchesProvider(),
         ),
+         ChangeNotifierProvider<AdvertisingProvider>(
+          create: (_) => AdvertisingProvider(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -83,6 +89,7 @@ class MyApp extends StatelessWidget {
         '/admintournament':(context) =>  TournamentAdminPage(),
         '/filluserinfo':(context) =>  FillUserInfoScreen(),
         '/usersprofile':(context) =>  UsersProfilePage(),
+        '/advertising': (context) => AdvertisingPage(advertisement: ModalRoute.of(context)!.settings.arguments as Advertising),
       },
     );
   }

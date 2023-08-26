@@ -1,9 +1,11 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:pro_angler/Controller/text_form_notifier.dart';
 import 'package:pro_angler/Models/user.dart';
 import 'package:pro_angler/Providers/user_provider.dart';
 import 'package:pro_angler/Util/cores.dart';
 import 'package:pro_angler/Util/custom_styles.dart';
+import 'package:pro_angler/Widgets/NewTournamentsPage/tournament_location_formfield.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -20,7 +22,10 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
   final List<String> participants = [];
   final TextEditingController _teamNameController = TextEditingController();
   final TextEditingController _participantController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
+  final TextEditingControllerNotifier _cityController =
+      TextEditingControllerNotifier('Nenhuma Selecionada');
+  final TextEditingControllerNotifier _stateController =
+      TextEditingControllerNotifier('Nenhum Selecionado');
   File? _teamImage;
 
   final List<String> searchResults = [];
@@ -40,6 +45,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
     _teamNameController.dispose();
     _participantController.dispose();
     _cityController.dispose();
+    _stateController.dispose();
     super.dispose();
   }
 
@@ -66,18 +72,33 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
   }
 
   Future<void> _createTeam() async {
-
     final String teamName = _teamNameController.text;
-    final String city = _cityController.text;
+    final String city = _cityController.value;
 
     if (!participants.contains(currentUser?.id)) {
       participants.add(currentUser?.id ?? '');
     }
 
+    final QuerySnapshot teamQuery = await FirebaseFirestore.instance
+      .collection('teams')
+      .where('participants', arrayContains: currentUser?.id)
+      .get();
+
+      if (teamQuery.docs.isNotEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Você já possui uma equipe.'),
+      ),
+    );
+    return;
+  }
+
     String imageUrl = '';
     if (_teamImage != null) {
-      final String imagePath ='team_images/${DateTime.now().millisecondsSinceEpoch.toString()}.jpg';
-      final Reference storageReference = FirebaseStorage.instance.ref().child(imagePath);
+      final String imagePath =
+          'team_images/${DateTime.now().millisecondsSinceEpoch.toString()}.jpg';
+      final Reference storageReference =
+          FirebaseStorage.instance.ref().child(imagePath);
       final UploadTask uploadTask = storageReference.putFile(_teamImage!);
       await uploadTask.whenComplete(() async {
         imageUrl = await storageReference.getDownloadURL();
@@ -86,7 +107,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
 
     final teamData = {
       'name': teamName,
-      'city': city,
+      'city': '${_cityController.value}-${_stateController.value}',
       'participants': participants,
       'imageUrl': imageUrl,
       'creatorId': currentUser?.id ?? '',
@@ -101,18 +122,18 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
       setState(() {
         _teamNameController.clear();
         _participantController.clear();
-        _cityController.clear();
         participants.clear();
         _teamImage = null;
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: CoresPersonalizada.corSecundaria,
-          content: Text('Time criado com sucesso!', style:  CustomTextStyles.texto12BrancoBold,),
-          duration: Duration(
-              seconds:
-                  3),
+          content: Text(
+            'Time criado com sucesso!',
+            style: CustomTextStyles.texto12BrancoBold,
+          ),
+          duration: Duration(seconds: 3),
         ),
       );
     } catch (e) {
@@ -353,16 +374,9 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
               ),
             ),
             const SizedBox(height: 16.0),
-            const Text('Cidade da Equipe', style: CustomTextStyles.texto16Bold),
-            const SizedBox(height: 8.0),
-            TextFormField(
-              controller: _cityController,
-              decoration: const InputDecoration(
-                hintText: 'Digite a cidade da equipe',
-                border: OutlineInputBorder(),
-                filled: true,
-                fillColor: Colors.white,
-              ),
+            TournamentLocationFormField(
+              cityController: _cityController,
+              stateController: _stateController,
             ),
             const SizedBox(height: 16.0),
             const Text('Adicionar Participantes',

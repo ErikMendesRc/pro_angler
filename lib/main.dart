@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pro_angler/Models/advertising.dart';
 import 'package:pro_angler/Providers/advertising_provider.dart';
 import 'package:pro_angler/Providers/catches_provider.dart';
+import 'package:pro_angler/Providers/ibge_provider.dart';
 import 'package:pro_angler/Providers/user_provider.dart';
 import 'package:pro_angler/Views/Onboarding/onboarding_screen.dart';
 import 'package:pro_angler/Views/advertising_page.dart'; 
@@ -51,6 +52,9 @@ void main() async {
         ),
          ChangeNotifierProvider<AdvertisingProvider>(
           create: (_) => AdvertisingProvider(),
+        ),
+        ChangeNotifierProvider<IBGEProvider>(
+          create: (_) => IBGEProvider(),
         ),
       ],
       child: const MyApp(),

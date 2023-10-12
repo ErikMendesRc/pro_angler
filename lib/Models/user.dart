@@ -11,10 +11,11 @@ class UserData {
   String? photoURL;
   List<ChampionTrophys>? championTrophys;
   List<PersonalAchieviments>? personalAchiviements;
-  List<Tournament>? myTournaments;
+  List<String>? myTournamentsIds;
   String city;
   List<Tournament>? participatingTournaments;
   List<Catch>? myCatches;
+  Map<String, int>? tournamentLuckyNumbers = {};
 
   UserData({
     required this.id,
@@ -22,11 +23,12 @@ class UserData {
     required this.email,
     this.photoURL,
     this.championTrophys,
-    this.myTournaments,
+    this.myTournamentsIds,
     required this.city,
     this.personalAchiviements,
     this.participatingTournaments,
-    this.myCatches
+    this.myCatches,
+    this.tournamentLuckyNumbers
   });
 
 
@@ -38,10 +40,11 @@ class UserData {
       "photoURL": photoURL,
       "championTrophys": championTrophys?.map((trophy) => trophy.toJson()).toList(),
       "personalAchiviements": personalAchiviements?.map((achievement) => achievement.toJson()).toList(),
-      "myTournaments": myTournaments?.map((tournament) => tournament.toJson()).toList(),
+      "myTournamentsIds": myTournamentsIds,
       "city": city,
       "participatingTournaments": participatingTournaments?.map((tournament) => tournament.toJson()).toList(),
       "myCatches": myCatches?.map((catchs) => catchs.toJson()).toList(),
+      "tournamentLuckyNumbers": tournamentLuckyNumbers
     };
   }
 
@@ -53,10 +56,12 @@ class UserData {
       photoURL: json['photoURL'],
       championTrophys: _parseChampionTrophys(json['championTrophys']),
       personalAchiviements: _parsePersonalAchieviments(json['personalAchiviements']),
-      myTournaments: _parseTournaments(json['myTournaments']),
+      myTournamentsIds: List<String>.from(json['myTournamentsIds'] ?? []),
       city: json['city'],
       participatingTournaments: _parseTournaments(json['participatingTournaments']),
       myCatches: _parseCatches(json['myCatches']),
+      tournamentLuckyNumbers: Map<String, int>.from(json['tournamentLuckyNumbers'] ?? {}),
+
     );
   }
 
@@ -96,7 +101,7 @@ class UserData {
         photoURL = null,
         championTrophys = null,
         personalAchiviements = null,
-        myTournaments = null,
+        myTournamentsIds = null,
         city = '',
         participatingTournaments = null,
         myCatches = null;

@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart'; // necessário para o tipo Timestamp
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../enum/tournament_team_based.dart';
 

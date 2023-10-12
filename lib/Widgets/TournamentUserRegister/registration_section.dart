@@ -3,6 +3,7 @@ import 'package:pro_angler/Util/cores.dart';
 import 'package:pro_angler/Util/custom_styles.dart';
 import 'package:provider/provider.dart';
 
+import '../../Controller/tournament_registration_controller.dart';
 import '../../Mock/mock_teams.dart';
 import '../../Models/team.dart';
 import '../../Models/user.dart';
@@ -19,19 +20,26 @@ class RegistrationSection extends StatefulWidget {
 
 class _RegistrationSectionState extends State<RegistrationSection> {
   bool isCheckboxChecked = false;
+  bool isRegistrationCompleted = false;
 
   @override
   Widget build(BuildContext context) {
+    
+    final registrationController = TournamentRegistrationController();
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    final TournamentProvider tournamentProvider = Provider.of<TournamentProvider>(context);
-     final screenHeight = MediaQuery.of(context).size;
+    final TournamentProvider tournamentProvider =
+        Provider.of<TournamentProvider>(context);
+    final screenHeight = MediaQuery.of(context).size;
 
-    final TournamentTeamBased teamBased = tournamentProvider.currentTournament?.teamBased ?? TournamentTeamBased.individual;
+    final TournamentTeamBased teamBased =
+        tournamentProvider.currentTournament?.teamBased ??
+            TournamentTeamBased.individual;
 
     if (teamBased == TournamentTeamBased.individual) {
       final UserData? currentUser = userProvider.currentUser;
       return Container(
-        height: screenHeight.height, // Definindo a altura para ocupar toda a tela
+        height:
+            screenHeight.height,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +54,8 @@ class _RegistrationSectionState extends State<RegistrationSection> {
                 decoration: const InputDecoration(
                   labelText: 'Nome/Apelido',
                   labelStyle: TextStyle(color: CoresPersonalizada.white),
-                  prefixIcon: Icon(Icons.person, color: CoresPersonalizada.white),
+                  prefixIcon:
+                      Icon(Icons.person, color: CoresPersonalizada.white),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: CoresPersonalizada.white),
                   ),
@@ -58,7 +67,8 @@ class _RegistrationSectionState extends State<RegistrationSection> {
                 decoration: const InputDecoration(
                   labelText: 'Número do WhatsApp',
                   labelStyle: TextStyle(color: CoresPersonalizada.white),
-                  prefixIcon: Icon(Icons.phone, color: CoresPersonalizada.white),
+                  prefixIcon:
+                      Icon(Icons.phone, color: CoresPersonalizada.white),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: CoresPersonalizada.white),
                   ),
@@ -69,7 +79,8 @@ class _RegistrationSectionState extends State<RegistrationSection> {
                 decoration: const InputDecoration(
                   labelText: 'Email',
                   labelStyle: TextStyle(color: CoresPersonalizada.white),
-                  prefixIcon: Icon(Icons.email, color: CoresPersonalizada.white),
+                  prefixIcon:
+                      Icon(Icons.email, color: CoresPersonalizada.white),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: CoresPersonalizada.white),
                   ),
@@ -86,7 +97,8 @@ class _RegistrationSectionState extends State<RegistrationSection> {
                         isCheckboxChecked = value ?? false;
                       });
                     },
-                    fillColor: MaterialStateProperty.all(CoresPersonalizada.white),
+                    fillColor:
+                        MaterialStateProperty.all(CoresPersonalizada.white),
                   ),
                   const Text(
                     'Eu li e aceito as Regras do Torneio',
@@ -97,15 +109,45 @@ class _RegistrationSectionState extends State<RegistrationSection> {
               const SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
-                  onPressed: isCheckboxChecked
-                      ? () {
-                          // Lógica para realizar a inscrição
+                  onPressed: isCheckboxChecked && !isRegistrationCompleted
+                      ? () async {
+                          final currentUser = userProvider.getCurrentUser();
+                          final tournamentId = tournamentProvider.currentTournament!.id;
+                          
+
+                          try {
+                            await registrationController.registerUserForTournament(
+                                currentUser!, tournamentId);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content:
+                                    Text('Inscrição concluída com sucesso!'),
+                              ),
+                            );
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              '/mytournaments',
+                              (route) =>
+                                  false,
+                            );
+                          } catch (e) {
+                            // Lidar com erros, exibir uma mensagem de erro, por exemplo.
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content:
+                                    Text('Erro ao realizar a inscrição: $e'),
+                              ),
+                            );
+                          }
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isCheckboxChecked ? CoresPersonalizada.white : Colors.grey,
+                    backgroundColor: isCheckboxChecked
+                        ? CoresPersonalizada.white
+                        : Colors.grey,
                   ),
-                  child: Text(
+                  child:
+                  Text(
                     'Inscrever-se',
                     style: TextStyle(
                       color: isCheckboxChecked ? Colors.black : Colors.grey,
@@ -119,13 +161,16 @@ class _RegistrationSectionState extends State<RegistrationSection> {
       );
     } else {
       final UserData? currentUser = userProvider.currentUser;
-      final List<Team> userTeams = currentUser != null ? MockTeams.getTeamsByParticipantId(currentUser.id) : [];
+      final List<Team> userTeams = currentUser != null
+          ? MockTeams.getTeamsByParticipantId(currentUser.id)
+          : [];
       final bool hasTeam = userTeams.isNotEmpty;
 
       final Team? team = hasTeam ? userTeams.first : null;
 
       return Container(
-        height: screenHeight.height, // Definindo a altura para ocupar toda a tela
+        height:
+            screenHeight.height, // Definindo a altura para ocupar toda a tela
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,7 +185,8 @@ class _RegistrationSectionState extends State<RegistrationSection> {
                 decoration: const InputDecoration(
                   labelText: 'Nome da Equipe',
                   labelStyle: TextStyle(color: CoresPersonalizada.white),
-                  prefixIcon: Icon(Icons.people, color: CoresPersonalizada.white),
+                  prefixIcon:
+                      Icon(Icons.people, color: CoresPersonalizada.white),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: CoresPersonalizada.white),
                   ),
@@ -169,7 +215,8 @@ class _RegistrationSectionState extends State<RegistrationSection> {
                         isCheckboxChecked = value ?? false;
                       });
                     },
-                    fillColor: MaterialStateProperty.all(CoresPersonalizada.white),
+                    fillColor:
+                        MaterialStateProperty.all(CoresPersonalizada.white),
                   ),
                   const Text(
                     'Eu li e aceito as Regras do Torneio',
@@ -182,11 +229,13 @@ class _RegistrationSectionState extends State<RegistrationSection> {
                 child: ElevatedButton(
                   onPressed: isCheckboxChecked
                       ? () {
-                         Navigator.pushNamed(context, '/payment');
+                          Navigator.pushNamed(context, '/payment');
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isCheckboxChecked ? CoresPersonalizada.white : Colors.grey,
+                    backgroundColor: isCheckboxChecked
+                        ? CoresPersonalizada.white
+                        : Colors.grey,
                   ),
                   child: Text(
                     'Inscrever-se',

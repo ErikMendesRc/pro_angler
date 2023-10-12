@@ -83,7 +83,7 @@ class SignupPage extends StatelessWidget {
           photoURL: '',
           championTrophys: [],
           personalAchiviements: [],
-          myTournaments: [],
+          myTournamentsIds: [],
           city: '',
           participatingTournaments: [],
           myCatches: [],
